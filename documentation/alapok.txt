@@ -1,0 +1,29 @@
+Feladat:
+Assembly kód parse-olása, helyesség leellenőrzése
+	* az adott kód nem feltétlenül használhatja a teljes utasításkészletet! majd menet közben kiderül mit hagyunk ki
+		amiket szeretnék belerakni, prioritási sorrendben:
+			mov, add, sub, mul, and, or, not;
+			push, pop - veremműveletek;
+			változók létrehozása és használata (beleértve a változók tárterületéből kimutatást más változóra);
+			jmp és feltételes ugró utasítások, hozzá tartozó címkék;
+			-- még vagy lesz más, vagy nem
+				pl. call, ret - ha az ugrás és a verem sikerül akkor ez nem vészes
+	információk eltárolása pl. jump címkék, változódeklarációk
+a kód soronkénti végrehajtása
+	minden lépésben a regiszterek, változók, verem tartalmának kiírása
+
+megoldási terv:
+C++
+első parse: flex, bisonc++
+	* utasítások soronkénti elmentése (stringként) a jumpos megvalósításhoz? (sorbarakás, jump -> melyik sorszámú utasításhoz ugrik) - ezen lementett dolgok későbbi parsolása lehet a tényleges futtatás
+		alternatíva (ha van ilyen) - flex olvasófej áthelyezése a jump pozíciókra
+	változók eltárolása (név, méret, kezdeti érték)
+	jump címkék lementése (név, hely)
+		ez nem tűnik elkerülhetőnek, sok memóriát foglalhat
+soronkénti végrehajtás:
+	az utasítások a lementett stringekből kiszedve beparseoljuk (egy másik parserrel!), a megfelelő memória/verem/regiszter műveletet végrehajtjuk, ugrásnál a következő utasítás számát beállítjuk
+grafikus kijelzés:
+	egyszerű, téglalapokban számok, regiszterek névvel jelölve, bájtokra osztva, verem függőlegesen, esetleg a következő utasítás sorszáma / maga az utasítás is kiírható
+
+ábrázolás:
+	
