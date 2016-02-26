@@ -1,0 +1,46 @@
+Első parse, terv
+	terminálisok:
+		konstans
+			szám	-	előjel nélküli egész szám, vezető nullák megengedve
+			karakter	-	'x' pl értékadás, inicializálás
+		művelet
+			mov, add, sub, mul, div, inc, dec, cmp
+			not, and, or, xor
+			push, pop
+			jmp, ja, jb, je, jne, jna, jnb, jz, jnz, near
+				a "near" figyelmen kívül hagyható az elemzés és a szimuláció szempontjából
+			//call, ret	-	ha belefér időben
+			-----
+			EGYVALTOZOS	-	mul, div, inc, dec, not, push, pop, jmp, ja, jb, je, jne, jna, jnb, jz, jnz
+			KETVALTOZOS	-	mov, add, sub, cmp, and, or, xor
+			--	string-ként tárolva hozzá hogy milyen műveletről is van szó
+		egyéb kulcsszavak (section, .text, .bss, .data, global, byte, word, dword)
+		vessző, kettőspont, zárójelek	-	() byteshift aritmetika, [] memóriaelérés
+		+-*/	-	aritmetikai műveletek memóriaelérésnél
+		pontosvessző (komment sor végéig)
+			figyelmen kívül hagyva
+		regiszterek
+			eax, ax, al, ah, ..b.., ..c.., ..d..
+			eip, ip, esp, sp, ebp, bp
+			flagek	-	valószínűleg csak a zero (je, jz) és a sign (előjel -> ja, jb) flag elég lesz
+			-- string-ként tárolva hozzá hogy konkrétan melyik regiszter
+		azonosítók
+			[a-zA-Z_"."][0-9a-zA-Z_"."]*
+		sorvége	(utasítások elválasztása)
+		whitespace	-	[\t ]
+	nemterminálisok (teljesség igénye nélkül)
+		.data deklarációs fázis	(inicializált változók)
+		.bss deklarációs fázis	(inicializálatlan változók)
+		.text (utasítás fázis)
+			-> GLOBAL AZONOSITO : első utasítás sorszámának eltárolása
+			-> AZONOSITO KETTOSPONT	: címke, lementeni az azonosító stringjét és a címke után következő utasítás számát
+			-> utasítás	: az utasítás stringjét lementeni + hanyadik utasításnál tartunk
+			utána még követheti utasítás
+			--	utasítást követheti másik utasítás vagy fájl vége
+		utasítás
+			-> művelet kifejezés1 vessző kifejezés2
+				ha csak egy kifejezés szükséges a művelethez, akkor értelemszerűen úgy
+				most még csak szintaktikus ellenőrzés, szemantikus nincs
+		kifejezés
+			-> [kifejezés] | (kifejezés) | kifejezés +-*/ kifejezés | KONSTANS | AZONOSITO | REGISZTER
+			--	a string formáját le kell menteni

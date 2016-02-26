@@ -32,8 +32,9 @@ grafikus kijelzés:
 	"állapot" - futás közben
 		regiszterek tartalma
 			vector <char> -- vigyázni kell az átfedéssel (pl eax 4. byteja al)
+			minden regiszternek külön ("a" -> eax, ax, ah, al)
 		változók tartalma
-			egy vektor <char> minden bytenak
+			egy vektor <char> - byteonkénti tárolás
 			egy map <string, int> minden változónak hogy melyik az ő első byteja
 		verem tartalma
 			stack <char> -- vagy 2byteot, vagy 4 byteot push/poppolunk (nem feltétlenül ugyanannyit be mint ki), sorrendre ügyelni!
