@@ -8,13 +8,13 @@ Első parse, terv
 			not, and, or, xor
 			push, pop
 			jmp, ja, jb, je, jne, jna, jnb, jz, jnz, near
-				a "near" figyelmen kívül hagyható az elemzés és a szimuláció szempontjából
+				a "near" figyelmen kívül hagyható az elemzés és a szimuláció szempontjából, bár jó lenne ha a "következő utasítás" stringben látható lenne a jelenléte
 			//call, ret	-	ha belefér időben
 			-----
 			EGYVALTOZOS	-	mul, div, inc, dec, not, push, pop, jmp, ja, jb, je, jne, jna, jnb, jz, jnz
 			KETVALTOZOS	-	mov, add, sub, cmp, and, or, xor
 			--	string-ként tárolva hozzá hogy milyen műveletről is van szó
-		egyéb kulcsszavak (section, .text, .bss, .data, global, byte, word, dword)
+		egyéb kulcsszavak (section, .text, .bss, .data, global, byte, word, dword, resb, resw, resd, db, dw, dd)
 		vessző, kettőspont, zárójelek	-	() byteshift aritmetika, [] memóriaelérés
 		+-*/	-	aritmetikai műveletek memóriaelérésnél
 		pontosvessző (komment sor végéig)
@@ -22,7 +22,7 @@ Első parse, terv
 		regiszterek
 			eax, ax, al, ah, ..b.., ..c.., ..d..
 			eip, ip, esp, sp, ebp, bp
-			flagek	-	valószínűleg csak a zero (je, jz) és a sign (előjel -> ja, jb) flag elég lesz
+			flagek	-	valószínűleg csak a zero (zf - je, jz) és a sign (sf - előjel -> ja, jb) flag elég lesz
 			-- string-ként tárolva hozzá hogy konkrétan melyik regiszter
 		azonosítók
 			[a-zA-Z_"."][0-9a-zA-Z_"."]*
@@ -30,11 +30,13 @@ Első parse, terv
 		whitespace	-	[\t ]
 	nemterminálisok (teljesség igénye nélkül)
 		.data deklarációs fázis	(inicializált változók)
+			mivel ezek konstans kifejezések, ezt el lehet menteni már most
 		.bss deklarációs fázis	(inicializálatlan változók)
 		.text (utasítás fázis)
 			-> GLOBAL AZONOSITO : első utasítás sorszámának eltárolása
 			-> AZONOSITO KETTOSPONT	: címke, lementeni az azonosító stringjét és a címke után következő utasítás számát
 			-> utasítás	: az utasítás stringjét lementeni + hanyadik utasításnál tartunk
+				a string lementésnél whitespacek az utasítások közé (egy darab szóköz)
 			utána még követheti utasítás
 			--	utasítást követheti másik utasítás vagy fájl vége
 		utasítás

@@ -1,0 +1,19 @@
+interpretálás, terv
+	amit kapunk az első parse-ból:
+		utasítások sorban egymás után (vector<string>)
+		első utasítás sorszáma
+		deklarált változók méretei, inicializációs értékei
+			vector<char> a memória szimulálására	-	megfelelő pontokon kitöltve
+			map<string, int> a változó nevéhez tartozó első byte sorszáma
+		egy címke után hanyas sorszámú utasítás következik (map<string, int>)
+	terminálisok
+		lásd elso_parse.txt, kivéve:
+			a műveletek szét vannak válogatva
+			komment nem szükséges (az első parse már eldobta azokat)
+			sorvége nem szükséges
+		tárolt adatok
+			AZONOSITO : név: string, kikereshető a hozzá tartozó első bit sorszáma
+			KONSTANS : érték: int (char-ból konvertálni)
+			REGISZTER : név: string, size: méret byteban
+	nemterminálisok
+		

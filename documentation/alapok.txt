@@ -2,7 +2,7 @@ Feladat:
 Assembly kód parse-olása, helyesség leellenőrzése
 	* az adott kód nem feltétlenül használhatja a teljes utasításkészletet! majd menet közben kiderül mit hagyunk ki
 		amiket szeretnék belerakni, prioritási sorrendben:
-			mov, add, sub, mul, and, or, not;
+			mov, add, sub, mul, and, or, not	-	aritmetikai és logikai műveletek
 			push, pop - veremműveletek;
 			változók létrehozása és használata (beleértve a változók tárterületéből kimutatást más változóra);
 			jmp és feltételes ugró utasítások, hozzá tartozó címkék;
@@ -40,5 +40,5 @@ grafikus kijelzés:
 			stack <char> -- vagy 2byteot, vagy 4 byteot push/poppolunk (nem feltétlenül ugyanannyit be mint ki), sorrendre ügyelni!
 		melyik utasítás a következő (szám)
 		* ebben minden információ benne van a megjelenítéshez és a továbbhaladáshoz csak a beparseolt kód (utasítás stringek + ugrás címkék helyei) kell
-			-- ha belefér időben: képbe is kimentés -> slideshow, animáció készíthető
+		-- ha belefér időben: képbe is kimentés -> slideshow, animáció készíthető
 		* rövid keresgélés után: little-endian tárolásra odafigyelni amikor nagyobb méretű változókkal dolgozok mint amivel deklarálva lett
