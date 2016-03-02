@@ -14,6 +14,47 @@ interpretálás, terv
 		tárolt adatok
 			AZONOSITO : név: string, kikereshető a hozzá tartozó első bit sorszáma
 			KONSTANS : érték: int (char-ból konvertálni)
-			REGISZTER : név: string, size: méret byteban
+			REGISZTER : név: string, size: méret byteban (int 1..4 vagy undefined)
 	nemterminálisok
+		utasítás
+			utasítás -> MOV kifejezés vessző kifejezés
+			utasítás -> MUL kifejezés
+		kifejezés
+			kifejezés -> méretmódosító kifbelső
+				méretmódosító : DWORD, WORD, BYTE, üres
+					ennek megfelelően kifejezésnek van mérete, el kell tárolni
+					csak kisebb
+			kifbelső -> [kifbelső] | kifbelső +-*/ kifbelső | KONSTANS | AZONOSÍTÓ | REGISZTER
+				[] legfeljebb egy lehet egy utasításon belül	-> tárolni kell hogy volt-e már
+				tárolva hozzá: méret
+
+állapot adatszerkezet:
+	adattagok
+		map<string, int> :	változó_első_byteja
+		vector<char> :	változókat tároló tömb
+			! Little Endian tárolásra odafigyelni !
+				pl. mov dword[x], 1 -> [x]: 00000001 00000000 00000000 00000000
+						dword [x + 1] == 0	--	[x + 1] 00000000 00000000 00000000 00000000
+						dword [x - 1] == 256	--	[x - 1] 00000000 00000001 00000000 00000000
+		vector<char> eax, ebx, ecx, edx :	regiszterek tartalma
+		vector<char> :	verem, byteonként
+		int stack : verem teteje
+		int köv :	következő utasítás sorszáma
+	metódusok
+		get_reg( string reg_azon, vector<char> &to)
+		set_reg( string reg_azon, vector<char> from)
+			-- mit hova?:
+				3 karakteres azonosító: (4 byte) az egészet másolni (megfelelő nevűtől)
+				'x'-re végződik: (2 byte) 3.-4. byte
+				'h'-ra végződik: (1 byte) 3. byte
+				'l'-re végződik: (1 byte) 4. byte
+		int get_first_byte ( string vált_azon )	-	azonosító esetén ezt használjuk a további számolásoknál
+		get_var( int first_byte, int len, vector<char> &to)
+		set_var( int first_byte, vector<char> from)
+		push(vector<char> from)
+		pop(int len, vector<char> &to)
+			-- veremműveleteknél a nagyobb helyiérték kerül alulra (push), a kisebb helyiértéktől kezdődik a kiadás (pop)
+			-- vektorok felhasználásánál a vektor hossza tartalmazza a megfelelő méreteket
+		int get_köv()
+		int set_köv(int)
 		
