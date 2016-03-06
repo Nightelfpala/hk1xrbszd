@@ -5,15 +5,17 @@
 using namespace std;
 
 void vec_cout(const vector<AP_UC> &ki, string pre = "");
-void verem_teszt();
 void regiszter_teszt();
+void verem_teszt();
+void valtozo_teszt();
 
 int main()
 {
-	
 	regiszter_teszt();
 	
 	verem_teszt();
+	
+	valtozo_teszt();
 	
 	return 0;
 }
@@ -70,10 +72,10 @@ void verem_teszt()
 	
 	if (vec_AP_UC_1 == eredeti)
 	{
-		cout << "HELYES! push-pop utan az eredeti vektort kaptuk vissza" << endl;
+		cout << "HELYES push-pop utan az eredeti vektort kaptuk vissza" << endl;
 	} else
 	{
-		cout << "HIBA! push-pop soran megvaltozott a vektor" << endl;
+		cout << "HIBA push-pop soran megvaltozott a vektor" << endl;
 	}
 	
 	ap.verem_vector(vec_AP_UC_1);
@@ -153,6 +155,80 @@ void regiszter_teszt()
 	ap.set_reg("ah", vec_AP_UC_3);
 	ap.get_reg("eax", vec_AP_UC_2);
 	vec_cout(vec_AP_UC_2, "atiras ah-ba bemasolasa majd eax-bol kiolvasas");
+	
+	vector<AP_UC> vec_ex(4, 1);
+	vector<AP_UC> vec_x;
+	
+	ap.set_reg("ebx", vec_ex);
+	ap.get_reg("bx", vec_x);
+	vec_cout(vec_x, "ebx-be 4 db 1-es, bx:");
+	
+	vec_ex[0] = 2;
+	ap.set_reg("ecx", vec_ex);
+	ap.get_reg("cl", vec_x);
+	vec_cout(vec_x, "ecx-be 2 1 1 1, cl:");
+	
+	vec_ex[1] = 3;
+	ap.set_reg("edx", vec_ex);
+	ap.get_reg("dh", vec_x);
+	vec_cout(vec_x, "edx-be 2 3 1 1, dh:");
+	
+	vec_ex[2] = 4;
+	ap.set_reg("ebp", vec_ex);
+	ap.get_reg("bp", vec_x);
+	vec_cout(vec_x, "ebp-be 2 3 4 1, bp:");
+	
+	ap.get_reg("ebx", vec_x);
+	vec_cout(vec_x, "ekozben ebx nem valtozott, ugyanaz az 1 1 1 1, ebx:");
+	
+	cout << endl;
+}
+
+void valtozo_teszt()
+{
+	cout << "VALTOZO TESZT:" << endl;
+	// x: 4 byteos, y: 2 byteos, z: 4 byteos
+	map<string, int> valtozo_kezdetek;
+	valtozo_kezdetek["x"] = 0;
+	valtozo_kezdetek["y"] = 4;
+	valtozo_kezdetek["z"] = 6;
+	Allapot ap;
+	ap.init(valtozo_kezdetek, 10);
+	
+	cout << "elso byte:" << endl << "x:\t" << ap.elso_byte("x") << endl << "y:\t" << ap.elso_byte("y") << endl << "z:\t" << ap.elso_byte("z") << endl;
+	
+	// [y] := 2 * 256 + 5
+	vector<AP_UC> vy(2);
+	vy[0] = 5; vy[1] = 2;
+	ap.set_var(ap.elso_byte("y"), vy);
+	cout << "[y] := 2 * 256 + 5" << endl;
+	
+	vector<AP_UC> vout;
+	ap.get_var(ap.elso_byte("y"), 2, vout);
+	vec_cout(vout, "y tartalma:");
+	cout << endl;
+	
+	// [x + 2] := 7 * 256^3 + 9 * 256^2 + 11 * 256 + 13
+	vector<AP_UC> vx_2(4);
+	vx_2[0] = 13; vx_2[1] = 11;
+	vx_2[2] = 9; vx_2[3] = 7;
+	ap.set_var(ap.elso_byte("x") + 2, vx_2);
+	cout << "[x + 2] := 7 * 256^3 + 9 * 256^2 + 11 * 256 + 13" << endl;
+	
+	ap.get_var(ap.elso_byte("x"), 4, vout);
+	vec_cout(vout, "x tartalma:");
+	ap.get_var(ap.elso_byte("y"), 2, vout);
+	vec_cout(vout, "y tartalma:");
+	
+	cout << endl;
+	
+	vy.push_back(60); vy.push_back(40);
+	ap.set_var(ap.elso_byte("y"), vy);
+	cout << "vy vegehez 60, 40 hozzafuzve, y-ban eltarolva" << endl;
+	ap.get_var(ap.elso_byte("y"), 2, vout);
+	vec_cout(vout, "y tartalma:");
+	ap.get_var(ap.elso_byte("z"), 4, vout);
+	vec_cout(vout, "z tartalma:");
 	
 	cout << endl;
 }

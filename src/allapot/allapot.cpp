@@ -9,15 +9,21 @@ using namespace std;
 Allapot::Allapot() : zeroflag(false), signflag(false), kovetkezo_utasitas(0)
 {
 	eax.resize(4);	// TODO: add other registers once this works properly (also to get_reg and set_reg)
+	ebx.resize(4);
+	ecx.resize(4);
+	edx.resize(4);
 	
-	
-	//ebp.resize(4);
+	ebp.resize(4);
 	esp.resize(4);
 	
 	for (int i = 0; i < REG_SIZE; ++i)
 	{
 		eax[i] = 0;
+		ebx[i] = 0;
+		ecx[i] = 0;
+		edx[i] = 0;
 		esp[i] = 255;
+		ebp[i] = 0;
 	}
 }
 
@@ -78,7 +84,7 @@ void Allapot::get_reg( const std::string &reg_azon, std::vector<AP_UC> &to ) con
 		{
 		switch (reg_azon[1])
 		{
-		case 'x':
+		case 'x': case 'p':
 			{
 				to.resize(2);
 				switch (reg_azon[0])
@@ -207,33 +213,51 @@ void Allapot::set_reg( const std::string &reg_azon, const std::vector<AP_UC> &fr
 			{
 			case 'a':
 				{
-					eax = from;
+					for (int i = 0; i < REG_SIZE; ++i)
+					{
+						eax[i] = from[i];
+					}
 					break;
 				}
 			case 'b':
 				{
 					if ( reg_azon == "ebx" )
 					{
-						ebx = from;
+						for (int i = 0; i < REG_SIZE; ++i)
+						{
+							ebx[i] = from[i];
+						}
 					} else
 					{
-						ebp = from;
+						for (int i = 0; i < REG_SIZE; ++i)
+						{
+							ebp[i] = from[i];
+						}
 					}
 					break;
 				}
 			case 'c':
 				{
-					ecx = from;
+					for (int i = 0; i < REG_SIZE; ++i)
+					{
+						ecx[i] = from[i];
+					}
 					break;
 				}
 			case 'd':
 				{
-					edx = from;
+					for (int i = 0; i < REG_SIZE; ++i)
+					{
+						edx[i] = from[i];
+					}
 					break;
 				}
 			case 's':
 				{
-					esp = from;
+					for (int i = 0; i < REG_SIZE; ++i)
+					{
+						esp[i] = from[i];
+					}
 					break;
 				}
 				
@@ -244,7 +268,7 @@ void Allapot::set_reg( const std::string &reg_azon, const std::vector<AP_UC> &fr
 		{
 			switch (reg_azon[1])
 			{
-			case 'x':
+			case 'x': case 'p':
 				switch (reg_azon[0])
 				{
 				case 'a':

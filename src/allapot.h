@@ -62,6 +62,9 @@ private:
 	std::vector<AP_UC> ecx;
 	std::vector<AP_UC> edx;
 	
+		// a pointer regiszterek erteke nem egyeznek meg a szimulalt program futasanak kozbeni tenyleges ertekekkel
+		//	csak funkcionalisan felelnek meg neki
+			// azaz esp a verem tetejere mutat, ebp alprogram hivas eseten a visszateresi hely
 	std::vector<AP_UC> ebp;
 	std::vector<AP_UC> esp;
 	
