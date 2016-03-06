@@ -4,13 +4,31 @@
 
 using namespace std;
 
+void vec_cout(const vector<AP_UC> &ki, string pre = "");
 void verem_teszt();
+void regiszter_teszt();
 
 int main()
 {
+	
+	regiszter_teszt();
+	
 	verem_teszt();
 	
 	return 0;
+}
+
+void vec_cout(const vector<AP_UC> &ki, string pre)
+{
+	if (pre != "")
+	{
+		cout << pre << endl;
+	}
+	for (int i = 0; i < ki.size(); ++i)
+	{
+		cout << (int)ki[i] << "\t";
+	}
+	cout << endl;
 }
 
 void verem_teszt()
@@ -19,6 +37,8 @@ void verem_teszt()
 	//	pusholja a verembe, kiirja a verem tartalmat
 	//	poppolja a verem tartalmat, osszehasonlitja az eredetivel
 	//	kiirja a verem maradek tartalmat (az esp pointer ertekeig)
+	
+	cout << "VEREM TESZT:" << endl;
 	Allapot ap;
 	vector<AP_UC> abc(8);
 	
@@ -30,43 +50,49 @@ void verem_teszt()
 	abc[6] = 1;
 	abc[7] = 1;
 	vector<AP_UC> eredeti = abc;
-	cout << "eltarolt vektor :\t";
-	for (unsigned int i = 0; i < abc.size(); ++i)
-	{
-		cout << (int)abc[i] << "\t";
-	}
-	cout << endl;
+	vec_cout(abc, "eltarolt vector:");
+
+	cout << "verem teteje pointerig byteok szama: " << ap.verem_teteje() << endl;
 	
 	ap.verem_push(abc);
 	ap.verem_vector(abc);
-	cout << endl << "verem vector:\t";
-	for (unsigned int i = 0; i < abc.size(); ++i)
-	{
-		cout << (int)abc[i] << "\t";
-	}
-	cout << endl;
+	vec_cout(abc, "verem vector:");
+	
+	cout << "verem teteje pointerig byteok szama: " << ap.verem_teteje() << endl;
 	
 	ap.verem_pop( eredeti.size(), abc);
-	cout << endl << "pop vector (tarolt : eredeti):\t";
+	cout << "pop vector (tarolt : eredeti):" << endl;
 	for (unsigned int i = 0; i < abc.size(); ++i)
 	{
-		cout << (int)abc[i] << " : " << (int)eredeti[i] << "\t,\t";
+		cout << (int)abc[i] << " : " << (int)eredeti[i] << " , ";
 	}
 	cout << endl;
 	
 	if (abc == eredeti)
 	{
-		cout << endl << "HELYES! push-pop utan az eredeti vektort kaptuk vissza" << endl;
+		cout << "HELYES! push-pop utan az eredeti vektort kaptuk vissza" << endl;
 	} else
 	{
-		cout << endl << "HIBA! push-pop soran megvaltozott a vektor" << endl;
+		cout << "HIBA! push-pop soran megvaltozott a vektor" << endl;
 	}
 	
 	ap.verem_vector(abc);
-	cout << endl << "verem vector:\t";
-	for (unsigned int i = 0; i < abc.size(); ++i)
-	{
-		cout << (int)abc[i] << "\t";
-	}
+	vec_cout(abc, "verem vector:");
+	cout << "verem teteje pointerig byteok szama: " << ap.verem_teteje() << endl;
 	cout << endl;
+}
+
+void regiszter_teszt()
+{
+	
+	cout << "REGISZTER TESZT:" << endl;
+	Allapot ap;
+	vector<AP_UC> abc(4);
+	
+	abc[0] = 5;
+	abc[1] = 2;
+	abc[2] = 1;
+	abc[3] = 0;
+	vector<AP_UC> eredeti = abc;
+	vec_cout(abc, "eredeti vector:");
 }

@@ -6,6 +6,7 @@
 #include <vector>
 
 typedef unsigned char AP_UC;
+typedef unsigned int AP_UI;
 
 class Allapot
 {
@@ -31,7 +32,8 @@ public:
 	
 	//verem muveletek
 	void verem_push( const std::vector<AP_UC> &from );
-	void verem_pop ( const int &hossz, std::vector<AP_UC> &to );
+	void verem_pop ( const int &hossz, std::vector<AP_UC> &to );	// Exception: URES_VEREM ha nincs annyi byte, amennyit ki akarunk venni
+	AP_UI verem_teteje () const;	// nem a tenyleges veremteto, az esp pointer mutatasi helye
 	
 	//kovetkezo utasitas muveletek
 	int get_kovetkezo() const;
@@ -40,8 +42,13 @@ public:
 	
 	//lekerdezo muveletek -- kiirashoz hasznalhato interface
 	void valtozo_vector( std::vector<AP_UC> &to ) const;
-	void verem_vector( std::vector<AP_UC> &to ) const;
+	void verem_vector( std::vector<AP_UC> &to ) const;	// az egesz vermet visszadja, nem csak az esp pointerig tarto reszet
 	
+	//hibakezeles
+	enum Exceptions
+	{
+		URES_VEREM,
+	};
 private:
 	//valtozok
 	std::map<std::string, int> valtozo_elso;
@@ -65,8 +72,11 @@ private:
 	int kovetkezo_utasitas;
 	
 	//segedmuvelet (veremkezeles)
-	int vecc2int( const std::vector<AP_UC> &from ) const;
-	void int2vecc ( const int &from, std::vector<AP_UC> &to ) const;
+	//	a rev elotagu muveletek a bitenkenti ellentettjet allitjak elo
+	AP_UI vecc2uint( const std::vector<AP_UC> &from ) const;
+	AP_UI vecc2revuint( const std::vector<AP_UC> &from ) const;
+	void uint2vecc( const AP_UI &from, std::vector<AP_UC> &to ) const;
+	void revuint2vecc( const AP_UI &from, std::vector<AP_UC> &to ) const;
 };
 
 #endif	// ALLAPOT_H_INCLUDED 
