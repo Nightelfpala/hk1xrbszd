@@ -17,7 +17,10 @@ public:
 	
 	//regiszter muveletek
 	void get_reg( const std::string &reg_azon, std::vector<AP_UC> &to ) const;
-	void set_reg( const std::string &reg_azon, const std::vector<AP_UC> &from );
+	void set_reg( const std::string &reg_azon, const std::vector<AP_UC> &from );	// mindig a megadott vector legelso elemetol kezdodik a masolas
+																					// akkor is, ha pl. "ah"-ba masolunk egy 2 hosszu vectorbol
+		// A regiszter muveleteknel nem feltetlenul szukseges a teljes egyezes a regiszterek nevevel
+		//	eleg egy egyertelmu minta is: pl. 3 karakterbol all, a 2. karakter 'a' -> eax
 	
 	bool get_zero() const;
 	void set_zero( bool b);

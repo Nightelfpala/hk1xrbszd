@@ -95,10 +95,10 @@ void verem_teszt()
 		}
 	}
 	
+	cout << endl;
 	vector<AP_UC> vec_AP_UC_2;
 	ap.get_reg("esp", vec_AP_UC_2);
 	vec_AP_UC_2[0] -= 8;
-	vec_cout(vec_AP_UC_2);
 	ap.set_reg("esp", vec_AP_UC_2);
 	cout << "esp modositas (-8) utan a verem teteje pointerig byteok szama: " << ap.verem_teteje() << endl;
 	try
@@ -146,7 +146,10 @@ void regiszter_teszt()
 	vec_AP_UC_1[0] = 11;
 	vec_AP_UC_1[1] = 13;
 	vec_cout(vec_AP_UC_1, "eax-bol get es 1., 2. atirasa");
-	vector<AP_UC> vec_AP_UC_3(1, vec_AP_UC_1[1]);
+	
+	vector<AP_UC> vec_AP_UC_3(2);
+	vec_AP_UC_3[0] = vec_AP_UC_1[0];
+	vec_AP_UC_3[1] = vec_AP_UC_1[1];
 	ap.set_reg("ah", vec_AP_UC_3);
 	ap.get_reg("eax", vec_AP_UC_2);
 	vec_cout(vec_AP_UC_2, "atiras ah-ba bemasolasa majd eax-bol kiolvasas");

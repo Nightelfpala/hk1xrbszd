@@ -45,6 +45,27 @@ void Allapot::get_reg( const std::string &reg_azon, std::vector<AP_UC> &to ) con
 					to = eax;
 					break;
 				}
+			case 'b':
+				{
+					if ( reg_azon == "ebx" )
+					{
+						to = ebx;
+					} else
+					{
+						to = ebp;
+					}
+					break;
+				}
+			case 'c':
+				{
+					to = ecx;
+					break;
+				}
+			case 'd':
+				{
+					to = edx;
+					break;
+				}
 			case 's':
 				{
 					to = esp;
@@ -63,11 +84,54 @@ void Allapot::get_reg( const std::string &reg_azon, std::vector<AP_UC> &to ) con
 				switch (reg_azon[0])
 				{
 				case 'a':
-					for (int i = 0; i < 2; ++i)
 					{
-						to[i] = eax[i];
+						for (int i = 0; i < 2; ++i)
+						{
+							to[i] = eax[i];
+						}
+						break;
 					}
-					break;
+				case 'b':
+					{
+						if ( reg_azon == "bx")
+						{
+							for (int i = 0; i < 2; ++i)
+							{
+								to[i] = ebx[i];
+							}
+						} else
+						{
+							for (int i = 0; i < 2; ++i)
+							{
+								to[i] = ebp[i];
+							}
+						}
+						break;
+					}
+				case 'c':
+					{
+						for (int i = 0; i < 2; ++i)
+						{
+							to[i] = ecx[i];
+						}
+						break;
+					}
+				case 'd':
+					{
+						for (int i = 0; i < 2; ++i)
+						{
+							to[i] = edx[i];
+						}
+						break;
+					}
+				case 's':
+					{
+						for (int i = 0; i < 2; ++i)
+						{
+							to[i] = esp[i];
+						}
+						break;
+					}
 				}
 				break;
 			}
@@ -77,8 +141,25 @@ void Allapot::get_reg( const std::string &reg_azon, std::vector<AP_UC> &to ) con
 				switch (reg_azon[0])
 				{
 				case 'a':
-					to[0] = eax[1];
-					break;
+					{
+						to[0] = eax[1];
+						break;
+					}
+				case 'b':
+					{
+						to[0] = ebx[1];
+						break;
+					}
+				case 'c':
+					{
+						to[0] = ecx[1];
+						break;
+					}
+				case 'd':
+					{
+						to[0] = edx[1];
+						break;
+					}
 				}
 				break;
 			}
@@ -88,8 +169,25 @@ void Allapot::get_reg( const std::string &reg_azon, std::vector<AP_UC> &to ) con
 				switch (reg_azon[0])
 				{
 				case 'a':
-					to[0] = eax[0];
-					break;
+					{
+						to[0] = eax[0];
+						break;
+					}
+				case 'b':
+					{
+						to[0] = ebx[0];
+						break;
+					}
+				case 'c':
+					{
+						to[0] = ecx[0];
+						break;
+					}
+				case 'd':
+					{
+						to[0] = edx[0];
+						break;
+					}
 				}
 				break;
 			}
@@ -110,6 +208,27 @@ void Allapot::set_reg( const std::string &reg_azon, const std::vector<AP_UC> &fr
 			case 'a':
 				{
 					eax = from;
+					break;
+				}
+			case 'b':
+				{
+					if ( reg_azon == "ebx" )
+					{
+						ebx = from;
+					} else
+					{
+						ebp = from;
+					}
+					break;
+				}
+			case 'c':
+				{
+					ecx = from;
+					break;
+				}
+			case 'd':
+				{
+					edx = from;
 					break;
 				}
 			case 's':
@@ -136,6 +255,47 @@ void Allapot::set_reg( const std::string &reg_azon, const std::vector<AP_UC> &fr
 						}
 						break;
 					}
+				case 'b':
+					{
+						if ( reg_azon == "eb" )
+						{
+							for (int i = 0; i < 2; ++i)
+							{
+								ebx[i] = from[i];
+							}
+						} else
+						{
+							for (int i = 0; i < 2; ++i)
+							{
+								ebp[i] = from[i];
+							}
+						}
+						break;
+					}
+				case 'c':
+					{
+						for (int i = 0; i < 2; ++i)
+						{
+							ecx[i] = from[i];
+						}
+						break;
+					}
+				case 'd':
+					{
+						for (int i = 0; i < 2; ++i)
+						{
+							edx[i] = from[i];
+						}
+						break;
+					}
+				case 's':
+					{
+						for (int i = 0; i < 2; ++i)
+						{
+							esp[i] = from[i];
+						}
+						break;
+					}
 				}
 				break;
 			case 'h':
@@ -143,8 +303,25 @@ void Allapot::set_reg( const std::string &reg_azon, const std::vector<AP_UC> &fr
 					switch (reg_azon[0])
 					{
 					case 'a':
-						eax[1] = from[0];
-						break;
+						{
+							eax[1] = from[0];
+							break;
+						}
+					case 'b':
+						{
+							ebx[1] = from[0];
+							break;
+						}
+					case 'c':
+						{
+							ecx[1] = from[0];
+							break;
+						}
+					case 'd':
+						{
+							edx[1] = from[0];
+							break;
+						}
 					}
 					break;
 				}
@@ -153,8 +330,25 @@ void Allapot::set_reg( const std::string &reg_azon, const std::vector<AP_UC> &fr
 					switch (reg_azon[0])
 					{
 					case 'a':
-						eax[0] = from[0];
-						break;
+						{
+							eax[0] = from[0];
+							break;
+						}
+					case 'b':
+						{
+							ebx[0] = from[0];
+							break;
+						}
+					case 'c':
+						{
+							ebx[0] = from[0];
+							break;
+						}
+					case 'd':
+						{
+							ebx[0] = from[0];
+							break;
+						}
 					}
 					break;
 				}
