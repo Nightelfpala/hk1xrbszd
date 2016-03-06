@@ -39,7 +39,6 @@ public:
 	int get_kovetkezo() const;
 	void set_kovetkezo( const int &kov );
 	
-	
 	//lekerdezo muveletek -- kiirashoz hasznalhato interface
 	void valtozo_vector( std::vector<AP_UC> &to ) const;
 	void verem_vector( std::vector<AP_UC> &to ) const;	// az egesz vermet visszadja, nem csak az esp pointerig tarto reszet

@@ -37,58 +37,131 @@ void Allapot::get_reg( const std::string &reg_azon, std::vector<AP_UC> &to ) con
 	switch (reg_azon.size())
 	{
 	case 3:
-		switch (reg_azon[1])	// b-nel vigyazni : ebp, ebx
 		{
-		case 'a':
-			to = eax;
-			break;
-		
-		case 's':
-			to = esp;
+			switch (reg_azon[1])	// b-nel vigyazni : ebp, ebx
+			{
+			case 'a':
+				{
+					to = eax;
+					break;
+				}
+			case 's':
+				{
+					to = esp;
+					break;
+				}
+			}
 			break;
 		}
-		break;	
 	case 2:
+		{
 		switch (reg_azon[1])
 		{
 		case 'x':
-			to.resize(2);
-			switch (reg_azon[0])
 			{
-			case 'a':
-				for (int i = 0; i < 2; ++i)
+				to.resize(2);
+				switch (reg_azon[0])
 				{
-					to[i] = eax[i];
+				case 'a':
+					for (int i = 0; i < 2; ++i)
+					{
+						to[i] = eax[i];
+					}
+					break;
 				}
 				break;
 			}
-			break;
 		case 'h':
-			to.resize(1);
-			switch (reg_azon[0])
 			{
-			case 'a':
-				to[0] = eax[0];
+				to.resize(1);
+				switch (reg_azon[0])
+				{
+				case 'a':
+					to[0] = eax[1];
+					break;
+				}
 				break;
 			}
-			break;
 		case 'l':
-			to.resize(1);
-			switch (reg_azon[0])
 			{
-			case 'a':
-				to[0] = eax[0];
+				to.resize(1);
+				switch (reg_azon[0])
+				{
+				case 'a':
+					to[0] = eax[0];
+					break;
+				}
 				break;
 			}
-			break;
 		}
 		break;
+		}
 	}
 }
 
 void Allapot::set_reg( const std::string &reg_azon, const std::vector<AP_UC> &from )
 {
-	
+	switch (reg_azon.size())
+	{
+	case 3:
+		{
+			switch (reg_azon[1])	// b-nel vigyazni : ebp, ebx
+			{
+			case 'a':
+				{
+					eax = from;
+					break;
+				}
+			case 's':
+				{
+					esp = from;
+					break;
+				}
+				
+			}
+			break;
+		}
+	case 2:
+		{
+			switch (reg_azon[1])
+			{
+			case 'x':
+				switch (reg_azon[0])
+				{
+				case 'a':
+					{
+						for (int i = 0; i < 2; ++i)
+						{
+							eax[i] = from[i];
+						}
+						break;
+					}
+				}
+				break;
+			case 'h':
+				{
+					switch (reg_azon[0])
+					{
+					case 'a':
+						eax[1] = from[0];
+						break;
+					}
+					break;
+				}
+			case 'l':
+				{
+					switch (reg_azon[0])
+					{
+					case 'a':
+						eax[0] = from[0];
+						break;
+					}
+					break;
+				}
+			}
+			break;
+		}
+	}
 }
 
 bool Allapot::get_zero() const
