@@ -37,8 +37,8 @@ interpretálás, terv
 						dword [x + 1] == 0	--	[x + 1] 00000000 00000000 00000000 00000000
 						dword [x - 1] == 256	--	[x - 1] 00000000 00000001 00000000 00000000
 		vector<char> eax, ebx, ecx, edx :	regiszterek tartalma
+		vector<char> ebp, esp :	visszatérési (base) pointer, verem teteje pointer
 		vector<char> :	verem, byteonként
-		int stack : verem teteje
 		int köv :	következő utasítás sorszáma
 	metódusok
 		get_reg( string reg_azon, vector<char> &to)
@@ -57,4 +57,5 @@ interpretálás, terv
 			-- vektorok felhasználásánál a vektor hossza tartalmazza a megfelelő méreteket
 		int get_köv()
 		int set_köv(int)
+		* lekérdező műveletek a kiíráshoz: teljes változó vektor, teljes verem (regiszter lekérdezések már készek)
 		

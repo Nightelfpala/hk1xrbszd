@@ -21,7 +21,7 @@ Első parse, terv
 			figyelmen kívül hagyva
 		regiszterek
 			eax, ax, al, ah, ..b.., ..c.., ..d..
-			eip, ip, esp, sp, ebp, bp
+			esp, sp, ebp, bp
 			flagek	-	valószínűleg csak a zero (zf - je, jz) és a sign (sf - előjel -> ja, jb) flag elég lesz
 			-- string-ként tárolva hozzá hogy konkrétan melyik regiszter
 		azonosítók
