@@ -1,0 +1,17 @@
+
+A projekt futtatasa
+	a "cpp" mappaban a "make" paranccsal lefordithato az egesz program
+		alapertelmezetten az egesz projektet leforditja	-> szimulacio
+		a "make allapot" parancs csak az allapot modult es a tesztelokornyezetet forditja le	-> teszt_allapot
+	a futtathato allomanyok a "bin" mappabol indithatoak
+		Windows kornyezetben .exe kiterjesztessel rendelkeznek
+
+"headers" mappa:
+	a projekthez tartozó header fileok
+"cpp" mappa:
+	a projekthez tartozó C++ forras fileok
+"objects" mappa:
+	a forrasfajlok leforditasa, linkeles elott
+	"cpp" mappaban "make clean" paranccsal torolhetok
+"bin" mappa:
+	futtathato allomanyok

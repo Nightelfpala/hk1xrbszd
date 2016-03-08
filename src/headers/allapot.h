@@ -5,8 +5,7 @@
 #include <map>
 #include <vector>
 
-typedef unsigned char AP_UC;
-typedef unsigned int AP_UI;
+#include "typedefs.h"
 
 class Allapot
 {
@@ -78,13 +77,6 @@ private:
 	std::vector<AP_UC> verem;	// nem tenyleges veremkent tarolva, szukseg van a belsejeben talalhato ertekekre is a folyamatos kiirashoz
 	
 	int kovetkezo_utasitas;
-	
-	//segedmuvelet (veremkezeles)
-	//	a rev elotagu muveletek a bitenkenti ellentettjet allitjak elo
-	AP_UI vecc2uint( const std::vector<AP_UC> &from ) const;
-	AP_UI vecc2revuint( const std::vector<AP_UC> &from ) const;
-	void uint2vecc( const AP_UI &from, std::vector<AP_UC> &to ) const;
-	void revuint2vecc( const AP_UI &from, std::vector<AP_UC> &to ) const;
 };
 
 #endif	// ALLAPOT_H_INCLUDED 

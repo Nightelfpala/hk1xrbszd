@@ -1,9 +1,11 @@
 
-#include "../allapot.h"
+#include "allapot.h"
+#include "utils.h"
 
 #define REG_SIZE 4
 
 using namespace std;
+using namespace Utils;
 
 
 Allapot::Allapot() : zeroflag(false), signflag(false), kovetkezo_utasitas(0)
@@ -485,41 +487,4 @@ void Allapot::verem_vector( std::vector<AP_UC> &to ) const
 AP_UI Allapot::verem_teteje() const
 {
 	return vecc2revuint(esp);
-}
-
-// segedmuveletek
-AP_UI Allapot::vecc2uint( const std::vector<AP_UC> &from) const
-{
-	AP_UI result = 0;
-	for (AP_UI i = 0; i < from.size(); ++i)
-	{
-		result *= 256;
-		result += from[(from.size() - 1 - i)];	// tarolas: legkisebb helyierteku bit van elol
-	}
-	return result;
-}
-
-AP_UI Allapot::vecc2revuint( const std::vector<AP_UC> &from) const
-{
-	return ~(vecc2uint(from));
-}
-
-void Allapot::uint2vecc ( const AP_UI &from, std::vector<AP_UC> &to ) const
-{
-	AP_UI akt = from;
-	for (AP_UI i = 0; i < to.size(); ++i)
-	{
-		to[i] = akt % 256;
-		akt /= 256;
-	}
-}
-
-void Allapot::revuint2vecc ( const AP_UI &from, std::vector<AP_UC> &to ) const
-{
-	AP_UI akt = ~0 - from;
-	for (AP_UI i = 0; i < to.size(); ++i)
-	{
-		to[i] = akt % 256;
-		akt /= 256;
-	}
 }

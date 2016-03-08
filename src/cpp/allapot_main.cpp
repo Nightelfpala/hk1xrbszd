@@ -1,10 +1,11 @@
 #include <iostream>
 
-#include "../allapot.h"
+#include "allapot.h"
+#include "utils.h"
 
 using namespace std;
+using namespace Utils;
 
-void vec_cout(const vector<AP_UC> &ki, string pre = "");
 void flag_teszt();
 void regiszter_teszt();
 void verem_teszt();
@@ -21,19 +22,6 @@ int main()
 	valtozo_teszt();
 	
 	return 0;
-}
-
-void vec_cout(const vector<AP_UC> &ki, string pre)
-{
-	if (pre != "")
-	{
-		cout << pre << endl;
-	}
-	for (int i = 0; i < ki.size(); ++i)
-	{
-		cout << (int)ki[i] << "\t";
-	}
-	cout << endl;
 }
 
 void flag_teszt()
