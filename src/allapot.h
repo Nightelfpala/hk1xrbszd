@@ -13,7 +13,7 @@ class Allapot
 public:
 	Allapot();
 	~Allapot();
-	void init( const std::map<std::string, int> &valtozo_kezdetek, const int &valt_hossz);
+	void init( const std::map<std::string, int> &valtozo_kezdetek, const std::vector<AP_UC> &valt_vector);
 	
 	//regiszter muveletek
 	void get_reg( const std::string &reg_azon, std::vector<AP_UC> &to ) const;
@@ -22,16 +22,17 @@ public:
 		// A regiszter muveleteknel nem feltetlenul szukseges a teljes egyezes a regiszterek nevevel
 		//	eleg egy egyertelmu minta is: pl. 3 karakterbol all, a 2. karakter 'a' -> eax
 	
-	bool get_zero() const;
+	bool get_zero() const;	// igaz akkor, ha "nulla" az eredmeny -- azaz az utolso muvelet vagy osszehasonlitaskor a ket argumentum megegyezik
 	void set_zero( bool b);
 	
-	bool get_sign() const;
+	bool get_sign() const;	// igaz akkor, ha negativ az eredmeny -- azaz az utolso osszehasonlitaskor az elso (bal oldali) argumentum a kisebb
+		// tehat a jb, jna ugrasok feltetele teljesul
 	void set_sign( bool b);
 	
 	//valtozo muveletek
 	int elso_byte( const std::string &valt_azon ) const;
-	void get_var( const int &elso_byte, const int &hossz, std::vector<AP_UC> &to ) const;
-	void set_var( const int &elso_byte, const std::vector<AP_UC> &from );
+	void get_var( const int &elso_byte, const int &hossz, std::vector<AP_UC> &to ) const;	// Exception: HATARON_KIVULI_VALTOZO ha az elmentett valtozo hatarokon kivulrol probal kivenni
+	void set_var( const int &elso_byte, const std::vector<AP_UC> &from );	// Exception: HATARON_KIVULI_VALTOZO ha az elmentett valtozo hatarokon kivulre probal tarolni
 	
 	//verem muveletek
 	void verem_push( const std::vector<AP_UC> &from );
@@ -47,9 +48,11 @@ public:
 	void verem_vector( std::vector<AP_UC> &to ) const;	// az egesz vermet visszadja, nem csak az esp pointerig tarto reszet
 	
 	//hibakezeles
+		// csak olyan hibak kerulnek lekezelesre, ami a szimulalt program futasabol szarmaznak - feltetelezzuk, hogy a szimulalo program kodja helyes
 	enum Exceptions
 	{
 		URES_VEREM,
+		HATARON_KIVULI_VALTOZO,
 	};
 private:
 	//valtozok

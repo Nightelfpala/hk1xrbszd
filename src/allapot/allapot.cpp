@@ -32,10 +32,10 @@ Allapot::~Allapot()
 	//null
 }
 
-void Allapot::init( const std::map<std::string, int> &valtozo_kezdetek, const int &valt_hossz)
+void Allapot::init( const std::map<std::string, int> &valtozo_kezdetek, const std::vector<AP_UC> &valt_vector)
 {
 	valtozo_elso = valtozo_kezdetek;
-	valtozok.resize(valt_hossz);
+	valtozok = valt_vector;
 }
 
 void Allapot::get_reg( const std::string &reg_azon, std::vector<AP_UC> &to ) const
@@ -409,6 +409,8 @@ int Allapot::elso_byte( const std::string &valt_azon ) const
 
 void Allapot::get_var( const int &elso_byte, const int &hossz, std::vector<AP_UC> &to ) const
 {
+	if ( (elso_byte < 0) || ((elso_byte + hossz) > valtozok.size() ))
+		throw HATARON_KIVULI_VALTOZO;
 	to.resize(hossz);
 	for (int i = 0; i < hossz; ++i)
 	{
@@ -419,6 +421,8 @@ void Allapot::get_var( const int &elso_byte, const int &hossz, std::vector<AP_UC
 void Allapot::set_var( const int &elso_byte, const std::vector<AP_UC> &from )
 {
 	int hossz = from.size();
+	if ( (elso_byte < 0) || ( (elso_byte + hossz) > valtozok.size() ))
+		throw HATARON_KIVULI_VALTOZO;
 	for (int i = 0; i < hossz; ++i)
 	{
 		valtozok[elso_byte + i] = from[i];

@@ -5,12 +5,15 @@
 using namespace std;
 
 void vec_cout(const vector<AP_UC> &ki, string pre = "");
+void flag_teszt();
 void regiszter_teszt();
 void verem_teszt();
 void valtozo_teszt();
 
 int main()
 {
+	flag_teszt();
+	
 	regiszter_teszt();
 	
 	verem_teszt();
@@ -30,6 +33,21 @@ void vec_cout(const vector<AP_UC> &ki, string pre)
 	{
 		cout << (int)ki[i] << "\t";
 	}
+	cout << endl;
+}
+
+void flag_teszt()
+{
+	cout << "FLAG TESZT:" << endl;
+	Allapot ap;
+	cout << "zero flag alapallapot:\t" << ap.get_zero() << endl;
+	ap.set_zero(true);
+	cout << "zero flag atallitva igazra:\t" << ap.get_zero() << endl;
+	
+	cout << "sign flag alapallapot:\t" << ap.get_sign() << endl;
+	ap.set_sign(true);
+	cout << "sign flag atallitva igazra:\t" << ap.get_sign() << endl;
+	
 	cout << endl;
 }
 
@@ -193,7 +211,8 @@ void valtozo_teszt()
 	valtozo_kezdetek["y"] = 4;
 	valtozo_kezdetek["z"] = 6;
 	Allapot ap;
-	ap.init(valtozo_kezdetek, 10);
+	vector<AP_UC> init(10, 0);
+	ap.init(valtozo_kezdetek, init);
 	
 	cout << "elso byte:" << endl << "x:\t" << ap.elso_byte("x") << endl << "y:\t" << ap.elso_byte("y") << endl << "z:\t" << ap.elso_byte("z") << endl;
 	
@@ -229,6 +248,78 @@ void valtozo_teszt()
 	vec_cout(vout, "y tartalma:");
 	ap.get_var(ap.elso_byte("z"), 4, vout);
 	vec_cout(vout, "z tartalma:");
+	
+	cout << endl;
+	
+	cout << "Valtozok hibakezeles ellenorzese:" << endl;
+	try
+	{
+		ap.get_var(-1, 2, vout);
+		cout << "HIBA nem dobott -1 -tol kiolvasasra hibat" << endl;
+		vec_cout(vout, "kiolvasott valtozok:");
+		ap.valtozo_vector(vout);
+		vec_cout(vout, "tarolt valtozok:");
+	} catch (Allapot::Exceptions ex)
+	{
+		if (ex == Allapot::HATARON_KIVULI_VALTOZO)
+		{
+			cout << "HELYES -1 -tol kezdve a valtozobol kivetelt HATARON_KIVULI_VALTOZO -t dobott" << endl;
+		} else
+		{
+			cout << "HIBA -1 -tol kezdve a kivetelt rossz hibat dobott" << endl;
+		}
+	}
+	try
+	{
+		ap.get_var(7, 4, vout);
+		cout << "HIBA nem dobott 7-11. byteok (10 bytenyi valtozobol) kiolvasasara hibat" << endl;
+		vec_cout(vout, "kiolvasott valtozok:");
+		ap.valtozo_vector(vout);
+		vec_cout(vout, "tarolt valtozok:");
+	} catch (Allapot::Exceptions ex)
+	{
+		if (ex == Allapot::HATARON_KIVULI_VALTOZO)
+		{
+			cout << "HELYES 7-11. byteok kivetele (10 bytenyi valtozobol) a valtozobol HATARON_KIVULI_VALTOZO -t dobott" << endl;
+		} else
+		{
+			cout << "HIBA 7-11. byteok kivetele (10 bytenyi valtozobol) a valtozobol rossz hibat dobott" << endl;
+		}
+	}
+	try
+	{
+		ap.set_var(-1, vx_2);
+		cout << "HIBA nem dobott -1 -tol eltarolasra hibat" << endl;
+		vec_cout(vx_2, "lementett valtozok:");
+		ap.valtozo_vector(vout);
+		vec_cout(vout, "tarolt valtozok:");
+	} catch (Allapot::Exceptions ex)
+	{
+		if (ex == Allapot::HATARON_KIVULI_VALTOZO)
+		{
+			cout << "HELYES -1 -tol kezdve a valtozoba berakast HATARON_KIVULI_VALTOZO -t dobott" << endl;
+		} else
+		{
+			cout << "HIBA -1 -tol kezdve a valtozoba berakast rossz hibat dobott" << endl;
+		}
+	}
+	try
+	{
+		ap.set_var(7, vx_2);
+		cout << "HIBA nem dobott 7-11. byteok (10 bytenyi valtozobol) eltarolasara hibat" << endl;
+		vec_cout(vx_2, "lementett valtozok:");
+		ap.valtozo_vector(vout);
+		vec_cout(vout, "tarolt valtozok:");
+	} catch (Allapot::Exceptions ex)
+	{
+		if (ex == Allapot::HATARON_KIVULI_VALTOZO)
+		{
+			cout << "HELYES 7-11. byteok berakasa (10 bytenyi valtozobol) a valtozoba HATARON_KIVULI_VALTOZO -t dobott" << endl;
+		} else
+		{
+			cout << "HIBA 7-11. byteok berakasa (10 bytenyi valtozobol) a valtozoba rossz hibat dobott" << endl;
+		}
+	}
 	
 	cout << endl;
 }
