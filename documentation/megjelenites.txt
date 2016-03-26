@@ -1,0 +1,39 @@
+megjelenítés, terv
+	Qt-ban elkészítve
+		fordítás parancssorban, saját makefile használatával (amibe a megfelelő linkeléseket és includeokat a qmake által generált makefile-ból átemeljük)
+
+részek:
+	vector<unsigned char> megjelenítésére szolgáló osztály		-	QWidget-ből öröklődéssel
+		vízszintesen (QVBoxLayout) megjeleníti a vector tartalmát
+			esetleg a névvel és az egyéb tárolt stringgekkel együtt egy QGridLayout-ban elhelyezve minden, így nem kell hierarchikusan pakolni
+		tárolja a megjelenítés nevét (pl. 'eax', 'változók')	-	beállítható
+		tárolja a megadott vector<unsigned char> számokat, ezek módosíthatók menet közben
+			opcionális: módosítás esetén kap valamilyen jelölést (más háttér- vagy betűszín), a következő nem-módosító utasítás végrehajtásakor ez eltűnik
+		tárol hozzá egy vector<int, string> -et, ami egyéb címkéket ad hozzá
+			pl. változók vektoránál a változó első byteját jelző címke, veremnél az esp / ebp pointer pozíciója
+			ezt esetleg az előbbi osztályból öröklődéssel külön osztályként valósíthatjuk meg
+		kinézet:
+			3 sorból áll	-	ezek külön-külön QWidget-ek és QHBoxLayout-ban vannak elhelyezve
+			1. sor, bal felső sarok: megjelenítési név
+			3. sor, tárolt vector<uchar>	-	minden érték külön kis dobozban
+			2. sor, a tárolt vector megfelelő pozíciói fölött a névstringek megjelenítése
+	nagy megjelenítő osztály, alkalmazás és grafikus felület	-	QWidget-ből öröklődéssel
+		alapja QHBoxLayout - függőlegesen 3 részre osztott ablak
+			esetleg QGridLayout(QWidget*, fromRow, fromColumn, rowSpan, columnSpan) használatával (valószínűleg ennek több értelme van)
+		alsó két sor: változók vektora, verem vektora (fentebb leírt módon)
+		első sor:
+			függőlegesen 4 részre osztott
+			1. oszlop: eax, ebx regiszterek (fent leírt módon) egymás alatt
+			2. oszlop: ecd, edx regiszterek
+			3. oszlop: a flagek (zero, sign + ami még esetleg hozzájön) megjelenítése	-	ezek read-only checkboxban vagy csak simán egy egyelemű 0/1 (fent leírt módon)
+			4. oszlop: 2 sorból áll (sorrend felcserélhető, majd kiderül mi a jobb)
+				1. sor: a következő utasítás stringje (amit majd a parser feldolgoz)	-	esetleg mellette megjeleníthetjük hogy az utasítás az eredeti program szövegfilejában hanyadik sorban kezdődött
+					akár "előző utasítás" és "következő N utasítás" megjelenítésére is szükség lehet - ezek egymás alatt-felett
+				2. sor: utasítás végrehajtása gomb	-	hatások megjelenítése: tárolt értékek módosítása, következő utasítás string lecserélése
+					esetleg egy "visszavonás" gomb is	-	ehhez a korábbi állapotokat egy veremben el kell tárolni és onnan visszanyerni
+						csak az állapot osztályt elég elvileg ehhez felhasználni	-	nem véletlenül lett így kitalálva
+					ezekhez billentyűlenyomással is jó lenne elérni
+		egyéb:
+			fájlböngésző amivel be lehet tölteni az assembly kódot tartalmazó fájlt (illetve valamilyen menü ahol ez az opció elérhető)
+			program futás közbeni hibák megjelenítésére egy külön felugró ablak (hibaüzenet + "oké" gomb)
+				ez esetben az utasítás részleges hatásait vissza kell vonni és a továbblépés gombot kiszürkíteni (és újraengedélyezni hogyha visszavonunk korábbi utasításokat)
