@@ -10,7 +10,7 @@ using namespace Utils;
 
 Allapot::Allapot() : zeroflag(false), signflag(false), kovetkezo_utasitas(0)
 {
-	eax.resize(4);	// TODO: add other registers once this works properly (also to get_reg and set_reg)
+	eax.resize(4);
 	ebx.resize(4);
 	ecx.resize(4);
 	edx.resize(4);
@@ -24,8 +24,8 @@ Allapot::Allapot() : zeroflag(false), signflag(false), kovetkezo_utasitas(0)
 		ebx[i] = 0;
 		ecx[i] = 0;
 		edx[i] = 0;
-		esp[i] = 255;
-		ebp[i] = 0;
+		esp[i] = 255;		// pointer ertek, igy a hozzaadas es a kivonas megfeleloen mukodik
+		ebp[i] = 255;
 	}
 }
 
@@ -260,6 +260,11 @@ void Allapot::set_reg( const std::string &reg_azon, const std::vector<AP_UC> &fr
 					{
 						esp[i] = from[i];
 					}
+					// amennyiben magasabb pontra mutat a verem teteje, mint amekkora a vektora, noveljuk meg a meretet
+					if (vecc2revuint(esp) > verem.size())
+					{
+						verem.resize(vecc2revuint(esp), 0);
+					}
 					break;
 				}
 				
@@ -319,6 +324,11 @@ void Allapot::set_reg( const std::string &reg_azon, const std::vector<AP_UC> &fr
 						for (int i = 0; i < 2; ++i)
 						{
 							esp[i] = from[i];
+						}
+						// amennyiben magasabb pontra mutat a verem teteje, mint amekkora a vektora, noveljuk meg a meretet
+						if (vecc2revuint(esp) > verem.size())
+						{
+							verem.resize(vecc2revuint(esp), 0);
 						}
 						break;
 					}

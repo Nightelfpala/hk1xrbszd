@@ -27,21 +27,10 @@ vectorDisplay::vectorDisplay(int _meret, QWidget *parent, bool kiegSzoveg) : QWi
 	nameLabel -> setGeometry(20, 20, 400, 200);
 	nameLabel -> setAlignment(Qt::AlignCenter);
 	
-	gridLayout -> addWidget(nameLabel, 0, 0, -1, 1);
+	gridLayout -> addWidget(nameLabel, 0, 0, 0, meret);
 	
 	for (int i = 0; i < meret; ++i)
 	{
-		valueLabel[i] = new QLabel(this);
-		
-		valueLabel[i] -> setStyleSheet("QLabel { background-color : white; color : black; }");
-		valueLabel[i] -> setTextInteractionFlags(Qt::TextSelectableByMouse);	// kijelolhetove (masolhatova) teszi a szoveget
-		valueLabel[i] -> setFont(displayFont);
-		
-		valueLabel[i] -> setGeometry(20, 20, 360, 120);
-		valueLabel[i] -> setAlignment(Qt::AlignCenter);
-		
-		gridLayout -> addWidget( valueLabel[i], disRow, i);
-		
 		if (kiegeszitoSzoveg)
 		{
 			kiegLabel[i] = new QLabel(this);
@@ -53,6 +42,18 @@ vectorDisplay::vectorDisplay(int _meret, QWidget *parent, bool kiegSzoveg) : QWi
 			
 			gridLayout -> addWidget( kiegLabel[i], disRow - 1, i);
 		}
+		
+		
+		valueLabel[i] = new QLabel(this);
+		
+		valueLabel[i] -> setStyleSheet("QLabel { background-color : white; color : black; }");
+		valueLabel[i] -> setTextInteractionFlags(Qt::TextSelectableByMouse);	// kijelolhetove (masolhatova) teszi a szoveget
+		valueLabel[i] -> setFont(displayFont);
+		
+		valueLabel[i] -> setGeometry(20, 20, 360, 120);
+		valueLabel[i] -> setAlignment(Qt::AlignCenter);
+		
+		gridLayout -> addWidget( valueLabel[i], disRow, i);
 	}
 	
 	setLayout(gridLayout);
