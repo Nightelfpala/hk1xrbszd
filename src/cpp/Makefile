@@ -8,8 +8,9 @@ BIN = ../bin
 CC = x86_64-w64-mingw32-g++
 FLAGS = -I$(INCLUDE)
 
-DEFINES       = -DUNICODE -DQT_DLL -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -DQT_NEEDS_QMAIN -DQT_SHARED
-CXXFLAGS      = -pipe -O2 -frtti -fexceptions -mthreads $(DEFINES)
+DEFINES		= -DUNICODE -DQT_DLL -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -DQT_NEEDS_QMAIN -DQT_SHARED
+CXXFLAGS	= -pipe -O2 -frtti -fexceptions -mthreads $(DEFINES)
+MINGWSTATIC	= -static-libgcc -static-libstdc++
 QT_INCPATH = -I'/usr/x86_64-w64-mingw32/sys-root/mingw/include/qt4/QtCore' -I'/usr/x86_64-w64-mingw32/sys-root/mingw/include/qt4/QtGui' -I'/usr/x86_64-w64-mingw32/sys-root/mingw/include/qt4' -I'/usr/x86_64-w64-mingw32/sys-root/mingw/include/qt4/ActiveQt' -I'release' -I'/usr/x86_64-w64-mingw32/sys-root/mingw/share/qt4/mkspecs/win32-g++'
 QT_LIBS = -L'/usr/x86_64-w64-mingw32/sys-root/mingw/lib' -lmingw32 -lqtmain -lQtGui -lQtCore
 
@@ -45,10 +46,10 @@ $(OBJECTS)/%.o: %.cpp $(DEPS)
 	$(CC) -c -o $@ $< $(FLAGS) $(CXXFLAGS) $(QT_INCPATH)
 
 all: $(OBJ)
-	$(CC) -o $(OUT) $^ $(QT_INCPATH) $(QT_LIBS)
+	$(CC) -o $(OUT) $^ $(QT_INCPATH) $(QT_LIBS) $(MINGWSTATIC)
 
 allapot: $(OBJ_ALLAPOT)
-	$(CC) -o $(OUT_ALLAPOT) $^
+	$(CC) -o $(OUT_ALLAPOT) $^ $(MINGWSTATIC)
 	
 ui_vec: $(OBJ_UI_VEC)
 	$(CC) -o $(OUT_UI_VEC) $^ $(QT_INCPATH) $(QT_LIBS)

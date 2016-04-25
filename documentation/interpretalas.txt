@@ -1,6 +1,6 @@
 interpretálás, terv
 	amit kapunk az első parse-ból:
-		utasítások sorban egymás után (vector<string>)
+		utasítások sorban egymás után, melyikhez hanyadik sor tartozik az eredeti fájlban, hány byte-os argumentumaik vannak
 		első utasítás sorszáma
 		deklarált változók méretei, inicializációs értékei
 			vector<char> a memória szimulálására	-	megfelelő pontokon kitöltve
@@ -13,8 +13,8 @@ interpretálás, terv
 			sorvége nem szükséges
 		tárolt adatok
 			AZONOSITO : név: string, kikereshető a hozzá tartozó első bit sorszáma
-			KONSTANS : érték: int (char-ból konvertálni)
-			REGISZTER : név: string, size: méret byteban (int 1..4 vagy undefined)
+			KONSTANS : érték: int (stringből konvertálni)
+			REGISZTER : név: string
 	nemterminálisok
 		utasítás
 			utasítás -> MOV kifejezés vessző kifejezés

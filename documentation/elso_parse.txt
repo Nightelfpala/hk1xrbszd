@@ -42,7 +42,7 @@ Első parse, terv
 		utasítás
 			-> művelet kifejezés1 vessző kifejezés2
 				ha csak egy kifejezés szükséges a művelethez, akkor értelemszerűen úgy
-				most még csak szintaktikus ellenőrzés, szemantikus nincs
+				szintaktikus és részleges szemantikus ellenőrzés is (pl. argumentumok mérete legyen definiált / megegyező)
 		kifejezés
 			-> [kifejezés] | (kifejezés) | kifejezés +-*/ kifejezés | KONSTANS | AZONOSITO | REGISZTER
 			--	a string formáját le kell menteni

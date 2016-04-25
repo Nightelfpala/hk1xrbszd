@@ -1,0 +1,9 @@
+Az ebben a mappában található fájlok az elsõ parseoláshoz szükségesek.
+
+Ezek a fájlok nem a helyben vannak megírva, hanem külön, virtuális gépen lesznek legenerálva (ugyanis Windows alatt bisonc++ nem érhetõ el), onnan átmásolva (megosztott mappán keresztül).
+A projekt létrehozásához szükséges generált kódfájlok ezek után a makefile által lesznek feldolgozva.
+
+Állományok:
+	semantics.h	-	az elemzéshez szükséges segédstruktúrák leírását tartalmazza
+	elsoparse.l	-	flex segítségével lexikális elemzõ lesz generálva
+	elsoparse.y	-	bisonc++ segítségével szintaktikus elemzõ lesz generálva, illetve kigyûjti a szükséges információkat
