@@ -1,9 +1,7 @@
-
 %option noyywrap c++ yylineno
-%option yyclass="elsoparse_flex"
 
 %{
-#include "Parserbase.h"
+#include "elsoparseParserbase.h"
 %}
 
 DIGIT   [0-9]
@@ -14,52 +12,52 @@ WS  [ \t]
 
 ";".*		// komment, nem kell semmit csinalni
 
-{DIGIT}+	return Parser::SZAM;
-/*'(\\.|[^\\'])'	return Parser::KONSTANS_CHAR;*/
+{DIGIT}+	return elsoparseParser::SZAM;
 
-(?i:section)	return Parser::SECTION;
-(?i:\.text)	return Parser::TEXT;
-(?i:\.bss)	return Parser::BSS;
-(?i:\.data)	return Parser::DATA;
-(?i:global)	return Parser::GLOBAL;
+(?i:section)	return elsoparseParser::SECTION;
+(?i:\.text)	return elsoparseParser::TEXT;
+(?i:\.bss)	return elsoparseParser::BSS;
+(?i:\.data)	return elsoparseParser::DATA;
+(?i:global)	return elsoparseParser::GLOBAL;
 
-(?i:resb)	return Parser::RESB;
-(?i:resw)	return Parser::RESW;
-(?i:resd)	return Parser::RESD;
+(?i:resb)	return elsoparseParser::RESB;
+(?i:resw)	return elsoparseParser::RESW;
+(?i:resd)	return elsoparseParser::RESD;
 
-(?i:db)	return Parser::DB;
-(?i:dw)	return Parser::DW;
-(?i:dd)	return Parser::DD;
+(?i:db)	return elsoparseParser::DB;
+(?i:dw)	return elsoparseParser::DW;
+(?i:dd)	return elsoparseParser::DD;
 
-(?i:byte)	return Parser::BYTE;
-(?i:word)	return Parser::WORD;
-(?i:dword)	return Parser::DWORD;
+(?i:byte)	return elsoparseParser::BYTE;
+(?i:word)	return elsoparseParser::WORD;
+(?i:dword)	return elsoparseParser::DWORD;
 
-"+"	return Parser::PLUS;
-"-"	return Parser::MINUS;
-"*"	return Parser::MULTIPLY;
-"/"	return Parser::DIVIDE;
-"," return Parser::VESSZO;
-":" return Parser::KETTOSPONT;
+"+"	return elsoparseParser::PLUS;
+"-"	return elsoparseParser::MINUS;
+"*"	return elsoparseParser::MULTIPLY;
+"/"	return elsoparseParser::DIVIDE;
+"," return elsoparseParser::VESSZO;
+":" return elsoparseParser::KETTOSPONT;
 
-"("	return Parser::NYITOZAROJEL;
-")"	return Parser::CSUKOZAROJEL;
-"["	return Parser::NYITOSZOGZAROJEL;
-"]"	return Parser::CSUKOSZOGZAROJEL;
+"("	return elsoparseParser::NYITOZAROJEL;
+")"	return elsoparseParser::CSUKOZAROJEL;
+"["	return elsoparseParser::NYITOSZOGZAROJEL;
+"]"	return elsoparseParser::CSUKOSZOGZAROJEL;
 
-(?i:(mov|add|sub|cmp|and|or|xor))	return Parser::KETARGUMENTUMOS;
-(?i:(mul|div|inc|dec|not|jmp|push|pop|ja|jb|je|jne|jna|jnb|jz|jnz))	return Parser::EGYARGUMENTUMOS;
-(?i:(jmp|ja|jb|je|jz|jna|jnb|jne|jnz))	return Parser::UGROUTAS;
-/* call, ret*/
-(?i:near)	return Parser::NEAR;
+(?i:(mov|add|sub|cmp|and|or|xor))	return elsoparseParser::KETARGUMENTUMOS;
+(?i:(mul|div|inc|dec|not|jmp|push|pop|ja|jb|je|jne|jna|jnb|jz|jnz))	return elsoparseParser::EGYARGUMENTUMOS;
+(?i:(jmp|ja|jb|je|jz|jna|jnb|jne|jnz))	return elsoparseParser::UGROUTAS;
+(?i:near)	return elsoparseParser::NEAR;
 
-[eE]?[abcdABCD][xX]|[eE]?[bsBS][pP]|[abcdABCD][hlHL]	return Parser::REGISTER;
+[eE]?[abcdABCD][xX]|[eE]?[bsBS][pP]|[abcdABCD][hlHL]	return elsoparseParser::REGISZTER;
 
-\n	return Parser::NEWLINE;	// utasitasok elvalasztasa
+\n	return elsoparseParser::NEWLINE;	// utasitasok elvalasztasa
 {WS}+	// whitespace	-	nem kell semmit csinalni
 
-{IDENTIFIER}	return Parser::AZONOSITO;
+{IDENTIFIER}	return elsoparseParser::AZONOSITO;
 
 .	{
 		// lexikalis hiba!
 	}
+
+%%

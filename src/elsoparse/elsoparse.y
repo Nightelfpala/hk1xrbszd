@@ -1,4 +1,5 @@
 %baseclass-preinclude "semantics.h"
+%class-name elsoparseParser
 %lsp-needed
 
 %token <szoveg> SZAM
@@ -55,25 +56,23 @@
 %%
 
 start:
-	SZABALY1 SZABALY2 SZABALY3
+	utasitasok
 	{	// TODO
-		;
+		
 	}
-|
-	
 ;
 
 utasitasok:
-	utasitas NEWLINE utasitasok
+	utasitas uressor utasitasok
 	{
-		// save line number, instruction number, instruction string
+		utasitas_gyujto[$1->utasitassorszam] = *$1;
 		
 		delete $1;
 	}
 |
 	utasitas
 	{
-		// save line number, instruction number, instruction string
+		utasitas_gyujto[$1->utasitassorszam] = *$1;
 		
 		delete $1;
 	}
@@ -82,16 +81,19 @@ utasitasok:
 utasitas:
 	KETARGUMENTUMOS argumentum VESSZO argumentum
 	{
-		$$ = new utasitas_data;	// TODO
-		
+		int argm;
 		if ($2->argmeret == -1 && $4->argmeret == -1)
 		{
-			// error undefined arg size
-		}
-		if ($2->argmeret != $4->argmeret)
+			// TODO error undefined arg size
+		} else if ($2->argmeret != $4->argmeret)
 		{
-			// error not equal arg size
+			// TODO error not equal arg size
+		} else
+		{
+			argm = ($2->argmeret == -1) ? ($4->argmeret) : ($2->argmeret);
 		}
+		
+		$$ = new utasitas_data( std::string("") + *$1 + " " + $2->kif + ", ", d_loc__.first_line, utasitasszam++, argm);
 		
 		delete $2;
 		delete $4;
@@ -99,18 +101,18 @@ utasitas:
 |
 	EGYARGUMENTUMOS argumentum
 	{
-		$$ = new utasitas_data; // TODO
 		if ($2->argmeret == -1)
 		{
-			// error undefined arg size
+			// TODO error undefined arg size
 		}
+		$$ = new utasitas_data( *$1 + " " + $2->kif, d_loc__.first_line, utasitasszam++, $2->argmeret);
 		
 		delete $2;
 	}
 |
 	UGROUTAS AZONOSITO
 	{
-		$$ = new utasitas_data;	// TODO
+		$$ = new utasitas_data( *$1 + " " + *$2, d_loc__.first_line, utasitasszam++, 4);
 		
 		delete $1;
 		delete $2;
@@ -118,11 +120,27 @@ utasitas:
 |
 	UGROUTAS NEAR AZONOSITO
 	{
-		$$ = new utasitas_data; // TODO
+		$$ = new utasitas_data( *$1 + " near " + *$3, d_loc__.first_line, utasitasszam++, 4);
 		
 		delete $1;
 		delete $3;
-	};
+	}
+|
+	cimke utasitas
+	{
+		$$ = $2;
+	}
+;
+
+cimke:
+	AZONOSITO KETTOSPONT
+	{
+		if ( ugrocimke_kovutasitas.count(*$1) > 0)
+		{
+			// TODO error ujradefinialt cimke
+		}
+		ugrocimke_kovutasitas[*$1] = utasitasszam;
+	}
 ;
 
 argumentum:
@@ -139,25 +157,25 @@ argumentum:
 |
 	BYTE NYITOSZOGZAROJEL kifejezes CSUKOSZOGZAROJEL
 	{
-		$$ = new kifejezes_data("byte [ " + $2->kif + " ]", 1);
-		delete $2;
+		$$ = new kifejezes_data("byte [ " + $3->kif + " ]", 1);
+		delete $3;
 	}
 |
 	WORD NYITOSZOGZAROJEL kifejezes CSUKOSZOGZAROJEL
 	{
-		$$ = new kifejezes_data("word [ " + $2->kif + " ]", 2);
-		delete $2;
+		$$ = new kifejezes_data("word [ " + $3->kif + " ]", 2);
+		delete $3;
 	}
 |
 	DWORD NYITOSZOGZAROJEL kifejezes CSUKOSZOGZAROJEL
 	{
-		$$ = new kifejezes_data("dword [ " + $2->kif + " ]", 4);
-		delete $2;
+		$$ = new kifejezes_data("dword [ " + $3->kif + " ]", 4);
+		delete $3;
 	}
 ;
 
 kifejezes:
-	NYITOZAROJEL kifejezes CSUKOZAROJEL;
+	NYITOZAROJEL kifejezes CSUKOZAROJEL
 	{
 		$$ = new kifejezes_data("( " + $2->kif + " )", $2->argmeret);
 		
@@ -169,7 +187,7 @@ kifejezes:
 		int argm;
 		if ($1->argmeret != -1 && $3->argmeret != -1 && $1->argmeret != $3->argmeret)
 		{
-			// error not equal arg size
+			// TODO error not equal arg size
 		} else
 		{
 			argm = ($1->argmeret == -1) ? ($3->argmeret) : ($1->argmeret);
@@ -185,7 +203,7 @@ kifejezes:
 		int argm;
 		if ($1->argmeret != -1 && $3->argmeret != -1 && $1->argmeret != $3->argmeret)
 		{
-			// error not equal arg size
+			// TODO error not equal arg size
 		} else
 		{
 			argm = ($1->argmeret == -1) ? ($3->argmeret) : ($1->argmeret);
@@ -201,7 +219,7 @@ kifejezes:
 		int argm;
 		if ($1->argmeret != -1 && $3->argmeret != -1 && $1->argmeret != $3->argmeret)
 		{
-			// error not equal arg size
+			// TODO error not equal arg size
 		} else
 		{
 			argm = ($1->argmeret == -1) ? ($3->argmeret) : ($1->argmeret);
@@ -217,7 +235,7 @@ kifejezes:
 		int argm;
 		if ($1->argmeret != -1 && $3->argmeret != -1 && $1->argmeret != $3->argmeret)
 		{
-			// error not equal arg size
+			// TODO error not equal arg size
 		} else
 		{
 			argm = ($1->argmeret == -1) ? ($3->argmeret) : ($1->argmeret);
@@ -228,32 +246,17 @@ kifejezes:
 		delete $3;
 	}
 |
-	REGISTER
+	REGISZTER
 	{
 		int argm;
-		// argm = getRegSize(*$1);
-		/*	TODO move to Parser as private method
-		int getRegSize(std::string reg)
-		{	// undefined behaviour with flag registers
-			if ($1[0] == "e")
-			{
-				return 4;
-			} else if ($1[1] == "p" || $1[1] == "x")
-			{
-				return 2;
-			} else
-			{
-				return 1;
-			}
-		}
-		*/
-		$$ = new kifejezes_data(*$1, -1);
+		argm = getRegSize(*$1);
+		
+		$$ = new kifejezes_data(*$1, argm);
 		delete $1;
 	}
 |
 	AZONOSITO
 	{
-		// TODO check reference - variable (not jump label)
 		$$ = new kifejezes_data(*$1, -1);
 		delete $1;
 	}
@@ -263,4 +266,10 @@ kifejezes:
 		$$ = new kifejezes_data(*$1, -1);
 		delete $1;
 	}
+;
+
+uressor:
+	uressor NEWLINE
+|
+	NEWLINE
 ;

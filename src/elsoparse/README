@@ -5,5 +5,10 @@ A projekt létrehozásához szükséges generált kódfájlok ezek után a makefile által
 
 Állományok:
 	semantics.h	-	az elemzéshez szükséges segédstruktúrák leírását tartalmazza
+		typedefs.h	-	a közös típusdefiníciók gyûjteménye
 	elsoparse.l	-	flex segítségével lexikális elemzõ lesz generálva
+		elsoparse.yy.cc	-	a generált állomány
 	elsoparse.y	-	bisonc++ segítségével szintaktikus elemzõ lesz generálva, illetve kigyûjti a szükséges információkat
+		elsoparse.cc	-	a generált állomány
+		elsoparseParser.h, elsoparseParser.ih, elsoparseParserbase.h	-	a generálás során keletkezõ, részben módosított állományok
+			ezek tartalmazzák az "elsoparseParse" osztályt, ami egy szöveges állományt feldolgoz
