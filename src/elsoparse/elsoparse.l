@@ -1,4 +1,5 @@
 %option noyywrap c++ yylineno
+%option prefix="elsoparse"
 
 %{
 #include "elsoparseParserbase.h"
@@ -45,7 +46,7 @@ WS  [ \t]
 "]"	return elsoparseParser::CSUKOSZOGZAROJEL;
 
 (?i:(mov|add|sub|cmp|and|or|xor))	return elsoparseParser::KETARGUMENTUMOS;
-(?i:(mul|div|inc|dec|not|jmp|push|pop|ja|jb|je|jne|jna|jnb|jz|jnz))	return elsoparseParser::EGYARGUMENTUMOS;
+(?i:(mul|div|inc|dec|not|push|pop))	return elsoparseParser::EGYARGUMENTUMOS;
 (?i:(jmp|ja|jb|je|jz|jna|jnb|jne|jnz))	return elsoparseParser::UGROUTAS;
 (?i:near)	return elsoparseParser::NEAR;
 

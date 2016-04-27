@@ -1,8 +1,9 @@
-
+#ifndef ELSOPARSEPARSER_IH_INCLUDED
+#define ELSOPARSEPARSER_IH_INCLUDED
 
 #include "elsoparseParser.h"
 
-inline elsoparseParser::elsoparseParser( std::istream &in) : lexer( &in, &std::cerr ), utasitasszam(0)
+inline elsoparseParser::elsoparseParser( std::istream &in) : lexer( &in, &std::cerr ), utasitasszam(0), elsoutasitas_cimke(""), errorMsg("")
 {
 	
 }
@@ -12,10 +13,35 @@ inline elsoparseParser::~elsoparseParser()
 	
 }
 
+inline std::map<int, utasitas_data> elsoparseParser::get_utasitasok() const
+{
+	return utasitas_gyujto;
+}
+
+inline std::map<std::string, int> elsoparseParser::get_valtozokezdet() const
+{
+	return valtozo_kezdetek;
+}
+inline std::map<std::string, int> elsoparseParser::get_ugrocimke() const
+{
+	return ugrocimke_kovutasitas;
+}
+	
+inline std::vector<AP_UC> elsoparseParser::get_valtozok() const
+{
+	return valtozok;
+}
+	
+inline std::string elsoparseParser::get_error() const
+{
+	return errorMsg;
+}
+
 inline void elsoparseParser::error(char const *msg)
 {
-	
-    // TODO error msg
+	std::stringstream ss;
+	ss << d_loc__.first_line << ". sor: " << msg << std::endl;
+    errorMsg = ss.str();
 }
 
 inline int elsoparseParser::lex()
@@ -52,3 +78,6 @@ int elsoparseParser::getRegSize(std::string reg)
 		return 1;
 	}
 }
+
+
+#endif

@@ -47,18 +47,149 @@
 	std::string* szoveg;
 	utasitas_data* utas;
 	kifejezes_data* kif;
+	int* szam;
+	std::vector<AP_UC>* charvec;
 }
 
 %type <utas> utasitas
 %type <kif> argumentum
 %type <kif> kifejezes
 
+%type <szam> meretdata
+%type <szam> meretbss
+%type <charvec> szamok
+
 %%
 
 start:
-	utasitasok
-	{	// TODO
+	szekciok
+;
+
+szekciok:
+	szekcio uressor szekciok
+|
+	szekcio
+;
+
+szekcio:
+	GLOBAL AZONOSITO
+	{
+		if (elsoutasitas_cimke != "")
+		{
+			std::stringstream ss;
+			ss << d_loc__.first_line << ". sor: " << "global belepesi pont ismetles" << std::endl
+				<< "\telozo nev: " << elsoutasitas_cimke << std::endl
+				<< "\tmost talalt nev: " << $2 << std::endl;
+			errorMsg = ss.str();
+			
+			delete $2;
+			throw HIBA;
+		}
+		elsoutasitas_cimke = *$2;
+		delete $2;
+	}
+|
+	SECTION DATA datadeklaraciok
+|
+	SECTION BSS bssdeklaraciok
+|
+	SECTION TEXT utasitasok
+;
+
+datadeklaraciok:
+	datadecl uressor datadeklaraciok
+|
+	datadecl
+;
+
+bssdeklaraciok:
+	bssdecl uressor bssdeklaraciok
+|
+	bssdecl
+;
+
+datadecl:
+	AZONOSITO KETTOSPONT meretdata szamok
+	{
+		int pluszhossz = (*$3) * $4->size();
+		int mosthossz = valtozok.size();
 		
+		valtozok.resize(mosthossz + pluszhossz);
+		for (int i = 0; i < pluszhossz; ++i)
+		{
+			valtozok[mosthossz + i] = (AP_UC)((*$4)[i]);
+		}
+		valtozo_kezdetek[*$1] = mosthossz;
+		
+		delete $1;
+		delete $3;
+		delete $4;
+	}
+;
+
+szamok:
+	szamok VESSZO SZAM
+	{
+		$1->push_back(atoi($3->c_str()));
+		$$ = $1;
+		
+		delete $3;
+	}
+|
+	SZAM
+	{
+		$$ = new std::vector<AP_UC>(1, atoi($1->c_str()));
+		
+		delete $1;
+	}
+;
+
+bssdecl:
+	AZONOSITO KETTOSPONT meretbss SZAM
+	{
+		int pluszhossz = (*$3) * atoi($4->c_str());
+		int mosthossz = valtozok.size();
+		
+		valtozok.resize(mosthossz + pluszhossz, 0);
+		valtozo_kezdetek[*$1] = mosthossz;
+		
+		delete $1;
+		delete $3;
+		delete $4;
+	}
+;
+
+meretdata:
+	DB
+	{
+		$$ = new int(1);
+	}
+|
+	DW
+	{
+		$$ = new int(2);
+	}
+|
+	DD
+	{
+		$$ = new int(4);
+	}
+;
+
+meretbss:
+	RESB
+	{
+		$$ = new int(1);
+	}
+|
+	RESW
+	{
+		$$ = new int(2);
+	}
+|
+	RESD
+	{
+		$$ = new int(4);
 	}
 ;
 
@@ -84,17 +215,36 @@ utasitas:
 		int argm;
 		if ($2->argmeret == -1 && $4->argmeret == -1)
 		{
-			// TODO error undefined arg size
-		} else if ($2->argmeret != $4->argmeret)
+			std::stringstream ss;
+			ss << d_loc__.first_line << ". sor: " << "muvelet meg nem adott argumentummerettel" << std::endl
+				<< "\t" << (std::string("") + *$1 + " " + $2->kif + ", " + $4->kif) << std::endl;
+			errorMsg = ss.str();
+			
+			delete $1;
+			delete $2;
+			delete $4;
+			throw HIBA;
+		} else if ($2->argmeret != $4->argmeret && $2->argmeret != -1 && $4->argmeret != -1)
 		{
-			// TODO error not equal arg size
+			std::stringstream ss;
+			ss << d_loc__.first_line << ". sor: " << "muvelet eltero argumentummerettel" << std::endl
+				<< "\t" << (std::string("") + *$1 + " " + $2->kif + ", " + $4->kif) << std::endl
+				<< "\telso argumentum merete: " << $2->argmeret << " byte" << std::endl
+				<< "\tmasodik argumentum merete: " << $4->argmeret << " byte" << std::endl;
+			errorMsg = ss.str();
+			
+			delete $1;
+			delete $2;
+			delete $4;
+			throw HIBA;
 		} else
 		{
 			argm = ($2->argmeret == -1) ? ($4->argmeret) : ($2->argmeret);
 		}
 		
-		$$ = new utasitas_data( std::string("") + *$1 + " " + $2->kif + ", ", d_loc__.first_line, utasitasszam++, argm);
+		$$ = new utasitas_data( std::string("") + *$1 + " " + $2->kif + ", " + $4->kif, d_loc__.first_line, utasitasszam++, argm);
 		
+		delete $1;
 		delete $2;
 		delete $4;
 	}
@@ -103,10 +253,18 @@ utasitas:
 	{
 		if ($2->argmeret == -1)
 		{
-			// TODO error undefined arg size
+			std::stringstream ss;
+			ss << d_loc__.first_line << ". sor: " << "muvelet meg nem adott argumentummerettel" << std::endl
+				<< "\t" <<(std::string("") + *$1 + " " + $2->kif) << std::endl;
+			errorMsg = ss.str();
+			
+			delete $1;
+			delete $2;
+			throw HIBA;
 		}
 		$$ = new utasitas_data( *$1 + " " + $2->kif, d_loc__.first_line, utasitasszam++, $2->argmeret);
 		
+		delete $1;
 		delete $2;
 	}
 |
@@ -137,9 +295,17 @@ cimke:
 	{
 		if ( ugrocimke_kovutasitas.count(*$1) > 0)
 		{
-			// TODO error ujradefinialt cimke
+			std::stringstream ss;
+			ss << d_loc__.first_line << ". sor: " << "ujradefinialt ugras cimke" << std::endl
+				<< "\t" << $1 << std::endl;
+			errorMsg = ss.str();
+			
+			delete $1;
+			throw HIBA;
 		}
 		ugrocimke_kovutasitas[*$1] = utasitasszam;
+		
+		delete $1;
 	}
 ;
 
@@ -187,7 +353,16 @@ kifejezes:
 		int argm;
 		if ($1->argmeret != -1 && $3->argmeret != -1 && $1->argmeret != $3->argmeret)
 		{
-			// TODO error not equal arg size
+			std::stringstream ss;
+			ss << d_loc__.first_line << ". sor: " << "szorzas muvelet eltero argumentummerettel" << std::endl
+				<< "\t" << (std::string("") + $1->kif + " * " + $3->kif) << std::endl
+				<< "\telso argumentum merete: " << $1->argmeret << " byte" << std::endl
+				<< "\tmasodik argumentum merete: " << $3->argmeret << " byte" << std::endl;
+			errorMsg = ss.str();
+			
+			delete $1;
+			delete $3;
+			throw HIBA;
 		} else
 		{
 			argm = ($1->argmeret == -1) ? ($3->argmeret) : ($1->argmeret);
@@ -203,7 +378,16 @@ kifejezes:
 		int argm;
 		if ($1->argmeret != -1 && $3->argmeret != -1 && $1->argmeret != $3->argmeret)
 		{
-			// TODO error not equal arg size
+			std::stringstream ss;
+			ss << d_loc__.first_line << ". sor: " << "osztas muvelet eltero argumentummerettel" << std::endl
+				<< "\t" << (std::string("") + $1->kif + " / " + $3->kif) << std::endl
+				<< "\telso argumentum merete: " << $1->argmeret << " byte" << std::endl
+				<< "\tmasodik argumentum merete: " << $3->argmeret << " byte" << std::endl;
+			errorMsg = ss.str();
+			
+			delete $1;
+			delete $3;
+			throw HIBA;
 		} else
 		{
 			argm = ($1->argmeret == -1) ? ($3->argmeret) : ($1->argmeret);
@@ -219,7 +403,16 @@ kifejezes:
 		int argm;
 		if ($1->argmeret != -1 && $3->argmeret != -1 && $1->argmeret != $3->argmeret)
 		{
-			// TODO error not equal arg size
+			std::stringstream ss;
+			ss << d_loc__.first_line << ". sor: " << "osszeadas muvelet eltero argumentummerettel" << std::endl
+				<< "\t" << (std::string("") + $1->kif + " + " + $3->kif) << std::endl
+				<< "\telso argumentum merete: " << $1->argmeret << " byte" << std::endl
+				<< "\tmasodik argumentum merete: " << $3->argmeret << " byte" << std::endl;
+			errorMsg = ss.str();
+			
+			delete $1;
+			delete $3;
+			throw HIBA;
 		} else
 		{
 			argm = ($1->argmeret == -1) ? ($3->argmeret) : ($1->argmeret);
@@ -235,7 +428,16 @@ kifejezes:
 		int argm;
 		if ($1->argmeret != -1 && $3->argmeret != -1 && $1->argmeret != $3->argmeret)
 		{
-			// TODO error not equal arg size
+			std::stringstream ss;
+			ss << d_loc__.first_line << ". sor: " << "kivonas muvelet eltero argumentummerettel" << std::endl
+				<< "\t" << (std::string("") + $1->kif + " - " + $3->kif) << std::endl
+				<< "\telso argumentum merete: " << $1->argmeret << " byte" << std::endl
+				<< "\tmasodik argumentum merete: " << $3->argmeret << " byte" << std::endl;
+			errorMsg = ss.str();
+			
+			delete $1;
+			delete $3;
+			throw HIBA;
 		} else
 		{
 			argm = ($1->argmeret == -1) ? ($3->argmeret) : ($1->argmeret);

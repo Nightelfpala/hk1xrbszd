@@ -20,7 +20,7 @@
      * We will address this in a future release of flex, or omit the C++ scanner
      * altogether.
      */
-    #define yyFlexLexer yyFlexLexer
+    #define yyFlexLexer elsoparseFlexLexer
 
 /* First, we deal with  platform-specific or compiler-specific issues. */
 
@@ -304,9 +304,9 @@ struct yy_buffer_state
  */
 #define YY_CURRENT_BUFFER_LVALUE (yy_buffer_stack)[(yy_buffer_stack_top)]
 
-void *yyalloc (yy_size_t  );
-void *yyrealloc (void *,yy_size_t  );
-void yyfree (void *  );
+void *elsoparsealloc (yy_size_t  );
+void *elsoparserealloc (void *,yy_size_t  );
+void elsoparsefree (void *  );
 
 #define yy_new_buffer yy_create_buffer
 
@@ -370,11 +370,11 @@ static yyconst flex_int16_t yy_accept[127] =
        34,   34,   34,   34,   34,   34,   34,   34,   34,   34,
        34,   34,   34,   34,   25,   26,   33,   34,   34,   34,
        34,    2,    1,   34,   31,   34,   34,   34,   11,   13,
-       34,   34,   12,   34,   34,   34,   34,   34,   28,   28,
-       28,   34,   34,   28,   34,   34,   34,   34,   27,   34,
+       34,   34,   12,   34,   34,   34,   34,   34,   29,   29,
+       29,   34,   34,   29,   34,   34,   34,   34,   27,   34,
        34,   34,   34,   34,   34,   34,   34,   34,   34,   27,
-       27,   34,   27,   28,   28,   34,   34,   28,   28,   28,
-       28,   28,   28,   27,   28,   34,   28,   28,   34,   34,
+       27,   34,   27,   28,   28,   34,   34,   28,   29,   29,
+       29,   29,   29,   27,   28,   34,   28,   28,   34,   34,
 
        34,   27,   34,   27,    5,   34,   34,   14,   34,   34,
        30,   28,    8,   10,    9,   34,   15,    6,    4,   16,
@@ -562,7 +562,7 @@ static yyconst flex_int32_t yy_rule_can_match_eol[37] =
 #define YY_MORE_ADJ 0
 #define YY_RESTORE_YY_MORE_OFFSET
 #line 1 "elsoparse.l"
-#line 4 "elsoparse.l"
+#line 5 "elsoparse.l"
 #include "elsoparseParserbase.h"
 #line 568 "elsoparse.yy.cc"
 
@@ -696,7 +696,7 @@ YY_DECL
 		}
 
 	{
-#line 11 "elsoparse.l"
+#line 12 "elsoparse.l"
 
 
 #line 703 "elsoparse.yy.cc"
@@ -768,185 +768,185 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 13 "elsoparse.l"
+#line 14 "elsoparse.l"
 // komment, nem kell semmit csinalni
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 15 "elsoparse.l"
+#line 16 "elsoparse.l"
 return elsoparseParser::SZAM;
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 17 "elsoparse.l"
+#line 18 "elsoparse.l"
 return elsoparseParser::SECTION;
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 18 "elsoparse.l"
+#line 19 "elsoparse.l"
 return elsoparseParser::TEXT;
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 19 "elsoparse.l"
+#line 20 "elsoparse.l"
 return elsoparseParser::BSS;
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 20 "elsoparse.l"
+#line 21 "elsoparse.l"
 return elsoparseParser::DATA;
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 21 "elsoparse.l"
+#line 22 "elsoparse.l"
 return elsoparseParser::GLOBAL;
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 23 "elsoparse.l"
+#line 24 "elsoparse.l"
 return elsoparseParser::RESB;
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 24 "elsoparse.l"
+#line 25 "elsoparse.l"
 return elsoparseParser::RESW;
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 25 "elsoparse.l"
+#line 26 "elsoparse.l"
 return elsoparseParser::RESD;
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 27 "elsoparse.l"
+#line 28 "elsoparse.l"
 return elsoparseParser::DB;
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 28 "elsoparse.l"
+#line 29 "elsoparse.l"
 return elsoparseParser::DW;
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 29 "elsoparse.l"
+#line 30 "elsoparse.l"
 return elsoparseParser::DD;
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 31 "elsoparse.l"
+#line 32 "elsoparse.l"
 return elsoparseParser::BYTE;
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 32 "elsoparse.l"
+#line 33 "elsoparse.l"
 return elsoparseParser::WORD;
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 33 "elsoparse.l"
+#line 34 "elsoparse.l"
 return elsoparseParser::DWORD;
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 35 "elsoparse.l"
+#line 36 "elsoparse.l"
 return elsoparseParser::PLUS;
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 36 "elsoparse.l"
+#line 37 "elsoparse.l"
 return elsoparseParser::MINUS;
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 37 "elsoparse.l"
+#line 38 "elsoparse.l"
 return elsoparseParser::MULTIPLY;
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 38 "elsoparse.l"
+#line 39 "elsoparse.l"
 return elsoparseParser::DIVIDE;
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 39 "elsoparse.l"
+#line 40 "elsoparse.l"
 return elsoparseParser::VESSZO;
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 40 "elsoparse.l"
+#line 41 "elsoparse.l"
 return elsoparseParser::KETTOSPONT;
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 42 "elsoparse.l"
+#line 43 "elsoparse.l"
 return elsoparseParser::NYITOZAROJEL;
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 43 "elsoparse.l"
+#line 44 "elsoparse.l"
 return elsoparseParser::CSUKOZAROJEL;
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 44 "elsoparse.l"
+#line 45 "elsoparse.l"
 return elsoparseParser::NYITOSZOGZAROJEL;
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 45 "elsoparse.l"
+#line 46 "elsoparse.l"
 return elsoparseParser::CSUKOSZOGZAROJEL;
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 47 "elsoparse.l"
+#line 48 "elsoparse.l"
 return elsoparseParser::KETARGUMENTUMOS;
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 48 "elsoparse.l"
+#line 49 "elsoparse.l"
 return elsoparseParser::EGYARGUMENTUMOS;
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 49 "elsoparse.l"
+#line 50 "elsoparse.l"
 return elsoparseParser::UGROUTAS;
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 50 "elsoparse.l"
+#line 51 "elsoparse.l"
 return elsoparseParser::NEAR;
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 52 "elsoparse.l"
+#line 53 "elsoparse.l"
 return elsoparseParser::REGISZTER;
 	YY_BREAK
 case 32:
 /* rule 32 can match eol */
 YY_RULE_SETUP
-#line 54 "elsoparse.l"
+#line 55 "elsoparse.l"
 return elsoparseParser::NEWLINE;	// utasitasok elvalasztasa
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 55 "elsoparse.l"
+#line 56 "elsoparse.l"
 // whitespace	-	nem kell semmit csinalni
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
-#line 57 "elsoparse.l"
+#line 58 "elsoparse.l"
 return elsoparseParser::AZONOSITO;
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
-#line 59 "elsoparse.l"
+#line 60 "elsoparse.l"
 {
 		// lexikalis hiba!
 	}
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
-#line 63 "elsoparse.l"
+#line 64 "elsoparse.l"
 ECHO;
 	YY_BREAK
 #line 953 "elsoparse.yy.cc"
@@ -1118,9 +1118,9 @@ yyFlexLexer::yyFlexLexer( std::istream* arg_yyin, std::ostream* arg_yyout )
 yyFlexLexer::~yyFlexLexer()
 {
 	delete [] yy_state_buf;
-	yyfree(yy_start_stack  );
+	elsoparsefree(yy_start_stack  );
 	yy_delete_buffer( YY_CURRENT_BUFFER );
-	yyfree(yy_buffer_stack  );
+	elsoparsefree(yy_buffer_stack  );
 }
 
 /* The contents of this function are C++ specific, so the () macro is not used.
@@ -1248,7 +1248,7 @@ int yyFlexLexer::yy_get_next_buffer()
 
 				b->yy_ch_buf = (char *)
 					/* Include room in for 2 EOB chars. */
-					yyrealloc((void *) b->yy_ch_buf,b->yy_buf_size + 2  );
+					elsoparserealloc((void *) b->yy_ch_buf,b->yy_buf_size + 2  );
 				}
 			else
 				/* Can't grow it, we don't own it. */
@@ -1297,7 +1297,7 @@ int yyFlexLexer::yy_get_next_buffer()
 	if ((yy_size_t) ((yy_n_chars) + number_to_move) > YY_CURRENT_BUFFER_LVALUE->yy_buf_size) {
 		/* Extend the array by 50%, plus the number we really need. */
 		yy_size_t new_size = (yy_n_chars) + number_to_move + ((yy_n_chars) >> 1);
-		YY_CURRENT_BUFFER_LVALUE->yy_ch_buf = (char *) yyrealloc((void *) YY_CURRENT_BUFFER_LVALUE->yy_ch_buf,new_size  );
+		YY_CURRENT_BUFFER_LVALUE->yy_ch_buf = (char *) elsoparserealloc((void *) YY_CURRENT_BUFFER_LVALUE->yy_ch_buf,new_size  );
 		if ( ! YY_CURRENT_BUFFER_LVALUE->yy_ch_buf )
 			YY_FATAL_ERROR( "out of dynamic memory in yy_get_next_buffer()" );
 	}
@@ -1552,7 +1552,7 @@ int yyFlexLexer::yy_get_next_buffer()
 {
 	YY_BUFFER_STATE b;
     
-	b = (YY_BUFFER_STATE) yyalloc(sizeof( struct yy_buffer_state )  );
+	b = (YY_BUFFER_STATE) elsoparsealloc(sizeof( struct yy_buffer_state )  );
 	if ( ! b )
 		YY_FATAL_ERROR( "out of dynamic memory in yy_create_buffer()" );
 
@@ -1561,7 +1561,7 @@ int yyFlexLexer::yy_get_next_buffer()
 	/* yy_ch_buf has to be 2 characters longer than the size given because
 	 * we need to put in 2 end-of-buffer characters.
 	 */
-	b->yy_ch_buf = (char *) yyalloc(b->yy_buf_size + 2  );
+	b->yy_ch_buf = (char *) elsoparsealloc(b->yy_buf_size + 2  );
 	if ( ! b->yy_ch_buf )
 		YY_FATAL_ERROR( "out of dynamic memory in yy_create_buffer()" );
 
@@ -1586,9 +1586,9 @@ int yyFlexLexer::yy_get_next_buffer()
 		YY_CURRENT_BUFFER_LVALUE = (YY_BUFFER_STATE) 0;
 
 	if ( b->yy_is_our_buffer )
-		yyfree((void *) b->yy_ch_buf  );
+		elsoparsefree((void *) b->yy_ch_buf  );
 
-	yyfree((void *) b  );
+	elsoparsefree((void *) b  );
 }
 
 /* Initializes or reinitializes a buffer.
@@ -1711,7 +1711,7 @@ void yyFlexLexer::yyensure_buffer_stack(void)
 		 * immediate realloc on the next call.
          */
 		num_to_alloc = 1;
-		(yy_buffer_stack) = (struct yy_buffer_state**)yyalloc
+		(yy_buffer_stack) = (struct yy_buffer_state**)elsoparsealloc
 								(num_to_alloc * sizeof(struct yy_buffer_state*)
 								);
 		if ( ! (yy_buffer_stack) )
@@ -1730,7 +1730,7 @@ void yyFlexLexer::yyensure_buffer_stack(void)
 		int grow_size = 8 /* arbitrary grow size */;
 
 		num_to_alloc = (yy_buffer_stack_max) + grow_size;
-		(yy_buffer_stack) = (struct yy_buffer_state**)yyrealloc
+		(yy_buffer_stack) = (struct yy_buffer_state**)elsoparserealloc
 								((yy_buffer_stack),
 								num_to_alloc * sizeof(struct yy_buffer_state*)
 								);
@@ -1753,10 +1753,10 @@ void yyFlexLexer::yyensure_buffer_stack(void)
 		new_size = (yy_start_stack_depth) * sizeof( int );
 
 		if ( ! (yy_start_stack) )
-			(yy_start_stack) = (int *) yyalloc(new_size  );
+			(yy_start_stack) = (int *) elsoparsealloc(new_size  );
 
 		else
-			(yy_start_stack) = (int *) yyrealloc((void *) (yy_start_stack),new_size  );
+			(yy_start_stack) = (int *) elsoparserealloc((void *) (yy_start_stack),new_size  );
 
 		if ( ! (yy_start_stack) )
 			YY_FATAL_ERROR( "out of memory expanding start-condition stack" );
@@ -1833,12 +1833,12 @@ static int yy_flex_strlen (yyconst char * s )
 }
 #endif
 
-void *yyalloc (yy_size_t  size )
+void *elsoparsealloc (yy_size_t  size )
 {
 	return (void *) malloc( size );
 }
 
-void *yyrealloc  (void * ptr, yy_size_t  size )
+void *elsoparserealloc  (void * ptr, yy_size_t  size )
 {
 	/* The cast to (char *) in the following accommodates both
 	 * implementations that use char* generic pointers, and those
@@ -1850,13 +1850,13 @@ void *yyrealloc  (void * ptr, yy_size_t  size )
 	return (void *) realloc( (char *) ptr, size );
 }
 
-void yyfree (void * ptr )
+void elsoparsefree (void * ptr )
 {
-	free( (char *) ptr );	/* see yyrealloc() for (char *) cast */
+	free( (char *) ptr );	/* see elsoparserealloc() for (char *) cast */
 }
 
 #define YYTABLES_NAME "yytables"
 
-#line 62 "elsoparse.l"
+#line 63 "elsoparse.l"
 
 
