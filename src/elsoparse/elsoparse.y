@@ -35,12 +35,13 @@
 
 %token <szoveg> REGISZTER
 
-%token NEWLINE
 %token VESSZO
 %token KETTOSPONT
 
 %left PLUS MINUS
 %left MULTIPLY DIVIDE
+
+%token LEXERROR
 
 %union
 {
@@ -66,12 +67,22 @@ start:
 ;
 
 szekciok:
-	szekcio uressor szekciok
+	szekcio szekciok
 |
 	szekcio
 ;
 
 szekcio:
+	global
+|
+	SECTION DATA datadeklaraciok
+|
+	SECTION BSS bssdeklaraciok
+|
+	SECTION TEXT global utasitasok
+;
+
+global:
 	GLOBAL AZONOSITO
 	{
 		if (elsoutasitas_cimke != "")
@@ -88,22 +99,16 @@ szekcio:
 		elsoutasitas_cimke = *$2;
 		delete $2;
 	}
-|
-	SECTION DATA datadeklaraciok
-|
-	SECTION BSS bssdeklaraciok
-|
-	SECTION TEXT utasitasok
 ;
 
 datadeklaraciok:
-	datadecl uressor datadeklaraciok
+	datadecl datadeklaraciok
 |
 	datadecl
 ;
 
 bssdeklaraciok:
-	bssdecl uressor bssdeklaraciok
+	bssdecl bssdeklaraciok
 |
 	bssdecl
 ;
@@ -194,7 +199,7 @@ meretbss:
 ;
 
 utasitasok:
-	utasitas uressor utasitasok
+	utasitas utasitasok
 	{
 		utasitas_gyujto[$1->utasitassorszam] = *$1;
 		
@@ -228,7 +233,7 @@ utasitas:
 		{
 			std::stringstream ss;
 			ss << d_loc__.first_line << ". sor: " << "muvelet eltero argumentummerettel" << std::endl
-				<< "\t" << (std::string("") + *$1 + " " + $2->kif + ", " + $4->kif) << std::endl
+				<< "\t" << (std::string("") + toLower(*$1) + " " + $2->kif + ", " + $4->kif) << std::endl
 				<< "\telso argumentum merete: " << $2->argmeret << " byte" << std::endl
 				<< "\tmasodik argumentum merete: " << $4->argmeret << " byte" << std::endl;
 			errorMsg = ss.str();
@@ -255,7 +260,7 @@ utasitas:
 		{
 			std::stringstream ss;
 			ss << d_loc__.first_line << ". sor: " << "muvelet meg nem adott argumentummerettel" << std::endl
-				<< "\t" <<(std::string("") + *$1 + " " + $2->kif) << std::endl;
+				<< "\t" <<(std::string("") + toLower(*$1) + " " + $2->kif) << std::endl;
 			errorMsg = ss.str();
 			
 			delete $1;
@@ -278,7 +283,7 @@ utasitas:
 |
 	UGROUTAS NEAR AZONOSITO
 	{
-		$$ = new utasitas_data( *$1 + " near " + *$3, d_loc__.first_line, utasitasszam++, 4);
+		$$ = new utasitas_data( toLower(*$1) + " near " + *$3, d_loc__.first_line, utasitasszam++, 4);
 		
 		delete $1;
 		delete $3;
@@ -453,7 +458,7 @@ kifejezes:
 		int argm;
 		argm = getRegSize(*$1);
 		
-		$$ = new kifejezes_data(*$1, argm);
+		$$ = new kifejezes_data( toLower(*$1), argm);
 		delete $1;
 	}
 |
@@ -468,10 +473,4 @@ kifejezes:
 		$$ = new kifejezes_data(*$1, -1);
 		delete $1;
 	}
-;
-
-uressor:
-	uressor NEWLINE
-|
-	NEWLINE
 ;

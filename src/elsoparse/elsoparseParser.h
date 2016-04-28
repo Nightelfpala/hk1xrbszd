@@ -18,8 +18,8 @@
 class elsoparseParser : public elsoparseParserBase
 {
 public:
-	elsoparseParser( std::istream &in);
-	~elsoparseParser();
+	elsoparseParser( std::istream &in) : lexer( &in, &std::cerr ), utasitasszam(0), elsoutasitas_cimke(""), errorMsg("") {}
+	~elsoparseParser() {}
 	
 	int parse();
 	
@@ -42,7 +42,8 @@ private:
 	void print();
 	
 	int utasitasszam;
-	int getRegSize(std::string s);
+	int getRegSize(const std::string &s) const;
+	std::string toLower(const std::string &s) const;
 	
 	std::map<int, utasitas_data> utasitas_gyujto;
 	std::map<std::string, int> ugrocimke_kovutasitas;

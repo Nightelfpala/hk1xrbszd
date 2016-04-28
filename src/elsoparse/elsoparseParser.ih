@@ -1,56 +1,56 @@
 #ifndef ELSOPARSEPARSER_IH_INCLUDED
 #define ELSOPARSEPARSER_IH_INCLUDED
 
+#include <algorithm>
 #include "elsoparseParser.h"
 
-inline elsoparseParser::elsoparseParser( std::istream &in) : lexer( &in, &std::cerr ), utasitasszam(0), elsoutasitas_cimke(""), errorMsg("")
-{
-	
-}
-
-inline elsoparseParser::~elsoparseParser()
-{
-	
-}
-
-inline std::map<int, utasitas_data> elsoparseParser::get_utasitasok() const
+std::map<int, utasitas_data> elsoparseParser::get_utasitasok() const
 {
 	return utasitas_gyujto;
 }
 
-inline std::map<std::string, int> elsoparseParser::get_valtozokezdet() const
+std::map<std::string, int> elsoparseParser::get_valtozokezdet() const
 {
 	return valtozo_kezdetek;
 }
-inline std::map<std::string, int> elsoparseParser::get_ugrocimke() const
+std::map<std::string, int> elsoparseParser::get_ugrocimke() const
 {
 	return ugrocimke_kovutasitas;
 }
 	
-inline std::vector<AP_UC> elsoparseParser::get_valtozok() const
+std::vector<AP_UC> elsoparseParser::get_valtozok() const
 {
 	return valtozok;
 }
 	
-inline std::string elsoparseParser::get_error() const
+std::string elsoparseParser::get_error() const
 {
 	return errorMsg;
 }
 
-inline void elsoparseParser::error(char const *msg)
+void elsoparseParser::error(char const *msg)
 {
 	std::stringstream ss;
 	ss << d_loc__.first_line << ". sor: " << msg << std::endl;
     errorMsg = ss.str();
+	throw HIBA;
 }
 
 inline int elsoparseParser::lex()
 {
     d_loc__.first_line = lexer.lineno();
 	int ret = lexer.yylex();
+	
 	if (ret == AZONOSITO or ret == SZAM or ret == REGISZTER or ret == KETARGUMENTUMOS or ret == EGYARGUMENTUMOS or ret == UGROUTAS)
 	{
 		d_val__.szoveg = new std::string(lexer.YYText());
+	}
+	if (ret == LEXERROR)
+	{
+		std::stringstream ss;
+		ss << d_loc__.first_line << ". sor: lexikalis hiba: " << lexer.YYText() << std::endl;
+		errorMsg = ss.str();
+		throw HIBA;
 	}
     return ret;
 }
@@ -65,7 +65,7 @@ inline void elsoparseParser::exceptionHandler__(std::exception const &exc)		// h
 	throw;  // re-implement to handle exceptions thrown by actions
 }
 
-int elsoparseParser::getRegSize(std::string reg)
+int elsoparseParser::getRegSize(const std::string &reg) const
 {	// undefined behaviour with flag registers
 	if (reg[0] == 'e')
 	{
@@ -77,6 +77,13 @@ int elsoparseParser::getRegSize(std::string reg)
 	{
 		return 1;
 	}
+}
+
+std::string elsoparseParser::toLower(const std::string& s) const
+{
+	std::string ss = s;
+	std::transform(ss.begin(), ss.end(), ss.begin(), ::tolower);
+	return ss;
 }
 
 

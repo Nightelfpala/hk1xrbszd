@@ -7,7 +7,7 @@
 
 DIGIT   [0-9]
 IDENTIFIER [a-zA-Z"."][a-zA-Z0-9_"."]*
-WS  [ \t]
+WS  [ \t\n]
 
 %%
 
@@ -52,13 +52,10 @@ WS  [ \t]
 
 [eE]?[abcdABCD][xX]|[eE]?[bsBS][pP]|[abcdABCD][hlHL]	return elsoparseParser::REGISZTER;
 
-\n	return elsoparseParser::NEWLINE;	// utasitasok elvalasztasa
 {WS}+	// whitespace	-	nem kell semmit csinalni
 
 {IDENTIFIER}	return elsoparseParser::AZONOSITO;
 
-.	{
-		// lexikalis hiba!
-	}
+.	return elsoparseParser::LEXERROR;	// csak lexikalis hibak kimutatasara van hasznalatban
 
 %%
