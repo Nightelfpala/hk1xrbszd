@@ -116,13 +116,14 @@ bssdeklaraciok:
 datadecl:
 	AZONOSITO KETTOSPONT meretdata szamok
 	{
-		int pluszhossz = (*$3) * $4->size();
+		int meret = (*$3);
+		int pluszhossz = meret * $4->size();
 		int mosthossz = valtozok.size();
 		
-		valtozok.resize(mosthossz + pluszhossz);
+		valtozok.resize(mosthossz + pluszhossz, 0);
 		for (int i = 0; i < pluszhossz; ++i)
 		{
-			valtozok[mosthossz + i] = (AP_UC)((*$4)[i]);
+			valtozok[mosthossz + i * meret] = (AP_UC)((*$4)[i]);
 		}
 		valtozo_kezdetek[*$1] = mosthossz;
 		
