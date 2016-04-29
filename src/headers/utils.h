@@ -15,8 +15,8 @@ namespace Utils
 		// a rev elotag az unsigned int bitenkenti komplementeret hasznalja / allitja elo
 	AP_UI vecc2uint( const std::vector<AP_UC> &from );
 	AP_UI vecc2revuint( const std::vector<AP_UC> &from );
-	void uint2vecc( const AP_UI &from, std::vector<AP_UC> &to );
-	void revuint2vecc( const AP_UI &from, std::vector<AP_UC> &to );
+	void uint2vecc( const AP_UI &from, std::vector<AP_UC> &to );	// a 'to' hosszanak elore be kell allitva lennie a 'from' vart meretenek megfeleloen
+	void revuint2vecc( const AP_UI &from, std::vector<AP_UC> &to );		// ^mint fent
 }
 
 #endif
