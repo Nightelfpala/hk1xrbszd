@@ -37,6 +37,9 @@
 %token JNE
 %token JNZ
 
+%token CALL
+%token RET
+
 %left PLUS MINUS
 %left MULTIPLY DIVIDE
 
@@ -62,37 +65,76 @@ start:
 
 utasitas:
 	MOV elsoarg VESSZO ertek
+	{
+		int val = (*$4);
+		std::vector<AP_UC> vec(argmeret);
+		Utils::uint2vecc( val, vec );
+		if ( $2->isvalt )
+		{
+			allapot->set_var( ($2->elsobyte), vec );
+		} else
+		{
+			allapot->set_reg( ($2->reg), vec );
+		}
+		
+		delete $2;
+		delete $4;
+	}
 |
 	ADD elsoarg VESSZO ertek
+	{
+		int val = (*$4);
+		std::vector<AP_UC> vec(argmeret);
+		if ( $2->isvalt )
+		{
+			allapot->get_var( ($2->elsobyte), argmeret, vec );
+			val += Utils::vecc2uint( vec );
+			Utils::uint2vecc( val, vec );
+			allapot->set_var( ($2->elsobyte), vec );
+		} else
+		{
+			allapot->get_reg( ($2->reg), vec );
+			val += Utils::vecc2uint( vec );
+			Utils::uint2vecc( val, vec );
+			allapot->set_reg( ($2->reg), vec );
+		}
+		allapot->set_sign( val < 0 );
+		allapot->set_zero( val == 0 );
+		
+		delete $2;
+		delete $4;
+	}
+	
 |
 	SUB elsoarg VESSZO ertek
+	{
+		int val = (*$4);
+		std::vector<AP_UC> vec(argmeret);
+		if ( $2->isvalt )
+		{
+			allapot->get_var( ($2->elsobyte), argmeret, vec );
+			val -= Utils::vecc2uint( vec );
+			Utils::uint2vecc( val, vec );
+			allapot->set_var( ($2->elsobyte), vec );
+		} else
+		{
+			allapot->get_reg( ($2->reg), vec );
+			val -= Utils::vecc2uint( vec );
+			Utils::uint2vecc( val, vec );
+			allapot->set_reg( ($2->reg), vec );
+		}
+		allapot->set_sign( val < 0 );
+		allapot->set_zero( val == 0 );
+		
+		delete $2;
+		delete $4;
+	}
 |
 	CMP ertek VESSZO ertek
 	{
 		std::vector<AP_UC> vec;
 		int val1 = (*$2);
 		int val2 = (*$4);
-		/*
-		if ( $2->isvalt )
-		{
-			allapot->get_var( $2->elsobyte, argmeret, vec );
-			val1 = vecc2uint( vec );
-		} else
-		{
-			allapot->get_reg( $2->reg, vec );
-			val1 = vecc2uint( vec );
-		}
-		
-		if ( $4->isvalt )
-		{
-			allapot->get_var( $4->elsobyte, argmeret, vec );
-			val2 = vecc2uint( vec );
-		} else
-		{
-			allapot->get_reg( $4->reg, vec );
-			val2 = vecc2uint( vec );
-		}
-		*/
 		
 		allapot->set_sign( (val1 - val2) < 0 );
 		allapot->set_zero( (val1 - val2) == 0 );
@@ -103,14 +145,109 @@ utasitas:
 	}
 |
 	AND elsoarg VESSZO ertek
+	{
+		int val = (*$4);
+		std::vector<AP_UC> vec(argmeret);
+		if ( $2->isvalt )
+		{
+			allapot->get_var( ($2->elsobyte), argmeret, vec );
+			val &= Utils::vecc2uint( vec );
+			Utils::uint2vecc( val, vec );
+			allapot->set_var( ($2->elsobyte), vec );
+		} else
+		{
+			allapot->get_reg( ($2->reg), vec );
+			val &= Utils::vecc2uint( vec );
+			Utils::uint2vecc( val, vec );
+			allapot->set_reg( ($2->reg), vec );
+		}
+		allapot->set_zero( val == 0 );
+		
+		delete $2;
+		delete $4;
+	}
 |
 	OR elsoarg VESSZO ertek
+	{
+		int val = (*$4);
+		std::vector<AP_UC> vec(argmeret);
+		if ( $2->isvalt )
+		{
+			allapot->get_var( ($2->elsobyte), argmeret, vec );
+			val |= Utils::vecc2uint( vec );
+			Utils::uint2vecc( val, vec );
+			allapot->set_var( ($2->elsobyte), vec );
+		} else
+		{
+			allapot->get_reg( ($2->reg), vec );
+			val |= Utils::vecc2uint( vec );
+			Utils::uint2vecc( val, vec );
+			allapot->set_reg( ($2->reg), vec );
+		}
+		allapot->set_zero( val == 0 );
+		
+		delete $2;
+		delete $4;
+	}
 |
 	XOR elsoarg VESSZO ertek
+	{
+		int val = (*$4);
+		std::vector<AP_UC> vec(argmeret);
+		if ( $2->isvalt )
+		{
+			allapot->get_var( ($2->elsobyte), argmeret, vec );
+			val ^= Utils::vecc2uint( vec );
+			Utils::uint2vecc( val, vec );
+			allapot->set_var( ($2->elsobyte), vec );
+		} else
+		{
+			allapot->get_reg( ($2->reg), vec );
+			val ^= Utils::vecc2uint( vec );
+			Utils::uint2vecc( val, vec );
+			allapot->set_reg( ($2->reg), vec );
+		}
+		allapot->set_zero( val == 0 );
+		
+		delete $2;
+		delete $4;
+	}
 |
 	MUL elsoarg
+	{
+		std::vector<AP_UC> vec;
+		AP_UI mulval;
+		if ( argmeret == 4 )
+		{
+			allapot->get_reg( "eax" , vec );
+		} else if ( argmeret == 2)
+		{
+			allapot->get_reg( "ax" , vec );
+		} else	// argmeret == 1
+		{
+			allapot->get_reg( "al" , vec );
+		}
+		mulval = vecc2uint( vec );
+		AP_UI baseval;
+		if ( $2->isvalt )
+		{
+			allapot->get_var( ($2->elsobyte) , argmeret, vec );
+			baseval = Utils::vecc2uint( vec );
+			// TODO finish overflow
+		} else
+		{
+			allapot->get_reg( ($2->reg), vec );
+			baseval = Utils::vecc2uint( vec );
+			// TODO
+		}
+		
+		delete $2;
+	}
 |
 	DIV elsoarg
+	{
+		// TODO
+	}
 |
 	INC elsoarg
 	{
@@ -131,6 +268,8 @@ utasitas:
 			Utils::uint2vecc( val, vec );
 			allapot->set_reg( $2->reg, vec );
 		}
+		allapot->set_zero( val == 0 );
+		
 		delete $2;
 	}
 |
@@ -153,6 +292,8 @@ utasitas:
 			Utils::uint2vecc( val, vec );
 			allapot->set_reg( $2->reg, vec );
 		}
+		allapot->set_zero( val == 0 );
+		
 		delete $2;
 	}
 |
@@ -175,6 +316,8 @@ utasitas:
 			Utils::uint2vecc( val, vec );
 			allapot->set_reg( $2->reg, vec );
 		}
+		allapot->set_zero( val == 0 );
+		
 		delete $2;
 	}
 |
@@ -291,6 +434,25 @@ utasitas:
 			allapot->set_kovetkezo(kov);
 		}
 		delete $2;
+	}
+|
+	CALL AZONOSITO
+	{
+		int cel = (*ugrocimkek)[*$2];
+		int kov = allapot->get_kovetkezo();
+		std::vector<AP_UC> vec(4);
+		Utils::uint2vecc( kov, vec );
+		allapot->verem_push( vec );
+		allapot->set_kovetkezo( cel );
+		delete $2;
+	}
+|
+	RET
+	{
+		std::vector<AP_UC> vec;
+		allapot->verem_pop(4, vec);
+		int kov = Utils::vecc2uint( vec );
+		allapot->set_kovetkezo( kov );
 	}
 ;
 

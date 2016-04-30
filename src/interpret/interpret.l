@@ -53,6 +53,9 @@ jnb	return interpretParser::JNB;
 jne	return interpretParser::JNE;
 jnz	return interpretParser::JNZ;
 
+call	return interpretParser::CALL;
+ret	return interpretParser::RET;
+
 e?[abcd]x|e?[bs]p|[abcd][hl]	return interpretParser::REGISZTER;
 
 {WS}+	// whitespace	-	nem kell semmit csinalni

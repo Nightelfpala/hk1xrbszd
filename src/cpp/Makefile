@@ -49,9 +49,9 @@ _OUT_UI_VEC = teszt_ui_vec
 OUT_UI_VEC = $(patsubst %,$(BIN)/%,$(_OUT_UI_VEC))
 
 #	teszt_elsoparse:
-_OBJ_ELSOP = elsoparseFlexer.o elsoparseParser.o elsoparse.o
+_OBJ_ELSOP = elsoparseFlexer.o elsoparseParser.o elsoparse.o utils.o
 OBJ_ELSOP = $(patsubst %,$(OBJECTS)/%,$(_OBJ_ELSOP))
-_DEPS_ELSOP = typedefs.h elsoparseParser.h elsoparseParserbase.h semantics.h FlexLexer.h
+_DEPS_ELSOP = typedefs.h elsoparseParser.h elsoparseParserbase.h semantics.h FlexLexer.h utils.h
 DEPS_ELSOP = $(patsubst %,$(INCLUDE)/%,$(_DEPS_ELSOP))
 _OUT_ELSOP = teszt_elsoparse
 OUT_ELSOP = $(patsubst %,$(BIN)/%,$(_OUT_ELSOP))

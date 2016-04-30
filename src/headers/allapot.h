@@ -56,7 +56,14 @@ public:
 private:
 	//valtozok
 	std::map<std::string, int> valtozo_elso;
-	std::vector<AP_UC> valtozok;
+	std::vector<AP_UC> valtozok_verem;	// a verem es a valtozok tarolasa
+		// felepites:	eleje						verem alja
+				//		valt1	valt2		valt3	PUSH1	PUSH2
+	int max_valt;	// a valtozoknak hany byte van lefoglalva
+	int max_verem;	// a verem jelenlegi helyzeteben max hany byteot hasznalhat
+	int max_verem_elert;
+	
+	void veremNovel( int val );	// ha a verem teteje belelogna a valtozok koze, ezzel noveljuk a rendelkezesre allo helyet
 	
 	//regiszterek
 	std::vector<AP_UC> eax;
@@ -74,7 +81,7 @@ private:
 	bool signflag;
 	
 	//futasideju verem
-	std::vector<AP_UC> verem;	// nem tenyleges veremkent tarolva, szukseg van a belsejeben talalhato ertekekre is a folyamatos kiirashoz
+	//std::vector<AP_UC> verem;	// nem tenyleges veremkent tarolva, szukseg van a belsejeben talalhato ertekekre is a folyamatos kiirashoz
 	
 	int kovetkezo_utasitas;
 };

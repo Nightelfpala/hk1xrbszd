@@ -47,7 +47,8 @@ WS  [ \t\n]
 
 (?i:(mov|add|sub|cmp|and|or|xor))	return elsoparseParser::KETARGUMENTUMOS;
 (?i:(mul|div|inc|dec|not|push|pop))	return elsoparseParser::EGYARGUMENTUMOS;
-(?i:(jmp|ja|jb|je|jz|jna|jnb|jne|jnz))	return elsoparseParser::UGROUTAS;
+(?i:(call|jmp|ja|jb|je|jz|jna|jnb|jne|jnz))	return elsoparseParser::UGROUTAS;
+(?i:(ret))	return elsoparseParser::RET;
 (?i:near)	return elsoparseParser::NEAR;
 
 [eE]?[abcdABCD][xX]|[eE]?[bsBS][pP]|[abcdABCD][hlHL]	return elsoparseParser::REGISZTER;

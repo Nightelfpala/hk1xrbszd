@@ -4,6 +4,46 @@
 #include <algorithm>
 #include "elsoparseParser.h"
 
+int elsoparseParser::completeParse()
+{
+	int ret = parse();
+	postParse();
+	return ret;
+}
+
+void elsoparseParser::postParse()
+{
+	for (std::map<std::string, int>::iterator it = ugrocimke_kovutasitas.begin(); it != ugrocimke_kovutasitas.end(); ++it )
+	{
+		if (it->second == -1)
+		{
+			std::stringstream ss;
+			ss << "A(z) " << it->first << " ugrocimke celpontja nincs megadva." << std::endl;
+			errorMsg = ss.str();
+			throw HIBA;
+		}
+	}
+	
+	for (std::map<std::string, int>::iterator it = valtozo_kezdetek.begin(); it != valtozo_kezdetek.end(); ++it )
+	{
+		if (it->second == -1)
+		{
+			std::stringstream ss;
+			ss << "A(z) " << it->first << " valtozo nincs definialva." << std::endl;
+			errorMsg = ss.str();
+			throw HIBA;
+		}
+	}
+	
+	if (elsoutasitas_cimke == "")
+	{
+		std::stringstream ss;
+		ss << "A program belepesi pontja nincs megadva." << std::endl;
+		errorMsg = ss.str();
+		throw HIBA;
+	}
+}
+
 std::map<int, utasitas_data> elsoparseParser::get_utasitasok() const
 {
 	return utasitas_gyujto;

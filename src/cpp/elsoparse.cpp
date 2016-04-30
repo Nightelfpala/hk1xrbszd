@@ -15,7 +15,7 @@ int main(int argc, char* argv[])
 	int p;
 	try
 	{
-		p = epP.parse();
+		p = epP.completeParse();
 		
 		map<int, utasitas_data> utasitasok = epP.get_utasitasok();
 		map<string, int> valtkezdet = epP.get_valtozokezdet();

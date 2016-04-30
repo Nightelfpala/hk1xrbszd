@@ -14,6 +14,8 @@
 #include <map>
 #include <vector>
 
+#include "utils.h"
+
 #undef elsoparseParser
 class elsoparseParser : public elsoparseParserBase
 {
@@ -21,7 +23,7 @@ public:
 	elsoparseParser( std::istream &in) : lexer( &in, &std::cerr ), utasitasszam(0), elsoutasitas_cimke(""), errorMsg("") {}
 	~elsoparseParser() {}
 	
-	int parse();
+	int completeParse();
 	
 	std::map<int, utasitas_data> get_utasitasok() const;
 	std::map<std::string, int> get_valtozokezdet() const;
@@ -36,6 +38,9 @@ public:
 		HIBA,	// a get_error() metodussal lekerdezheto a hibauzenet
 	};
 private:
+	int parse();
+	void postParse();	// szemantikus ellenorzesek: minden ugropontnak van vegpontja, minden hivatkozott valtozo deklaralva van-e
+	
 	elsoparseFlexLexer lexer;
 	void error(char const *msg);
 	int lex();

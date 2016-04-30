@@ -31,6 +31,7 @@
 %token <szoveg> KETARGUMENTUMOS
 %token <szoveg> EGYARGUMENTUMOS
 %token <szoveg> UGROUTAS
+%token <szoveg> RET
 %token NEAR
 
 %token <szoveg> REGISZTER
@@ -49,7 +50,7 @@
 	utasitas_data* utas;
 	kifejezes_data* kif;
 	int* szam;
-	std::vector<AP_UC>* charvec;
+	std::vector<int>* intvec;
 }
 
 %type <utas> utasitas
@@ -58,7 +59,7 @@
 
 %type <szam> meretdata
 %type <szam> meretbss
-%type <charvec> szamok
+%type <intvec> szamok
 
 %%
 
@@ -120,10 +121,16 @@ datadecl:
 		int pluszhossz = meret * $4->size();
 		int mosthossz = valtozok.size();
 		
+		std::vector<AP_UC> vec(meret);
+		
 		valtozok.resize(mosthossz + pluszhossz, 0);
 		for (int i = 0; i < pluszhossz; ++i)
 		{
-			valtozok[mosthossz + i * meret] = (AP_UC)((*$4)[i]);
+			Utils::uint2vecc( (*$4)[i] , vec );
+			for (int j = 0; j < meret; ++j)
+			{
+				valtozok[mosthossz + i * meret + j] = vec[j];
+			}
 		}
 		valtozo_kezdetek[*$1] = mosthossz;
 		
@@ -144,7 +151,7 @@ szamok:
 |
 	SZAM
 	{
-		$$ = new std::vector<AP_UC>(1, atoi($1->c_str()));
+		$$ = new std::vector<int>(1, atoi($1->c_str()));
 		
 		delete $1;
 	}
@@ -276,7 +283,11 @@ utasitas:
 |
 	UGROUTAS AZONOSITO
 	{
-		$$ = new utasitas_data( *$1 + " " + *$2, d_loc__.first_line, utasitasszam++, 4);
+		if ( ugrocimke_kovutasitas.count(*$2) == 0 )
+		{
+			ugrocimke_kovutasitas[ *$2 ] = -1;
+		}
+		$$ = new utasitas_data( *$1 + " " + (*$2), d_loc__.first_line, utasitasszam++, 4);
 		
 		delete $1;
 		delete $2;
@@ -284,10 +295,21 @@ utasitas:
 |
 	UGROUTAS NEAR AZONOSITO
 	{
-		$$ = new utasitas_data( toLower(*$1) + " near " + *$3, d_loc__.first_line, utasitasszam++, 4);
+		if ( ugrocimke_kovutasitas.count(*$3) == 0 )
+		{
+			ugrocimke_kovutasitas[ *$3 ] = -1;
+		}
+		$$ = new utasitas_data( toLower(*$1) + " near " + (*$3), d_loc__.first_line, utasitasszam++, 4);
 		
 		delete $1;
 		delete $3;
+	}
+|
+	RET
+	{
+		$$ = new utasitas_data( "ret", d_loc__.first_line, utasitasszam++, 0);
+		
+		delete $1;
 	}
 |
 	cimke utasitas
@@ -465,6 +487,10 @@ kifejezes:
 |
 	AZONOSITO
 	{
+		if ( valtozo_kezdetek.count(*$1) == 0)
+		{
+			valtozo_kezdetek[ *$1 ] = -1;
+		}
 		$$ = new kifejezes_data(*$1, -1);
 		delete $1;
 	}

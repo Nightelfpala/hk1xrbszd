@@ -24,7 +24,15 @@ void interpretParser::initAp(Allapot* ap, std::map<std::string, int> *uc)
 	ugrocimkek = uc;
 }
 
-void interpretParser::preparse(std::istream& in, int argsize)
+int interpretParser::completeParse(std::istream& in, int argsize)
+{
+	preParse(in, argsize);
+	allapot->set_kovetkezo(allapot->get_kovetkezo() + 1);	// a parse() meg ezt modosithatja
+	int ret = parse();
+	return ret;
+}
+
+void interpretParser::preParse(std::istream& in, int argsize)
 {
 	if (lexer)
 	{

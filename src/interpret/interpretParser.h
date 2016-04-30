@@ -24,10 +24,11 @@ class interpretParser: public interpretParserBase
     public:
 		interpretParser();
 		~interpretParser();
-        int parse();
+		
+		int completeParse(std::istream& in, int argsize);	// meghivja a preParse fv-t, majd a parse fv-t
+			// az allapot kovetkezo utasitas valtozojat megfeleloen modositja (jmp -> ahova, kulonben ++ )
 		
 		void initAp(Allapot* ap, std::map<std::string, int> *uc);
-		void preparse(std::istream& in, int argsize);	// meg kell hivni
 		
 		enum Exceptions
 		{
@@ -35,6 +36,9 @@ class interpretParser: public interpretParserBase
 		};
 
     private:
+		int parse();
+		void preParse(std::istream& in, int argsize);
+	
 		interpretFlexLexer *lexer;
 		
 		int argmeret;

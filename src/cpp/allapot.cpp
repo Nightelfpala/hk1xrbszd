@@ -1,4 +1,6 @@
 
+#include <algorithm>
+
 #include "allapot.h"
 #include "utils.h"
 
@@ -37,7 +39,27 @@ Allapot::~Allapot()
 void Allapot::init( const std::map<std::string, int> &valtozo_kezdetek, const std::vector<AP_UC> &valt_vector)
 {
 	valtozo_elso = valtozo_kezdetek;
-	valtozok = valt_vector;
+	valtozok_verem = valt_vector;
+	max_valt = valtozok_verem.size();
+	int szazasmeret = ((max_valt / 100) + 2) * 100;
+	max_verem = szazasmeret - max_valt;
+	max_verem_elert = 0;
+	valtozok.resize(szazasmeret, 0);
+}
+
+void Allapot::veremNovel( int val = 100)
+{
+	vector<AP_UC> temp( valtozok_verem.size() + val, 0);
+	for (int i = 0; i < max_valt; ++i)
+	{
+		temp[i] = valtozok_verem[i];
+	}
+	for (int i = 0; i < max_verem; ++i)
+	{
+		temp[ temp.size() - 1 - i] = valtozok_verem[ valtozok_verem.size() - 1 - i];
+	}
+	max_verem = temp.size() - max_valt;
+	valtozok_verem = temp;
 }
 
 void Allapot::get_reg( const std::string &reg_azon, std::vector<AP_UC> &to ) const
@@ -261,9 +283,11 @@ void Allapot::set_reg( const std::string &reg_azon, const std::vector<AP_UC> &fr
 						esp[i] = from[i];
 					}
 					// amennyiben magasabb pontra mutat a verem teteje, mint amekkora a vektora, noveljuk meg a meretet
-					if (vecc2revuint(esp) > verem.size())
+					int tmp = (vecc2revuint(esp) - max_verem);
+					if ( tmp > 0 )
 					{
-						verem.resize(vecc2revuint(esp), 0);
+						veremNovel( ((tmp * 3) > 100) ? (tmp * 3) : 100 );
+						max_verem_elert = std::max(tmp, max_verem_elert);
 					}
 					break;
 				}
@@ -326,9 +350,11 @@ void Allapot::set_reg( const std::string &reg_azon, const std::vector<AP_UC> &fr
 							esp[i] = from[i];
 						}
 						// amennyiben magasabb pontra mutat a verem teteje, mint amekkora a vektora, noveljuk meg a meretet
-						if (vecc2revuint(esp) > verem.size())
+						int tmp = (vecc2revuint(esp) - max_verem);
+						if ( tmp > 0 )
 						{
-							verem.resize(vecc2revuint(esp), 0);
+							veremNovel( ((tmp * 3) > 100) ? (tmp * 3) : 100 );
+							max_verem_elert = std::max(tmp, max_verem_elert);
 						}
 						break;
 					}
@@ -419,45 +445,46 @@ int Allapot::elso_byte( const std::string &valt_azon ) const
 	return valtozo_elso.at(valt_azon);
 }
 
-void Allapot::get_var( const int &elso_byte, const int &hossz, std::vector<AP_UC> &to ) const
+void Allapot::get_var( const int &elso_byte, const int &hossz, std::vector<AP_UC> &to ) const	// TODO
 {
-	if ( (elso_byte < 0) || ((elso_byte + hossz) > valtozok.size() ))
+	if ( (elso_byte < 0) || ((elso_byte + hossz) > max_valt ))
 		throw HATARON_KIVULI_VALTOZO;
 	to.resize(hossz);
 	for (int i = 0; i < hossz; ++i)
 	{
-		to[i] = valtozok[elso_byte + i];
+		to[i] = valtozok_verem[elso_byte + i];
 	}
 }
 
-void Allapot::set_var( const int &elso_byte, const std::vector<AP_UC> &from )
+void Allapot::set_var( const int &elso_byte, const std::vector<AP_UC> &from )	// TODO
 {
 	int hossz = from.size();
-	if ( (elso_byte < 0) || ( (elso_byte + hossz) > valtozok.size() ))
+	if ( (elso_byte < 0) || ( (elso_byte + hossz) > max_valt ))
 		throw HATARON_KIVULI_VALTOZO;
 	for (int i = 0; i < hossz; ++i)
 	{
-		valtozok[elso_byte + i] = from[i];
+		valtozok_verem[elso_byte + i] = from[i];
 	}
 }
 
-void Allapot::verem_push( const std::vector<AP_UC> &from )
+void Allapot::verem_push( const std::vector<AP_UC> &from )	// TODO
 {
-	AP_UI veremteto = vecc2revuint(esp);
+	AP_UI veremteto = verem_teteje();
 	int meret = from.size();
-	if ( verem.size() < (veremteto + meret) )
+	if ( max_verem < (veremteto + meret) )
 	{
-		verem.resize(veremteto + meret);
+		veremNovel( ((veremteto + meret) > 100) ? (( veremteto + meret ) * 3 ) : 100 );
 	}
 	for (int i = 0; i < meret; ++i)
 	{
-		verem[veremteto + i] = from[meret - 1 - i];
+		valtozok_verem[ valtozok_verem.size() - 1 - veremteto - i] = from[meret - 1 - i];
 	}
 	veremteto += meret;
+	max_verem_elert = std::max(max_verem_elert, veremteto);
 	revuint2vecc( veremteto, esp );
 }
 
-void Allapot::verem_pop ( const int &meret, std::vector<AP_UC> &to )
+void Allapot::verem_pop ( const int &meret, std::vector<AP_UC> &to )	// TODO
 {
 	AP_UI veremteto = vecc2revuint(esp);
 	if (veremteto < meret)
@@ -467,7 +494,7 @@ void Allapot::verem_pop ( const int &meret, std::vector<AP_UC> &to )
 	to.resize(meret);
 	for (int i = 0; i < meret; ++i)
 	{
-		to[i] = verem[veremteto - 1 - i];	
+		to[i] = valtozok_verem[veremteto - 1 - i];	
 	}
 	veremteto -= meret;
 	revuint2vecc( veremteto, esp);
@@ -485,13 +512,20 @@ void Allapot::set_kovetkezo( const int &kov )
 
 void Allapot::valtozo_vector( std::vector<AP_UC> &to ) const
 {
-	to = valtozok;
+	to.resize(verem_alja);
+	for (int i = 0; i < to.size(); ++i)
+	{
+		to[i] = valtozok_verem[i];
+	}
 }
 
 void Allapot::verem_vector( std::vector<AP_UC> &to ) const
 {
-	to.resize(verem.size());
-	to = verem;
+	to.resize(valtozok_verem.size() - veremalja);
+	for (int i = 0; i < to.size(); ++i)
+	{
+		to[i] = valtozok_verem[veremalja + i];
+	}
 }
 
 AP_UI Allapot::verem_teteje() const
