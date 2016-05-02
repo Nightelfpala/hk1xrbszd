@@ -32,6 +32,14 @@ _OUT = szimulacio
 OUT = $(patsubst %,$(BIN)/%,$(_OUT))
 
 #	reszmodulok forditasa
+#	teszt_utils:
+_OBJ_UTILS = utils.o utils_main.o
+OBJ_UTILS = $(patsubst %,$(OBJECTS)/%,$(_OBJ_UTILS))
+_DEPS_UTILS = utils.h
+DEPS_UTILS = $(patsubst %,$(INCLUDE)/%,$(_DEPS_UTILS))
+_OUT_UTILS = teszt_utils
+OUT_UTILS = $(patsubst %,$(BIN)/%,$(_OUT_UTILS))
+
 #	teszt_allapot:
 _OBJ_ALLAPOT = allapot.o allapot_main.o utils.o
 OBJ_ALLAPOT = $(patsubst %,$(OBJECTS)/%,$(_OBJ_ALLAPOT))
@@ -68,6 +76,9 @@ $(OBJECTS)/%.o: %.cpp $(DEPS)
 
 all: $(OBJ)
 	$(CC) -o $(OUT) $^ $(QT_INCPATH) $(QT_LIBS) $(MINGWSTATIC)
+	
+utils: $(OBJ_UTILS)
+	$(CC) -o $(OUT_UTILS) $^ $(MINGWSTATIC)
 
 allapot: $(OBJ_ALLAPOT)
 	$(CC) -o $(OUT_ALLAPOT) $^ $(MINGWSTATIC)

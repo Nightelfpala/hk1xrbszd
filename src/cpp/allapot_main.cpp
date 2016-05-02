@@ -13,13 +13,13 @@ void valtozo_teszt();
 
 int main()
 {
-	flag_teszt();
+	//flag_teszt();
 	
-	regiszter_teszt();
+	//regiszter_teszt();
 	
 	verem_teszt();
 	
-	valtozo_teszt();
+	//valtozo_teszt();
 	
 	return 0;
 }
@@ -49,6 +49,7 @@ void verem_teszt()
 	cout << "VEREM TESZT:" << endl;
 	Allapot ap;
 	vector<AP_UC> vec_AP_UC_1(8);
+	vector<string> verem_nevek;
 	
 	vec_AP_UC_1[0] = 1;
 	vec_AP_UC_1[1] = 3;
@@ -58,13 +59,19 @@ void verem_teszt()
 	vec_AP_UC_1[6] = 1;
 	vec_AP_UC_1[7] = 1;
 	vector<AP_UC> eredeti = vec_AP_UC_1;
-	vec_cout(vec_AP_UC_1, "eltarolt vector:");
+	vec_cout(vec_AP_UC_1, "eltarolando vector:");
 
 	cout << "verem teteje pointerig byteok szama: " << ap.verem_teteje() << endl;
 	
 	ap.verem_push(vec_AP_UC_1);
 	ap.verem_vector(vec_AP_UC_1);
+	ap.vec_pointerek(verem_nevek);
 	vec_cout(vec_AP_UC_1, "verem vector:");
+	for (int i = 0; i < verem_nevek.size(); ++i)
+	{
+		cout << verem_nevek[i] << "\t";
+	}
+	cout << endl;
 	
 	cout << "verem teteje pointerig byteok szama: " << ap.verem_teteje() << endl;
 	
@@ -106,8 +113,9 @@ void verem_teszt()
 	cout << endl;
 	vector<AP_UC> vec_AP_UC_2;
 	ap.get_reg("esp", vec_AP_UC_2);
-	vec_AP_UC_2[0] -= 8;
+	sint2vecc( vecc2sint(vec_AP_UC_2) + 8, vec_AP_UC_2);	// 8 byte-al megnoveli a verem melyseget
 	ap.set_reg("esp", vec_AP_UC_2);
+	
 	cout << "esp modositas (-8) utan a verem teteje pointerig byteok szama: " << ap.verem_teteje() << endl;
 	try
 	{
@@ -120,6 +128,36 @@ void verem_teszt()
 	{
 		cout << "HIBA esp allitas utani pop sikertelen" << endl;
 	}
+	
+	cout << endl;
+	
+	cout << ap.verem_teteje() << endl;
+	vector<AP_UC> to(4);
+	ap.get_reg("esp", to);
+	ap.set_reg("ebp", to);
+	to.resize(0);
+	to.resize(4, 0);
+	to[0] = 1;
+	ap.verem_push(to);
+	cout << "push1" << endl;
+	to[0] = 2;
+	ap.verem_push(to);
+	cout << "push2" << endl;
+	to[0] = 3;
+	ap.verem_push(to);
+	cout << "push3" << endl;
+	try
+	{
+		ap.get_reg("ebp", to);
+		int veremfele = vecc2sint ( to ) - 4;
+		ap.get_var( veremfele, 8, to, 1);
+		vec_cout( to, "esp modositas utan [ebp - 4] lekerdezese:");
+	} catch(Allapot::Exceptions ex)
+	{
+		cout << "HIBA [esp + 4] lekerdezese sikertelen" << endl;
+	}
+	ap.verem_vector(to);
+	vec_cout(to, "verem vektor:");
 	
 	cout << endl;
 }
@@ -202,7 +240,7 @@ void valtozo_teszt()
 	vector<AP_UC> init(10, 0);
 	ap.init(valtozo_kezdetek, init);
 	
-	cout << "elso byte:" << endl << "x:\t" << ap.elso_byte("x") << endl << "y:\t" << ap.elso_byte("y") << endl << "z:\t" << ap.elso_byte("z") << endl;
+	cout << "elso byte:" << endl << "x:\t" << (int)(~(ap.elso_byte("x"))) << endl << "y:\t" << (int)(~(ap.elso_byte("y"))) << endl << "z:\t" << (int)(~(ap.elso_byte("z"))) << endl;
 	
 	// [y] := 2 * 256 + 5
 	vector<AP_UC> vy(2);
