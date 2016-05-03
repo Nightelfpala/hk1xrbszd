@@ -1,6 +1,5 @@
 
 #include <algorithm>
-#include <iostream>
 
 #include "allapot.h"
 #include "utils.h"
@@ -488,7 +487,6 @@ void Allapot::verem_push( const std::vector<AP_UC> &from )	// TODO
 	}
 	veremteto += meret;
 	sint2vecc( -veremteto, esp );
-	cout << "push vege" << endl;
 }
 
 void Allapot::verem_pop ( const AP_UI &meret, std::vector<AP_UC> &to )	// TODO
