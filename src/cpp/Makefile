@@ -21,7 +21,7 @@ QT_LIBS	= -L'/usr/x86_64-w64-mingw32/sys-root/mingw/lib' -lmingw32 -lqtmain -lQt
 #	kiegeszitendo a tovabbi forrasfajlokkal
 _OBJ = allapot.o utils.o ui.o elsoparseFlexer.o elsoparseParser.o
 OBJ = $(patsubst %,$(OBJECTS)/%,$(_OBJ))
-_MAINS_OBJ = allapot_main.o ui_vec_main.o elsoparse.o
+_MAINS_OBJ = allapot_main.o ui_vec_main.o elsoparse.o utils_main.o
 MAINS_OBJ = $(patsubst %,$(OBJECTS)/%,$(_MAINS_OBJ))
 
 _DEPS = allapot.h utils.h typedefs.h ui.h semantics.h FlexLexer.h

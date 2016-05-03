@@ -264,8 +264,7 @@ void Allapot::set_reg( const std::string &reg_azon, const std::vector<AP_UC> &fr
 						esp[i] = from[i];
 					}
 					// amennyiben magasabb pontra mutat a verem teteje, mint amekkora a vektora, noveljuk meg a meretet
-					int tmp = vecc2sint(esp);
-					cout << "tmp:\t" << tmp << endl;
+					int tmp = -vecc2sint(esp);
 					if ( tmp > verem.size() )
 					{
 						verem.resize( tmp );
@@ -331,7 +330,7 @@ void Allapot::set_reg( const std::string &reg_azon, const std::vector<AP_UC> &fr
 							esp[i] = from[i];
 						}
 						// amennyiben magasabb pontra mutat a verem teteje, mint amekkora a vektora, noveljuk meg a meretet
-						int tmp = vecc2sint(esp);
+						int tmp = -vecc2sint(esp);
 						if ( tmp > verem.size() )
 						{
 							verem.resize( tmp );
@@ -476,7 +475,6 @@ void Allapot::set_var( const int &elso_byte, const std::vector<AP_UC> &from, boo
 void Allapot::verem_push( const std::vector<AP_UC> &from )	// TODO
 {
 	int veremteto = verem_teteje();
-	//cout << "veremteto:\t" << veremteto << endl;
 	int meret = from.size();
 	if ( veremteto + meret > UTILS_SIGNED_ZERO )
 		throw TELE_VEREM;
@@ -496,7 +494,6 @@ void Allapot::verem_push( const std::vector<AP_UC> &from )	// TODO
 void Allapot::verem_pop ( const AP_UI &meret, std::vector<AP_UC> &to )	// TODO
 {
 	int veremteto = verem_teteje();
-	cout << "veremteto:\t" << veremteto << endl;
 	if ( veremteto < meret)
 	{
 		throw URES_VEREM;
@@ -549,6 +546,7 @@ void Allapot::elso_valtozok( std::vector<std::string> &to ) const
 
 void Allapot::vec_pointerek( std::vector<std::string> &to ) const
 {
+	to.resize( 0 );
 	to.resize( verem.size() + 1, "");
 	to[ -vecc2sint(ebp) ] = "ebp";
 	to[ -vecc2sint(esp) ] = "esp";
