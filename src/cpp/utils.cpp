@@ -34,6 +34,17 @@ AP_UI Utils::vecc2revuint( const std::vector<AP_UC> &from)
 	return ~(vecc2uint(from));
 }
 
+int Utils::vecc2sint( const std::vector<AP_UC> &from )
+{
+	int result = 0;
+	for (int i = 0; i < from.size(); ++i)
+	{
+		result *= 256;
+		result -= from[ from.size() - 1 - i ];
+	}
+	return result + UTILS_SIGNED_ZERO;
+}
+
 void Utils::uint2vecc ( const AP_UI &from, std::vector<AP_UC> &to )
 {
 	AP_UI akt = from;
@@ -50,6 +61,16 @@ void Utils::revuint2vecc ( const AP_UI &from, std::vector<AP_UC> &to )
 	for (AP_UI i = 0; i < to.size(); ++i)
 	{
 		to[i] = akt % 256;
+		akt /= 256;
+	}
+}
+
+void Utils::sint2vecc( const int &from, std::vector<AP_UC> &to )
+{
+	int akt = (UTILS_SIGNED_ZERO - from);
+	for (int i = 0; i < to.size(); ++i)
+	{
+		to[ i ] = akt % 256;
 		akt /= 256;
 	}
 }

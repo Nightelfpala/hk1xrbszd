@@ -1,10 +1,12 @@
 # Leforditja a projektet
+#	'utils'		hozza tartozo main segitsegevel letrehoz egy tesztkornyezetet: teszt_utils
 #	'allapot'	hozza tartozo main segitsegevel letrehoz egy tesztkornyezetet: teszt_allapot
 #	'ui_vec'	hozza tartozo main segitsegevel letrehoz egy tesztkornyezetet: teszt_ui_vec
 #	'elsoparse'	hozza tartozo main segitsegevel letrehoz egy tesztkornyezetet: teszt_elsoparse
 
 INCLUDE = ../headers
 INCLUDE_ELSOPARSE = ../elsoparse
+INCLUDE_INTERPRET = ../interpret
 OBJECTS = ../objects
 BIN = ../bin
 
@@ -18,20 +20,31 @@ MINGWSTATIC	= -static-libgcc -static-libstdc++
 QT_INCPATH	= -I'/usr/x86_64-w64-mingw32/sys-root/mingw/include/qt4/QtCore' -I'/usr/x86_64-w64-mingw32/sys-root/mingw/include/qt4/QtGui' -I'/usr/x86_64-w64-mingw32/sys-root/mingw/include/qt4' -I'/usr/x86_64-w64-mingw32/sys-root/mingw/include/qt4/ActiveQt' -I'release' -I'/usr/x86_64-w64-mingw32/sys-root/mingw/share/qt4/mkspecs/win32-g++'
 QT_LIBS	= -L'/usr/x86_64-w64-mingw32/sys-root/mingw/lib' -lmingw32 -lqtmain -lQtGui -lQtCore
 
-#	kiegeszitendo a tovabbi forrasfajlokkal
-_OBJ = allapot.o utils.o ui.o elsoparseFlexer.o elsoparseParser.o
+#	---------------------------------------
+#	kiegeszitendo a tovabbi objectfajlokkal
+_OBJ = allapot.o utils.o ui.o elsoparseFlexer.o elsoparseParser.o interpretFlexer.o interpretParser.o
 OBJ = $(patsubst %,$(OBJECTS)/%,$(_OBJ))
-_MAINS_OBJ = allapot_main.o ui_vec_main.o elsoparse.o
+#	teszteleshez hasznalt mainekbol keletkezo object fajlok
+_MAINS_OBJ = allapot_main.o ui_vec_main.o elsoparse.o utils_main.o
 MAINS_OBJ = $(patsubst %,$(OBJECTS)/%,$(_MAINS_OBJ))
 
 _DEPS = allapot.h utils.h typedefs.h ui.h semantics.h FlexLexer.h
 _DEPS_ELSOPARSE = elsoparseParser.h elsoparseParserbase.h
-DEPS = $(patsubst %,$(INCLUDE)/%,$(_DEPS)) $(patsubst %,$(INCLUDE_ELSOPARSE)/%,$(_DEPS_ELSOPARSE))
+_DEPS_INTERPRET = interpretParser.h interpretParserbase.h
+DEPS = $(patsubst %,$(INCLUDE)/%,$(_DEPS)) $(patsubst %,$(INCLUDE_ELSOPARSE)/%,$(_DEPS_ELSOPARSE)) $(patsubst %,$(INCLUDE_INTERPRET)/%,$(_DEPS_INTERPRET))
 
 _OUT = szimulacio
 OUT = $(patsubst %,$(BIN)/%,$(_OUT))
 
 #	reszmodulok forditasa
+#	teszt_utils:
+_OBJ_UTILS = utils.o utils_main.o
+OBJ_UTILS = $(patsubst %,$(OBJECTS)/%,$(_OBJ_UTILS))
+_DEPS_UTILS = utils.h
+DEPS_UTILS = $(patsubst %,$(INCLUDE)/%,$(_DEPS_UTILS))
+_OUT_UTILS = teszt_utils
+OUT_UTILS = $(patsubst %,$(BIN)/%,$(_OUT_UTILS))
+
 #	teszt_allapot:
 _OBJ_ALLAPOT = allapot.o allapot_main.o utils.o
 OBJ_ALLAPOT = $(patsubst %,$(OBJECTS)/%,$(_OBJ_ALLAPOT))
@@ -57,6 +70,12 @@ _OUT_ELSOP = teszt_elsoparse
 OUT_ELSOP = $(patsubst %,$(BIN)/%,$(_OUT_ELSOP))
 
 
+$(OBJECTS)/interpretFlexer.o: ../interpret/interpret.yy.cc
+	$(CC) -c -o $@ $< $(FLAGS)
+
+$(OBJECTS)/interpretParser.o: ../interpret/interpret.cc
+	$(CC) -c -o $@ $< $(FLAGS)
+
 $(OBJECTS)/elsoparseFlexer.o: ../elsoparse/elsoparse.yy.cc
 	$(CC) -c -o $@ $< $(FLAGS)
 
@@ -68,6 +87,9 @@ $(OBJECTS)/%.o: %.cpp $(DEPS)
 
 all: $(OBJ)
 	$(CC) -o $(OUT) $^ $(QT_INCPATH) $(QT_LIBS) $(MINGWSTATIC)
+	
+utils: $(OBJ_UTILS)
+	$(CC) -o $(OUT_UTILS) $^ $(MINGWSTATIC)
 
 allapot: $(OBJ_ALLAPOT)
 	$(CC) -o $(OUT_ALLAPOT) $^ $(MINGWSTATIC)

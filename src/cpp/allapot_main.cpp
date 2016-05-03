@@ -10,6 +10,7 @@ void flag_teszt();
 void regiszter_teszt();
 void verem_teszt();
 void valtozo_teszt();
+void verem_limit_teszt();
 
 int main()
 {
@@ -20,6 +21,8 @@ int main()
 	verem_teszt();
 	
 	valtozo_teszt();
+	
+	verem_limit_teszt();
 	
 	return 0;
 }
@@ -49,6 +52,7 @@ void verem_teszt()
 	cout << "VEREM TESZT:" << endl;
 	Allapot ap;
 	vector<AP_UC> vec_AP_UC_1(8);
+	vector<string> verem_nevek;
 	
 	vec_AP_UC_1[0] = 1;
 	vec_AP_UC_1[1] = 3;
@@ -58,13 +62,19 @@ void verem_teszt()
 	vec_AP_UC_1[6] = 1;
 	vec_AP_UC_1[7] = 1;
 	vector<AP_UC> eredeti = vec_AP_UC_1;
-	vec_cout(vec_AP_UC_1, "eltarolt vector:");
+	vec_cout(vec_AP_UC_1, "eltarolando vector:");
 
 	cout << "verem teteje pointerig byteok szama: " << ap.verem_teteje() << endl;
 	
 	ap.verem_push(vec_AP_UC_1);
 	ap.verem_vector(vec_AP_UC_1);
+	ap.vec_pointerek(verem_nevek);
 	vec_cout(vec_AP_UC_1, "verem vector:");
+	for (int i = 0; i < verem_nevek.size(); ++i)
+	{
+		cout << verem_nevek[i] << "\t";
+	}
+	cout << endl;
 	
 	cout << "verem teteje pointerig byteok szama: " << ap.verem_teteje() << endl;
 	
@@ -85,7 +95,13 @@ void verem_teszt()
 	}
 	
 	ap.verem_vector(vec_AP_UC_1);
+	ap.vec_pointerek(verem_nevek);
 	vec_cout(vec_AP_UC_1, "verem vector:");
+	for (int i = 0; i < verem_nevek.size(); ++i)
+	{
+		cout << verem_nevek[i] << "\t";
+	}
+	cout << endl;
 	cout << "verem teteje pointerig byteok szama: " << ap.verem_teteje() << endl;
 	
 	try
@@ -106,8 +122,9 @@ void verem_teszt()
 	cout << endl;
 	vector<AP_UC> vec_AP_UC_2;
 	ap.get_reg("esp", vec_AP_UC_2);
-	vec_AP_UC_2[0] -= 8;
+	sint2vecc( vecc2sint(vec_AP_UC_2) - 8, vec_AP_UC_2);	// 8 byte-al megnoveli a verem melyseget	~	mov esp, esp - 8
 	ap.set_reg("esp", vec_AP_UC_2);
+	
 	cout << "esp modositas (-8) utan a verem teteje pointerig byteok szama: " << ap.verem_teteje() << endl;
 	try
 	{
@@ -120,6 +137,47 @@ void verem_teszt()
 	{
 		cout << "HIBA esp allitas utani pop sikertelen" << endl;
 	}
+	
+	cout << endl;
+	
+	cout << "ezek utan a veremben " << ap.verem_teteje() << " byte van" << endl;
+	vector<AP_UC> to(4);
+	ap.get_reg("esp", to);
+	ap.set_reg("ebp", to);
+	cout << "mov ebp, esp	;	vegrehajtasa" << endl;
+	to.resize(0);
+	to.resize(4, 0);
+	uint2vecc( 1, to );
+	ap.verem_push(to);
+	uint2vecc( 2, to );
+	ap.verem_push(to);
+	uint2vecc( 3, to );
+	ap.verem_push(to);
+	cout << "4 byte-os formaban 1, majd 2, majd 3 pusholva a verembe" << endl;
+	try
+	{
+		ap.get_reg("ebp", to);
+		int veremfele = vecc2sint ( to ) - 4;
+		ap.get_var( veremfele, 4, to, 1);
+		vec_cout( to, "[ebp - 4] lekerdezese:");
+		
+		ap.get_reg("ebp", to);
+		veremfele = vecc2sint( to ) - 8;
+		ap.get_var( veremfele, 4, to, 1);
+		vec_cout( to, "[ebp - 8] lekerdezese:");
+	} catch(Allapot::Exceptions ex)
+	{
+		cout << "HIBA [esp + 4] lekerdezese sikertelen" << endl;
+	}
+	ap.verem_vector(to);
+	vec_cout(to, "verem vektor:");
+	
+	ap.vec_pointerek(verem_nevek);
+	for (int i = 0; i < verem_nevek.size(); ++i)
+	{
+		cout << verem_nevek[i] << "\t";
+	}
+	cout << endl;
 	
 	cout << endl;
 }
@@ -179,11 +237,6 @@ void regiszter_teszt()
 	ap.get_reg("dh", vec_x);
 	vec_cout(vec_x, "edx-be 2 3 1 1, dh:");
 	
-	vec_ex[2] = 4;
-	ap.set_reg("ebp", vec_ex);
-	ap.get_reg("bp", vec_x);
-	vec_cout(vec_x, "ebp-be 2 3 4 1, bp:");
-	
 	ap.get_reg("ebx", vec_x);
 	vec_cout(vec_x, "ekozben ebx nem valtozott, ugyanaz az 1 1 1 1, ebx:");
 	
@@ -202,7 +255,7 @@ void valtozo_teszt()
 	vector<AP_UC> init(10, 0);
 	ap.init(valtozo_kezdetek, init);
 	
-	cout << "elso byte:" << endl << "x:\t" << ap.elso_byte("x") << endl << "y:\t" << ap.elso_byte("y") << endl << "z:\t" << ap.elso_byte("z") << endl;
+	cout << "elso byte:" << endl << "x:\t" << (int)(~(ap.elso_byte("x"))) << endl << "y:\t" << (int)(~(ap.elso_byte("y"))) << endl << "z:\t" << (int)(~(ap.elso_byte("z"))) << endl;
 	
 	// [y] := 2 * 256 + 5
 	vector<AP_UC> vy(2);
@@ -309,5 +362,38 @@ void valtozo_teszt()
 		}
 	}
 	
+	cout << endl;
+}
+
+void verem_limit_teszt()
+{
+	cout << "Verem limit teszt:" << endl;
+	Allapot ap;
+	
+	vector<AP_UC> vec(4);
+	for (int i = 0; i < 4; ++i)
+	{
+		vec[i] = i + 1;
+	}
+	
+	AP_UI j = 0;
+	try
+	{
+		while (1)
+		{
+			ap.verem_push( vec );
+			++j;
+		}
+	} catch (Allapot::Exceptions ex)
+	{
+		if (ex == Allapot::TELE_VEREM)
+		{
+			cout << "A verem " << j << " db 4-byteos pusholas utan dobott TELE_VEREM hibat, osszesen " << (4 * j) << " byte kerult bele." << endl;
+			cout << "Ekkor a verem teteje:\t" << ap.verem_teteje() << endl;
+		} else
+		{
+			cout << "HIBA a verem tultoltes elott mas hibat dobott" << endl;
+		}
+	}
 	cout << endl;
 }

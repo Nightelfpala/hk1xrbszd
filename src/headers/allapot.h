@@ -29,41 +29,41 @@ public:
 	void set_sign( bool b);
 	
 	//valtozo muveletek
-	int elso_byte( const std::string &valt_azon ) const;
-	void get_var( const int &elso_byte, const int &hossz, std::vector<AP_UC> &to ) const;	// Exception: HATARON_KIVULI_VALTOZO ha az elmentett valtozo hatarokon kivulrol probal kivenni
-	void set_var( const int &elso_byte, const std::vector<AP_UC> &from );	// Exception: HATARON_KIVULI_VALTOZO ha az elmentett valtozo hatarokon kivulre probal tarolni
+	AP_UI elso_byte( const std::string &valt_azon ) const;
+	void get_var( const int &elso_byte, const AP_UI &hossz, std::vector<AP_UC> &to, bool verembol = 0 ) const;	// Exception: HATARON_KIVULI_VALTOZO vagy HATARON_KIVULI_VEREM ha az elmentett valtozo hatarokon kivulrol probal kivenni
+	void set_var( const int &elso_byte, const std::vector<AP_UC> &from, bool verembe = 0 );	// Exception: HATARON_KIVULI_VALTOZO vagy HATARON_KIVULI_VEREM ha az elmentett valtozo hatarokon kivulre probal tarolni
 	
 	//verem muveletek
-	void verem_push( const std::vector<AP_UC> &from );
-	void verem_pop ( const int &hossz, std::vector<AP_UC> &to );	// Exception: URES_VEREM ha nincs annyi byte, amennyit ki akarunk venni
-	AP_UI verem_teteje () const;	// nem a tenyleges veremteto, az esp pointer mutatasi helye
+	void verem_push( const std::vector<AP_UC> &from );		// Exception: TELE_VEREM ha a veremben 0x0FFFFFFF (~26mio) byte talalhato
+	void verem_pop ( const AP_UI &hossz, std::vector<AP_UC> &to );	// Exception: URES_VEREM ha nincs annyi byte, amennyit ki akarunk venni
+	int verem_teteje () const;	// nem a tenyleges veremteto, az esp pointer mutatasi helye
 	
 	//kovetkezo utasitas muveletek
-	int get_kovetkezo() const;
-	void set_kovetkezo( const int &kov );
+	AP_UI get_kovetkezo() const;
+	void set_kovetkezo( const AP_UI &kov );
 	
 	//lekerdezo muveletek -- kiirashoz hasznalhato interface
 	void valtozo_vector( std::vector<AP_UC> &to ) const;
 	void verem_vector( std::vector<AP_UC> &to ) const;	// az egesz vermet visszadja, nem csak az esp pointerig tarto reszet
+	void elso_valtozok( std::vector<std::string> &to ) const;	// ad egy vektort, amiben azokon az indexeken ahol valtozo kezdodik talalhato a valtozo neve, a tobbi ures string
+	void vec_pointerek( std::vector<std::string> &to ) const;	// ad egy vektort, amiben az esp illetve ebp mutatasi helye be van jelolve (a tobbi ures string)
+																	// ha ugyanoda mutatnak, akkor esp van kiirva
 	
 	//hibakezeles
 		// csak olyan hibak kerulnek lekezelesre, ami a szimulalt program futasabol szarmaznak - feltetelezzuk, hogy a szimulalo program kodja helyes
 	enum Exceptions
 	{
 		URES_VEREM,
+		TELE_VEREM,
 		HATARON_KIVULI_VALTOZO,
+		HATARON_KIVULI_VEREM,
 	};
 private:
 	//valtozok
 	std::map<std::string, int> valtozo_elso;
-	std::vector<AP_UC> valtozok_verem;	// a verem es a valtozok tarolasa
+	std::vector<AP_UC> valtozok;	// a verem es a valtozok tarolasa
 		// felepites:	eleje						verem alja
-				//		valt1	valt2		valt3	PUSH1	PUSH2
-	int max_valt;	// a valtozoknak hany byte van lefoglalva
-	int max_verem;	// a verem jelenlegi helyzeteben max hany byteot hasznalhat
-	int max_verem_elert;
-	
-	void veremNovel( int val );	// ha a verem teteje belelogna a valtozok koze, ezzel noveljuk a rendelkezesre allo helyet
+				//		valt1	valt2		valt3	PUSH1	PUSH2	PUSH3
 	
 	//regiszterek
 	std::vector<AP_UC> eax;
@@ -73,7 +73,7 @@ private:
 	
 		// a pointer regiszterek erteke nem egyeznek meg a szimulalt program futasanak kozbeni tenyleges ertekekkel
 		//	csak funkcionalisan felelnek meg neki
-			// azaz esp a verem tetejere mutat, ebp alprogram hivas eseten a visszateresi hely
+			// azaz esp a verem tetejere mutat, stack pointereket tarolhat
 	std::vector<AP_UC> ebp;
 	std::vector<AP_UC> esp;
 	
@@ -81,9 +81,9 @@ private:
 	bool signflag;
 	
 	//futasideju verem
-	//std::vector<AP_UC> verem;	// nem tenyleges veremkent tarolva, szukseg van a belsejeben talalhato ertekekre is a folyamatos kiirashoz
+	std::vector<AP_UC> verem;	// nem tenyleges veremkent tarolva, szukseg van a belsejeben talalhato ertekekre is a folyamatos kiirashoz
 	
-	int kovetkezo_utasitas;
+	AP_UI kovetkezo_utasitas;
 };
 
 #endif	// ALLAPOT_H_INCLUDED 
