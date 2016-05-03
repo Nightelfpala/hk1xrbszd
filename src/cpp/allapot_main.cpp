@@ -10,6 +10,7 @@ void flag_teszt();
 void regiszter_teszt();
 void verem_teszt();
 void valtozo_teszt();
+void verem_limit_teszt();
 
 int main()
 {
@@ -20,6 +21,8 @@ int main()
 	verem_teszt();
 	
 	valtozo_teszt();
+	
+	verem_limit_teszt();
 	
 	return 0;
 }
@@ -359,5 +362,38 @@ void valtozo_teszt()
 		}
 	}
 	
+	cout << endl;
+}
+
+void verem_limit_teszt()
+{
+	cout << "Verem limit teszt:" << endl;
+	Allapot ap;
+	
+	vector<AP_UC> vec(4);
+	for (int i = 0; i < 4; ++i)
+	{
+		vec[i] = i + 1;
+	}
+	
+	AP_UI j = 0;
+	try
+	{
+		while (1)
+		{
+			ap.verem_push( vec );
+			++j;
+		}
+	} catch (Allapot::Exceptions ex)
+	{
+		if (ex == Allapot::TELE_VEREM)
+		{
+			cout << "A verem " << j << " db 4-byteos pusholas utan dobott TELE_VEREM hibat, osszesen " << (4 * j) << " byte kerult bele." << endl;
+			cout << "Ekkor a verem teteje:\t" << ap.verem_teteje() << endl;
+		} else
+		{
+			cout << "HIBA a verem tultoltes elott mas hibat dobott" << endl;
+		}
+	}
 	cout << endl;
 }

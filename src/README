@@ -2,7 +2,10 @@
 A projekt futtatasa
 	a "cpp" mappaban a "make" paranccsal lefordithato az egesz program
 		alapertelmezetten az egesz projektet leforditja	-> szimulacio
-		a "make allapot" parancs csak az allapot modult es a tesztelokornyezetet forditja le	-> teszt_allapot
+		a "make utils" parancs a utils kisegitoallomanyt fordítja le							-> teszt_utils
+		a "make allapot" parancs az allapot modult es a tesztelokornyezetet forditja le			-> teszt_allapot
+		a "make elsoparse" parancs az elsoparse modult forditja le								-> teszt_elsoparse
+		a "make ui_vec" parancs a megjelenito modult forditja le								-> teszt_ui_vec
 	a futtathato allomanyok a "bin" mappabol indithatoak
 		Windows kornyezetben .exe kiterjesztessel rendelkeznek
 
@@ -15,3 +18,7 @@ A projekt futtatasa
 	"cpp" mappaban "make clean" paranccsal torolhetok
 "bin" mappa:
 	futtathato allomanyok
+"elsoparse" mappa:
+	az elsoparse modulhoz tartozo flex, bisonc++ kodok, illetve a beloluk generalt allomanyok
+"interpret" mappa:
+	az interpretalo modulhoz tartozo flex, bisonc++ kodok, illetve a beloluk generalt allomanyok
