@@ -11,7 +11,6 @@ OBJECTS = ../objects
 BIN = ../bin
 
 CC = x86_64-w64-mingw32-g++
-#CC = g++
 FLAGS = -I$(INCLUDE) -I$(INCLUDE_ELSOPARSE)
 
 DEFINES		= -DUNICODE -DQT_DLL -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -DQT_NEEDS_QMAIN -DQT_SHARED
@@ -22,13 +21,13 @@ QT_LIBS	= -L'/usr/x86_64-w64-mingw32/sys-root/mingw/lib' -lmingw32 -lqtmain -lQt
 
 #	---------------------------------------
 #	kiegeszitendo a tovabbi objectfajlokkal
-_OBJ = allapot.o utils.o ui.o elsoparseFlexer.o elsoparseParser.o interpretFlexer.o interpretParser.o
+_OBJ = allapot.o utils.o ui_parts.o elsoparseFlexer.o elsoparseParser.o interpretFlexer.o interpretParser.o szimulacio.o
 OBJ = $(patsubst %,$(OBJECTS)/%,$(_OBJ))
 #	teszteleshez hasznalt mainekbol keletkezo object fajlok
 _MAINS_OBJ = allapot_main.o ui_vec_main.o elsoparse.o utils_main.o
 MAINS_OBJ = $(patsubst %,$(OBJECTS)/%,$(_MAINS_OBJ))
 
-_DEPS = allapot.h utils.h typedefs.h ui.h semantics.h FlexLexer.h
+_DEPS = allapot.h utils.h typedefs.h ui_parts.h semantics.h FlexLexer.h
 _DEPS_ELSOPARSE = elsoparseParser.h elsoparseParserbase.h
 _DEPS_INTERPRET = interpretParser.h interpretParserbase.h
 DEPS = $(patsubst %,$(INCLUDE)/%,$(_DEPS)) $(patsubst %,$(INCLUDE_ELSOPARSE)/%,$(_DEPS_ELSOPARSE)) $(patsubst %,$(INCLUDE_INTERPRET)/%,$(_DEPS_INTERPRET))
@@ -54,9 +53,9 @@ _OUT_ALLAPOT = teszt_allapot
 OUT_ALLAPOT = $(patsubst %,$(BIN)/%,$(_OUT_ALLAPOT))
 
 #	teszt_ui_vec:
-_OBJ_UI_VEC = ui.o ui_vec_main.o
+_OBJ_UI_VEC = ui_parts.o ui_vec_main.o
 OBJ_UI_VEC = $(patsubst %,$(OBJECTS)/%,$(_OBJ_UI_VEC))
-_DEPS_UI_VEC = ui.h typedefs.h
+_DEPS_UI_VEC = ui_parts.h typedefs.h
 DEPS_UI_VEC = $(patsubst %,$(INCLUDE)/%,$(_DEPS_UI_VEC))
 _OUT_UI_VEC = teszt_ui_vec
 OUT_UI_VEC = $(patsubst %,$(BIN)/%,$(_OUT_UI_VEC))
@@ -69,6 +68,9 @@ DEPS_ELSOP = $(patsubst %,$(INCLUDE)/%,$(_DEPS_ELSOP))
 _OUT_ELSOP = teszt_elsoparse
 OUT_ELSOP = $(patsubst %,$(BIN)/%,$(_OUT_ELSOP))
 
+
+all: $(OBJ)
+	$(CC) -o $(OUT) $^ $(QT_INCPATH) $(QT_LIBS) $(MINGWSTATIC)
 
 $(OBJECTS)/interpretFlexer.o: ../interpret/interpret.yy.cc
 	$(CC) -c -o $@ $< $(FLAGS)
@@ -84,9 +86,6 @@ $(OBJECTS)/elsoparseParser.o: ../elsoparse/elsoparse.cc
 
 $(OBJECTS)/%.o: %.cpp $(DEPS)
 	$(CC) -c -o $@ $< $(FLAGS) $(CXXFLAGS) $(QT_INCPATH)
-
-all: $(OBJ)
-	$(CC) -o $(OUT) $^ $(QT_INCPATH) $(QT_LIBS) $(MINGWSTATIC)
 	
 utils: $(OBJ_UTILS)
 	$(CC) -o $(OUT_UTILS) $^ $(MINGWSTATIC)

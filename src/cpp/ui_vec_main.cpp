@@ -2,7 +2,9 @@
 #include <QApplication>
 #include <QVBoxLayout>
 
-#include "ui.h"
+#include <iostream>
+
+#include "ui_parts.h"
 
 using namespace std;
 
@@ -16,10 +18,12 @@ int main( int argc, char *argv[])
 	QVBoxLayout *_layout = new QVBoxLayout;
 	
 	vectorDisplay v1(4, &display);
-	vectorDisplay v2(12, &display, true);
+	vectorDisplay v2(4, &display);
+	veremDisplay v3("verem", &display);
 	
 	_layout -> addWidget(&v1);
 	_layout -> addWidget(&v2);
+	_layout -> addWidget(&v3);
 	
 	v1.setName("v1 neve");
 	v2.setName("v2 neve");
@@ -30,11 +34,13 @@ int main( int argc, char *argv[])
 		fill1[i] = 1 + i + i * i;
 	}
 	
-	vector<AP_UC> fill2(v2.size());
-	vector<string> strv(v2.size());
-	for (unsigned int i = 0; i < v2.size(); ++i)
+	const int v3size = 46;
+	
+	vector<AP_UC> fill2(v3size);
+	vector<string> strv(v3size);
+	for (unsigned int i = 0; i < v3size; ++i)
 	{
-		fill2[i] = 1 + 3 * i ;
+		fill2[i] = 1 + 3 * i * i ;
 		if (i % 4 == 0)
 		{
 			strv[i] = "a";
@@ -47,8 +53,9 @@ int main( int argc, char *argv[])
 	display.setLayout(_layout);
 	
 	v1.setValues(fill1);
-	v2.setValues(fill2);
-	v2.setKieg(strv);
+	v2.setValues(fill1);
+	v3.updateValues(fill2);
+	v3.updateKieg(strv);
 	
 	display.show();
 	
