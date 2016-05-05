@@ -5,21 +5,15 @@
 
 #include "ui_parts.h"
 
+#define UI_REG_HEIGHT 60
+
 using namespace std;
 
-vectorDisplay::vectorDisplay(int _meret, QWidget *parent, bool kiegSzoveg) : QWidget(parent), meret(_meret), kiegeszitoSzoveg(kiegSzoveg)
+regDisplay::regDisplay(int _meret, QWidget *parent) : QFrame(parent), meret(_meret)
 {
-	int disRow = 2;
-	if (kiegeszitoSzoveg) ++disRow;
-	
-	setFixedSize(  200, 80 );
+	setFixedSize(  200, UI_REG_HEIGHT );
 	valueVec.resize(meret);
 	valueLabel.resize(meret);
-	if (kiegeszitoSzoveg)
-	{
-		kiegVec.resize(meret);
-		kiegLabel.resize(meret);
-	}
 	
 	QFont nameFont( "Arial", 16);
 	QFont displayFont( "Arial", 12);
@@ -29,28 +23,14 @@ vectorDisplay::vectorDisplay(int _meret, QWidget *parent, bool kiegSzoveg) : QWi
 	
 	nameLabel -> setFont(nameFont);
 	//nameLabel -> setGeometry(20, 20, 400, 200);
-	nameLabel -> setFixedSize( 80, 30 );
+	nameLabel -> setFixedSize( 80, 20 );
 	nameLabel -> setAlignment(Qt::AlignCenter);
 	
-	gridLayout -> addWidget(nameLabel, 0, 0, 0, meret);
+	gridLayout -> addWidget(nameLabel, 0, 0, 0, -1, Qt::AlignTop);
 	//gridLayout -> addWidget(nameLabel, 0, 0, meret, 0);
 	
 	for (int i = 0; i < meret; ++i)
 	{
-		if (kiegeszitoSzoveg)
-		{
-			kiegLabel[i] = new QLabel(this);
-			kiegLabel[i] -> setStyleSheet("QLabel { color : black; }");
-			kiegLabel[i] -> setFont(displayFont);
-			
-			//kiegLabel[i] -> setGeometry(20, 20, 360, 120);
-			kiegLabel[i] -> setFixedSize( 40, 20 );
-			kiegLabel[i] -> setAlignment(Qt::AlignCenter);
-			
-			gridLayout -> addWidget( kiegLabel[i], disRow - 1, i);
-		}
-		
-		
 		valueLabel[i] = new QLabel(this);
 		
 		valueLabel[i] -> setStyleSheet("QLabel { background-color : white; color : black; }");
@@ -66,25 +46,26 @@ vectorDisplay::vectorDisplay(int _meret, QWidget *parent, bool kiegSzoveg) : QWi
 	}
 	
 	setLayout(gridLayout);
+	setFrameShape( QFrame::Box );	// fekete keret
 }
 
-vectorDisplay::~vectorDisplay()
+regDisplay::~regDisplay()
 {
 	// null
 }
 
-int vectorDisplay::size() const
+int regDisplay::size() const
 {
 	return meret;
 }
 
-void vectorDisplay::setName(std::string _name)
+void regDisplay::setName(std::string _name)
 {
 	name = _name;
 	nameLabel -> setText( QString::fromStdString( name ));
 }
 
-void vectorDisplay::setValues(const std::vector<AP_UC> &val)
+void regDisplay::setValues(const std::vector<AP_UC> &val)
 {
 	for (int i = 0; i < meret; ++i)
 	{
@@ -94,19 +75,9 @@ void vectorDisplay::setValues(const std::vector<AP_UC> &val)
 	}
 }
 
-void vectorDisplay::setKieg(const std::vector<std::string> &kieg)
-{
-	for (int i = 0; i < meret; ++i)
-	{
-		kiegVec[i] = kieg[i];
-		
-		kiegLabel[i] -> setText( QString::fromStdString( kiegVec[i] ) );
-	}
-}
-
 // -----------------------------------------------
 
-veremDisplay::veremDisplay( std::string nev, QWidget *parent = 0 ) : QWidget(parent), name(nev)
+veremDisplay::veremDisplay( const std::string &nev, QWidget *parent = 0 ) : QFrame(parent), name(nev)
 {
 	setFixedSize( 800, 110 );
 	
@@ -124,7 +95,7 @@ veremDisplay::veremDisplay( std::string nev, QWidget *parent = 0 ) : QWidget(par
 	nameLabel -> setAlignment(Qt::AlignCenter);
 	nameLabel -> setText( QString::fromStdString( name ));
 	
-	mainLayout -> addWidget( nameLabel );
+	mainLayout -> addWidget( nameLabel, Qt::AlignTop );
 	
 	mainLayout -> addWidget( scrollArea );
 	scrollArea -> setWidget( scrollWidget );
@@ -134,6 +105,7 @@ veremDisplay::veremDisplay( std::string nev, QWidget *parent = 0 ) : QWidget(par
 //	scrollWidget -> setFixedSize( 780, 50 );
 	
 	setLayout( mainLayout );
+	setFrameShape( QFrame::Box );	// fekete keret
 	
 	valueVec.resize(0);
 	valueLabel.resize(0);
@@ -178,7 +150,7 @@ void veremDisplay::updateValues(const std::vector<AP_UC> &vals)
 			valueLabel[i] -> setFixedSize( 40, 20 );
 			valueLabel[i] -> setAlignment(Qt::AlignCenter);
 			
-			gridLayout -> addWidget( valueLabel[i], 1, i);
+			gridLayout -> addWidget( valueLabel[i], 1, i, Qt::AlignBottom);
 		}
 	}
 	for (int i = 0; i < valueLabel.size(); ++i)
@@ -209,12 +181,11 @@ void veremDisplay::updateKieg(const std::vector<std::string> &kiegs)
 		{
 			kiegLabel[i] = new QLabel( this );
 			kiegLabel[i] -> setStyleSheet( "QLabel { color : black; }" );
-			kiegLabel[i] -> setTextInteractionFlags( Qt::TextSelectableByMouse );	// kijelolhetove (masolhatova) teszi a szoveget
 			kiegLabel[i] -> setFont( displayFont );
 			kiegLabel[i] -> setFixedSize( 40, 20 );
 			kiegLabel[i] -> setAlignment(Qt::AlignCenter);
 			
-			gridLayout -> addWidget( kiegLabel[i], 0, i);
+			gridLayout -> addWidget( kiegLabel[i], 0, i, Qt::AlignTop);
 		}
 	}
 	for (int i = 0; i < kiegLabel.size(); ++i)
@@ -222,4 +193,45 @@ void veremDisplay::updateKieg(const std::vector<std::string> &kiegs)
 		kiegLabel[i] -> setText( QString::fromStdString( kiegVec[i] ));
 	}
 	scrollWidget -> setFixedSize( 45 * kiegLabel.size(), 45 );
+}
+
+// ------------------------
+
+flagDisplay::flagDisplay( const std::string &nev, QWidget *parent = 0) : QFrame(parent), name(nev), flag(0)
+{
+	setFixedSize(UI_REG_HEIGHT, UI_REG_HEIGHT);
+	setFrameShape( QFrame::Box );
+	
+	QFont nameFont( "Arial", 16);
+	QVBoxLayout *mainLayout = new QVBoxLayout( this );
+	nameLabel = new QLabel( this );
+	checkBox = new QCheckBox( this );
+	
+	nameLabel -> setFont( nameFont );
+	nameLabel -> setFixedSize( 40, 20 );
+	nameLabel -> setAlignment(Qt::AlignCenter);
+	nameLabel -> setText( QString::fromStdString( name ));
+	
+	checkBox -> setDisabled( true );
+	checkBox -> setChecked( flag );
+	//checkBox -> setStyleSheet( "QCheckBox:unchecked{ color: red; }QCheckBox:checked{ color: red; }" );
+	
+	mainLayout -> addWidget( nameLabel, Qt::AlignTop );
+	mainLayout -> addWidget( checkBox, Qt::AlignCenter );
+}
+
+flagDisplay::~flagDisplay()
+{
+	// null
+}
+
+bool flagDisplay::getFlag() const
+{
+	return flag;
+}
+
+void flagDisplay::setFlag(bool b)
+{
+	flag = b;
+	checkBox -> setChecked( flag );
 }

@@ -8,21 +8,22 @@
 #include <QLabel>
 #include <QGridLayout>
 #include <QScrollArea>
+#include <QFrame>
+#include <QCheckBox>
 
 #include <vector>
 #include <string>
 
-class vectorDisplay : public QWidget
+class regDisplay : public QFrame
 {	// a regiszterek kijelzeseert felelos, fix meretu
 public:
-	vectorDisplay(int _meret, QWidget *parent = 0, bool kiegSzoveg = false );
-	~vectorDisplay();
+	regDisplay(int _meret, QWidget *parent = 0);
+	~regDisplay();
 	
 	int size() const;
 	
 	void setName(std::string _name);
 	void setValues(const std::vector<AP_UC> &val);
-	void setKieg(const std::vector<std::string> &kieg);
 	
 private:
 	QLabel* nameLabel;
@@ -33,17 +34,13 @@ private:
 	
 	std::vector<AP_UC> valueVec;
 	std::vector<QLabel*> valueLabel;
-	
-	bool kiegeszitoSzoveg;
-	std::vector<QLabel*> kiegLabel;
-	std::vector<std::string> kiegVec;
 };
 
 
-class veremDisplay : public QWidget
+class veremDisplay : public QFrame
 {	// a verem illetve a valtozok kijelzeseert felelos, valtoztathato meretu, gorditosavval ellatott
 public:
-	veremDisplay( std::string nev, QWidget *parent );
+	veremDisplay( const std::string &nev, QWidget *parent );
 	~veremDisplay();
 	
 	
@@ -69,6 +66,22 @@ private:
 	// kiegeszito szovegek: valtozo nevek, verem pointer cimkek
 	std::vector<std::string> kiegVec;
 	std::vector<QLabel*> kiegLabel;
+};
+
+class flagDisplay : public QFrame
+{
+public:
+	flagDisplay( const std::string &nev, QWidget* parent );
+	~flagDisplay();
+	
+	bool getFlag() const;
+	void setFlag( bool b );
+private:
+	const std::string name;
+	QLabel* nameLabel;
+	QCheckBox* checkBox;
+	
+	bool flag;
 };
 
 #endif	// UI_H_INCLUDED

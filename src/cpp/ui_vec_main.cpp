@@ -17,13 +17,18 @@ int main( int argc, char *argv[])
 	
 	QVBoxLayout *_layout = new QVBoxLayout;
 	
-	vectorDisplay v1(4, &display);
-	vectorDisplay v2(4, &display);
+	regDisplay v1(4, &display);
+	regDisplay v2(4, &display);
 	veremDisplay v3("verem", &display);
+	
+	flagDisplay sf("sf", &display);
+	flagDisplay zf("zf", &display);
 	
 	_layout -> addWidget(&v1);
 	_layout -> addWidget(&v2);
 	_layout -> addWidget(&v3);
+	_layout -> addWidget(&sf);
+	_layout -> addWidget(&zf);
 	
 	v1.setName("v1 neve");
 	v2.setName("v2 neve");
@@ -56,6 +61,41 @@ int main( int argc, char *argv[])
 	v2.setValues(fill1);
 	v3.updateValues(fill2);
 	v3.updateKieg(strv);
+	
+	for (int i = 0; i < 10; ++i)
+	{
+		fill2.push_back( i );
+		strv.push_back( "jozsi" );
+	}
+	v3.updateValues(fill2);
+	v3.updateKieg(strv);
+	
+	/*
+	// ez a teszt a memoria-szivargas ellenorzeset szolgalja
+	for (int j = 0; j < 1e4; ++j)
+	{
+		for (int i = 0; i < 10; ++i)
+		{
+			fill2.push_back( i );
+			strv.push_back( "b" );
+		}
+		v3.updateValues(fill2);
+		v3.updateKieg(strv);
+		
+		fill2.resize(20);
+		strv.resize(20);
+		
+		v3.updateValues(fill2);
+		v3.updateKieg(strv);
+		if (j % 100 == 0)
+		{
+			cout << j << endl;
+		}
+	}
+	*/
+	
+	sf.setFlag( 0 );
+	zf.setFlag( 1 );
 	
 	display.show();
 	
