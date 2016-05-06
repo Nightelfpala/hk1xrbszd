@@ -21,13 +21,13 @@ QT_LIBS	= -L'/usr/x86_64-w64-mingw32/sys-root/mingw/lib' -lmingw32 -lqtmain -lQt
 
 #	---------------------------------------
 #	kiegeszitendo a tovabbi objectfajlokkal
-_OBJ = allapot.o utils.o ui_parts.o elsoparseFlexer.o elsoparseParser.o interpretFlexer.o interpretParser.o szimulacio.o
+_OBJ = allapot.o utils.o ui_parts.o elsoparseFlexer.o elsoparseParser.o interpretFlexer.o interpretParser.o szimulacio.o ui_main.o
 OBJ = $(patsubst %,$(OBJECTS)/%,$(_OBJ))
 #	teszteleshez hasznalt mainekbol keletkezo object fajlok
-_MAINS_OBJ = allapot_main.o ui_vec_main.o elsoparse.o utils_main.o
+_MAINS_OBJ = allapot_main.o ui_vec_main.o elsoparse.o utils_main.o ui_main_main.o
 MAINS_OBJ = $(patsubst %,$(OBJECTS)/%,$(_MAINS_OBJ))
 
-_DEPS = allapot.h utils.h typedefs.h ui_parts.h semantics.h FlexLexer.h
+_DEPS = allapot.h utils.h typedefs.h ui_parts.h semantics.h FlexLexer.h ui_main.h
 _DEPS_ELSOPARSE = elsoparseParser.h elsoparseParserbase.h
 _DEPS_INTERPRET = interpretParser.h interpretParserbase.h
 DEPS = $(patsubst %,$(INCLUDE)/%,$(_DEPS)) $(patsubst %,$(INCLUDE_ELSOPARSE)/%,$(_DEPS_ELSOPARSE)) $(patsubst %,$(INCLUDE_INTERPRET)/%,$(_DEPS_INTERPRET))
@@ -68,6 +68,14 @@ DEPS_ELSOP = $(patsubst %,$(INCLUDE)/%,$(_DEPS_ELSOP))
 _OUT_ELSOP = teszt_elsoparse
 OUT_ELSOP = $(patsubst %,$(BIN)/%,$(_OUT_ELSOP))
 
+#	teszt_ui_main:
+_OBJ_UI_MAIN = ui_parts.o ui_main.o allapot.o utils.o ui_main_main.o 
+OBJ_UI_MAIN = $(patsubst %,$(OBJECTS)/%,$(_OBJ_UI_MAIN))
+_DEPS_UI_MAIN = ui_parts.h ui_main.h typedefs.h utils.h allapot.h
+DEPS_UI_MAIN = $(patsubst %,$(INCLUDE)/%,$(_DEPS_UI_MAIN))
+_OUT_UI_MAIN = teszt_ui_main
+OUT_UI_MAIN = $(patsubst %,$(BIN)/%,$(_OUT_UI_MAIN))
+
 
 all: $(OBJ)
 	$(CC) -o $(OUT) $^ $(QT_INCPATH) $(QT_LIBS) $(MINGWSTATIC)
@@ -95,6 +103,9 @@ allapot: $(OBJ_ALLAPOT)
 	
 ui_vec: $(OBJ_UI_VEC)
 	$(CC) -o $(OUT_UI_VEC) $^ $(QT_INCPATH) $(QT_LIBS)
+
+ui_main: $(OBJ_UI_MAIN)
+	$(CC) -o $(OUT_UI_MAIN) $^ $(QT_INCPATH) $(QT_LIBS)
 
 elsoparse: $(OBJ_ELSOP)
 	$(CC) -o $(OUT_ELSOP) $^

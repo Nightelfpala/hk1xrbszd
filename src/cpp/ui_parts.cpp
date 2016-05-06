@@ -9,7 +9,7 @@
 
 using namespace std;
 
-regDisplay::regDisplay(int _meret, QWidget *parent) : QFrame(parent), meret(_meret)
+regDisplay::regDisplay(int _meret, const std::string &nev, QWidget *parent) : QFrame(parent), meret(_meret), name(nev)
 {
 	setFixedSize(  200, UI_REG_HEIGHT );
 	valueVec.resize(meret);
@@ -25,6 +25,7 @@ regDisplay::regDisplay(int _meret, QWidget *parent) : QFrame(parent), meret(_mer
 	//nameLabel -> setGeometry(20, 20, 400, 200);
 	nameLabel -> setFixedSize( 80, 20 );
 	nameLabel -> setAlignment(Qt::AlignCenter);
+	nameLabel -> setText( QString::fromStdString( name ));
 	
 	gridLayout -> addWidget(nameLabel, 0, 0, 0, -1, Qt::AlignTop);
 	//gridLayout -> addWidget(nameLabel, 0, 0, meret, 0);
@@ -57,12 +58,6 @@ regDisplay::~regDisplay()
 int regDisplay::size() const
 {
 	return meret;
-}
-
-void regDisplay::setName(std::string _name)
-{
-	name = _name;
-	nameLabel -> setText( QString::fromStdString( name ));
 }
 
 void regDisplay::setValues(const std::vector<AP_UC> &val)

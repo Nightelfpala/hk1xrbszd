@@ -1,6 +1,6 @@
 
-#ifndef UI_H_INCLUDED
-#define UI_H_INCLUDED
+#ifndef UI_PARTS_H_INCLUDED
+#define UI_PARTS_H_INCLUDED
 
 #include "typedefs.h"
 
@@ -17,19 +17,18 @@
 class regDisplay : public QFrame
 {	// a regiszterek kijelzeseert felelos, fix meretu
 public:
-	regDisplay(int _meret, QWidget *parent = 0);
+	regDisplay(int _meret, const std::string &nev, QWidget *parent = 0);
 	~regDisplay();
 	
 	int size() const;
 	
-	void setName(std::string _name);
 	void setValues(const std::vector<AP_UC> &val);
 	
 private:
 	QLabel* nameLabel;
 	QGridLayout* gridLayout;
 	
-	std::string name;
+	const std::string name;
 	int meret;
 	
 	std::vector<AP_UC> valueVec;
@@ -84,4 +83,4 @@ private:
 	bool flag;
 };
 
-#endif	// UI_H_INCLUDED
+#endif	// UI_PARTS_H_INCLUDED
