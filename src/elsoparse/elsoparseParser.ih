@@ -62,6 +62,11 @@ std::vector<AP_UC> elsoparseParser::get_valtozok() const
 {
 	return valtozok;
 }
+
+int elsoparseParser::get_elsoutasitas() const
+{
+	return ugrocimke_kovutasitas.at(elsoutasitas_cimke);
+}
 	
 std::string elsoparseParser::get_error() const
 {

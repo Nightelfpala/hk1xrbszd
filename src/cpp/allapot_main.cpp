@@ -179,6 +179,8 @@ void verem_teszt()
 	}
 	cout << endl;
 	
+	ap.print_allapot();
+	
 	cout << endl;
 }
 
@@ -239,6 +241,8 @@ void regiszter_teszt()
 	
 	ap.get_reg("ebx", vec_x);
 	vec_cout(vec_x, "ekozben ebx nem valtozott, ugyanaz az 1 1 1 1, ebx:");
+	
+	ap.print_allapot();
 	
 	cout << endl;
 }
@@ -362,6 +366,8 @@ void valtozo_teszt()
 		}
 	}
 	
+	ap.print_allapot();
+	
 	cout << endl;
 }
 
@@ -395,5 +401,6 @@ void verem_limit_teszt()
 			cout << "HIBA a verem tultoltes elott mas hibat dobott" << endl;
 		}
 	}
+	
 	cout << endl;
 }

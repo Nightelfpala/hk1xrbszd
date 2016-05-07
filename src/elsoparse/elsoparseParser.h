@@ -29,6 +29,7 @@ public:
 	std::map<std::string, int> get_valtozokezdet() const;
 	std::map<std::string, int> get_ugrocimke() const;
 	std::vector<AP_UC> get_valtozok() const;
+	int get_elsoutasitas() const;
 	
 	std::string get_error() const;
 		// szintaktikus / szemantikus hiba eseten hibat dobunk, ez a fv megadja hogy milyen hiba tortent

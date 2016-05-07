@@ -49,6 +49,8 @@ public:
 	void vec_pointerek( std::vector<std::string> &to ) const;	// ad egy vektort, amiben az esp illetve ebp mutatasi helye be van jelolve (a tobbi ures string)
 																	// ha ugyanoda mutatnak, akkor esp van kiirva
 	
+	void print_allapot() const;
+	
 	//hibakezeles
 		// csak olyan hibak kerulnek lekezelesre, ami a szimulalt program futasabol szarmaznak - feltetelezzuk, hogy a szimulalo program kodja helyes
 	enum Exceptions

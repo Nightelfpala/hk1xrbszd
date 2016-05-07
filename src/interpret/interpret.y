@@ -114,14 +114,14 @@ utasitas:
 |
 	SUB elsoarg VESSZO masodarg
 	{
-		AP_UI val = (*$4);
+		AP_UI minusz = (*$4);
 		std::vector<AP_UC> vec(argmeret);
 		bool b = $2->isverem;
-		AP_UI minusz;
+		AP_UI val;
 		if ( $2->isvalt )
 		{
 			allapot->get_var( ($2->elsobyte), argmeret, vec, b );
-			minusz = Utils::vecc2uint( vec );
+			val = Utils::vecc2uint( vec );
 			allapot->set_sign( val < minusz );
 			val -= minusz;
 			Utils::uint2vecc( val, vec );

@@ -1,5 +1,6 @@
 
 #include <algorithm>
+#include <iostream>
 
 #include "allapot.h"
 #include "utils.h"
@@ -553,4 +554,37 @@ void Allapot::vec_pointerek( std::vector<std::string> &to ) const
 int Allapot::verem_teteje() const
 {
 	return -vecc2sint(esp);
+}
+
+void Allapot::print_allapot() const
+{
+	cout << endl << "Allapot:" << endl;
+	cout << "kovetkezo utasitas szama: " << kovetkezo_utasitas << endl;
+	
+	cout << "Zero flag:\t" << zeroflag << endl;
+	cout << "Sign flag:\t" << signflag << endl;
+	
+	vec_cout(eax, "eax");
+	vec_cout(ebx, "ebx");
+	vec_cout(ecx, "ecx");
+	vec_cout(edx, "edx");
+	
+	vector<string> vecStr;
+	elso_valtozok( vecStr );
+	cout << "valtozok, hossza: " << valtozok.size() << endl;
+	for (int i = 0; i < vecStr.size(); ++i )
+	{
+		cout << vecStr[i] << "\t";
+	}
+	cout << endl;
+	vec_cout( valtozok );
+	
+	vec_pointerek( vecStr );
+	cout << "verem, hossza: " << verem.size() << endl;
+	for (int i = 0; i < vecStr.size(); ++i )
+	{
+		cout << vecStr[i] << "\t";
+	}
+	cout << endl;
+	vec_cout( verem );
 }
