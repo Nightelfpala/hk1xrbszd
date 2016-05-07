@@ -52,13 +52,11 @@
 	std::string* szoveg;
 	kifejezes_ertek* kif;
 	elso_argumentum* earg;
-	AP_UI* szam;
 	masodik_argumentum* marg;
 }
 
 %type <kif> ertek
 %type <earg> elsoarg
-//%type <szam> masodarg
 %type <marg> masodarg
 
 %%
@@ -70,7 +68,7 @@ start:
 utasitas:
 	MOV elsoarg VESSZO masodarg
 	{
-		AP_UI val = (*$4);
+		AP_UI val = ( $4 -> value );
 		std::vector<AP_UC> vec(argmeret);
 		bool b = $2->isverem;
 		if ( $2->isvalt )
@@ -97,7 +95,7 @@ utasitas:
 |
 	ADD elsoarg VESSZO masodarg
 	{
-		AP_UI val = (*$4);
+		AP_UI val = ( $4 -> value );
 		std::vector<AP_UC> vec(argmeret);
 		bool b = $2->isverem;
 		AP_UI plusz;
@@ -138,7 +136,7 @@ utasitas:
 |
 	SUB elsoarg VESSZO masodarg
 	{
-		AP_UI minusz = (*$4);
+		AP_UI minusz = ( $4 -> value);
 		std::vector<AP_UC> vec(argmeret);
 		bool b = $2->isverem;
 		AP_UI val;
@@ -181,8 +179,8 @@ utasitas:
 	CMP masodarg VESSZO masodarg
 	{
 		std::vector<AP_UC> vec;
-		AP_UI val1 = (*$2);
-		AP_UI val2 = (*$4);
+		AP_UI val1 = ( $2 -> value);
+		AP_UI val2 = ( $4 -> value);
 		
 		allapot->set_sign( val1 < val2 );
 		allapot->set_zero( (val1 - val2) == 0 );
@@ -194,7 +192,7 @@ utasitas:
 |
 	AND elsoarg VESSZO masodarg
 	{
-		AP_UI val = (*$4);
+		AP_UI val = ( $4 -> value);
 		std::vector<AP_UC> vec(argmeret);
 		bool b = $2->isverem;
 		if ( $2->isvalt )
@@ -218,7 +216,7 @@ utasitas:
 |
 	OR elsoarg VESSZO masodarg
 	{
-		AP_UI val = (*$4);
+		AP_UI val = ( $4 -> value);
 		std::vector<AP_UC> vec(argmeret);
 		bool b = $2->isverem;
 		if ( $2->isvalt )
@@ -242,7 +240,7 @@ utasitas:
 |
 	XOR elsoarg VESSZO masodarg
 	{
-		AP_UI val = (*$4);
+		AP_UI val = ( $4 -> value);
 		std::vector<AP_UC> vec(argmeret);
 		bool b = $2->isverem;
 		if ( $2->isvalt )
@@ -448,7 +446,13 @@ utasitas:
 	PUSH masodarg
 	{
 		std::vector<AP_UC> vec(argmeret);
-		Utils::uint2vecc( *$2, vec );
+		if ( $2 -> issigned )
+		{
+			Utils::sint2vecc( $2 -> value, vec );
+		} else
+		{
+			Utils::uint2vecc( $2 -> value, vec );
+		}
 		allapot->verem_push( vec );
 		delete $2;
 	}
@@ -606,7 +610,7 @@ elsoarg:
 masodarg:
 	ertek
 	{
-		$$ = new AP_UI( $1->value );
+		$$ = new masodik_argumentum( $1->value, $1->isverem );
 		
 		delete $1;
 	}
@@ -618,7 +622,7 @@ masodarg:
 		
 		allapot->get_var( $2->value, argmeret, vec, b );
 		
-		$$ = new AP_UI( Utils::vecc2uint(vec) );
+		$$ = new masodik_argumentum( Utils::vecc2uint(vec) );
 		
 		delete $2;
 	}

@@ -292,7 +292,7 @@ void Allapot::set_reg( const std::string &reg_azon, const std::vector<AP_UC> &fr
 					}
 				case 'b':
 					{
-						if ( reg_azon == "eb" )
+						if ( reg_azon == "bx" )
 						{
 							for (int i = 0; i < 2; ++i)
 							{
@@ -536,7 +536,8 @@ void Allapot::valtozo_vector( std::vector<AP_UC> &to ) const
 
 void Allapot::verem_vector( std::vector<AP_UC> &to ) const
 {
-	to.resize( verem.size() );
+	int meret = verem_teteje();
+	to.resize( meret );
 	for (int i = 0; i < to.size(); ++i)
 	{
 		to[i] = verem[i];
@@ -601,5 +602,7 @@ void Allapot::print_allapot() const
 		cout << vecStr[i] << "\t";
 	}
 	cout << endl;
-	vec_cout( verem );
+	vector<AP_UC> veremp;
+	verem_vector( veremp );
+	vec_cout( veremp );
 }

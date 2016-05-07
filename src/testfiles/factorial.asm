@@ -10,8 +10,9 @@ main:
 	
 factorial:
 	push ebp
+	push ebx
 	mov ebp, esp
-	add ebp, 8
+	add ebp, 12
 	mov ebx, [ebp]
 	
 	cmp ebx, 0
@@ -28,8 +29,9 @@ factorial:
 fact0:
 	mov eax, 1
 end:
+	pop ebx
 	pop ebp
 	ret
 	
 kilep:
-	mov dl, 1
+	pop ecx

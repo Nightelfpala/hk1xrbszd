@@ -38,4 +38,13 @@ struct kifejezes_ertek
 	kifejezes_ertek( int v, bool b ) : value(v), isverem(b) {}
 };
 
+struct masodik_argumentum
+{
+	int value;
+	bool issigned;
+	masodik_argumentum(){}
+	masodik_argumentum(int ert) : value(ert), issigned(ert < 0) {}
+	masodik_argumentum( int ert, bool is ) : value(ert), issigned(is) {}
+};
+
 #endif // SEMANTICS_H_INCLUDED
