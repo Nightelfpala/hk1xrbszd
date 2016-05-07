@@ -1,20 +1,46 @@
 
 #include <QFileDialog>
+#include <QMessageBox>
 
 #include "ui_main.h"
+#include "utils.h"
+
+//#include "elsoparseParser.h"
 
 #include <iostream>
+#include <fstream>
+#include <sstream>
+
+using namespace std;
 
 mainDisplay::mainDisplay( )
 {
 	QWidget *mainWidget = new QWidget(this);
 	setCentralWidget(mainWidget);
 	
-	QWidget *controlWidget = new QWidget(this);
+	QFrame *controlWidget = new QFrame(this);
+	controlWidget -> setFrameShape( QFrame::Box );
 	
 	QGridLayout *layout = new QGridLayout(this);
+	QGridLayout *controlLayout = new QGridLayout(controlWidget);
+	nextInstruction = new QLabel(controlWidget);
+	nextButton = new QPushButton( QString::fromUtf8("Végrehajtás"), controlWidget);
 	
 	createWidgets();
+	{
+		openAct = new QAction( QString::fromUtf8("File megnyitása"), this);
+		quitAct = new QAction( QString::fromUtf8("Kilépés"), this);
+		
+		//connect( openAct, SIGNAL( triggered() ), this, SLOT( openFile() ));
+		connect( quitAct, SIGNAL( triggered() ), this, SLOT( close() ));
+		connect( nextButton, SIGNAL( clicked() ), this, SLOT( openFile() ));
+		
+		fileMenu = menuBar() -> addMenu( tr("File"));
+		
+		fileMenu -> addAction( openAct );
+		fileMenu -> addSeparator();
+		fileMenu -> addAction( quitAct );
+	}
 	
 	layout -> addWidget(eax, 0, 0);
 	layout -> addWidget(ebx, 0, 1);
@@ -29,8 +55,13 @@ mainDisplay::mainDisplay( )
 	
 	layout -> addWidget(controlWidget, 0, 3, 1, 2);
 	
-	mainWidget -> setLayout(layout);
+	controlLayout -> addWidget( nextInstruction, 0, 0, 1, 3);
+	controlLayout -> addWidget( nextButton, 1, 2, 1, 1);
 	
+	mainWidget -> setLayout(layout);
+	controlWidget -> setLayout(controlLayout);
+	
+	//displayAllapot();
 }
 
 mainDisplay::~mainDisplay( )
@@ -40,9 +71,22 @@ mainDisplay::~mainDisplay( )
 
 void mainDisplay::openFile()
 {
-	std::cout << "asd" << std::endl;
-	//QString fileName = QFileDialog::getOpenFileName( this, tr("File megnyitasa") );
-	//std::cout << "filename: " << fileName.toStdString() << std::endl;
+	QString fileName = QFileDialog::getOpenFileName( this, tr("File megnyitasa") );
+	
+	ifstream infile;
+	infile.open( fileName.toStdString().c_str() );
+	/*
+	elsoparseParser elsoParser( infile );
+	
+	try
+	{
+		elsoParser.completeParse();
+	} catch (  )
+	{
+		
+	}
+	*/
+	infile.close();
 }
 
 void mainDisplay::createWidgets()
@@ -57,16 +101,39 @@ void mainDisplay::createWidgets()
 	
 	signFlag = new flagDisplay( "sign", this );
 	zeroFlag = new flagDisplay( "zero", this );
+}
+
+void mainDisplay::displayAllapot()
+{
+	vector<AP_UC> vecUC;
+	vector<std::string> vecStr;
+	bool b;
 	
-	openAct = new QAction( QString::fromUtf8("File megnyitása"), this);
-	quitAct = new QAction( QString::fromUtf8("Kilépés"), this);
+	allapot.get_reg("eax", vecUC);
+	eax->setValues( vecUC );
 	
-	connect( openAct, SIGNAL( triggered() ), this, SLOT( openFile() ));	// TODO FIX DOESNT WORK
-	connect( quitAct, SIGNAL( triggered() ), this, SLOT( close() ));
+	allapot.get_reg("ebx", vecUC);
+	ebx->setValues( vecUC );
 	
-	fileMenu = menuBar() -> addMenu( tr("File"));
+	allapot.get_reg("ecx", vecUC);
+	ecx->setValues( vecUC );
 	
-	fileMenu -> addAction( openAct );
-	fileMenu -> addSeparator();
-	fileMenu -> addAction( quitAct );
+	allapot.get_reg("edx", vecUC);
+	edx->setValues( vecUC );
+	
+	allapot.valtozo_vector( vecUC );
+	allapot.elso_valtozok( vecStr );
+	valtozok->updateValues( vecUC );
+	valtozok->updateKieg( vecStr );
+	
+	allapot.verem_vector( vecUC );
+	allapot.vec_pointerek( vecStr );
+	verem->updateValues( vecUC );
+	verem->updateKieg( vecStr );
+	
+	b = allapot.get_sign();
+	signFlag->setFlag(b);
+	
+	b = allapot.get_zero();
+	zeroFlag->setFlag(b);
 }

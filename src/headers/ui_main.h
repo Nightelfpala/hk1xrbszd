@@ -4,12 +4,15 @@
 #include <QMainWindow>
 #include <QMenuBar>
 #include <QMenu>
+#include <QLabel>
+#include <QPushbutton>
 
 #include "ui_parts.h"
 #include "allapot.h"
 
 class mainDisplay : public QMainWindow
 {
+	Q_OBJECT
 public:
 	mainDisplay( );
 	~mainDisplay( );
@@ -31,11 +34,15 @@ private:
 	flagDisplay *signFlag;
 	flagDisplay *zeroFlag;
 	
+	QLabel *nextInstruction;
+	QPushButton *nextButton;
+	
 	QMenu *fileMenu;
 	QAction *openAct;
 	QAction *quitAct;
 	
 	void createWidgets();
+	void displayAllapot();
 };
 
 

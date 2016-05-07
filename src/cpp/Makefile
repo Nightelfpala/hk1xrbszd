@@ -11,7 +11,8 @@ OBJECTS = ../objects
 BIN = ../bin
 
 CC = x86_64-w64-mingw32-g++
-FLAGS = -I$(INCLUDE) -I$(INCLUDE_ELSOPARSE)
+MOC = moc.exe
+FLAGS = -I$(INCLUDE) -I$(INCLUDE_ELSOPARSE) -I$(INCLUDE_INTERPRET)
 
 DEFINES		= -DUNICODE -DQT_DLL -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -DQT_NEEDS_QMAIN -DQT_SHARED
 CXXFLAGS	= -pipe -O2 -frtti -fexceptions -mthreads $(DEFINES)
@@ -21,7 +22,7 @@ QT_LIBS	= -L'/usr/x86_64-w64-mingw32/sys-root/mingw/lib' -lmingw32 -lqtmain -lQt
 
 #	---------------------------------------
 #	kiegeszitendo a tovabbi objectfajlokkal
-_OBJ = allapot.o utils.o ui_parts.o elsoparseFlexer.o elsoparseParser.o interpretFlexer.o interpretParser.o szimulacio.o ui_main.o
+_OBJ = allapot.o utils.o ui_parts.o elsoparseFlexer.o elsoparseParser.o interpretFlexer.o interpretParser.o szimulacio.o ui_main.o ui_main_moc.o
 OBJ = $(patsubst %,$(OBJECTS)/%,$(_OBJ))
 #	teszteleshez hasznalt mainekbol keletkezo object fajlok
 _MAINS_OBJ = allapot_main.o ui_vec_main.o elsoparse.o utils_main.o ui_main_main.o
@@ -69,7 +70,7 @@ _OUT_ELSOP = teszt_elsoparse
 OUT_ELSOP = $(patsubst %,$(BIN)/%,$(_OUT_ELSOP))
 
 #	teszt_ui_main:
-_OBJ_UI_MAIN = ui_parts.o ui_main.o allapot.o utils.o ui_main_main.o 
+_OBJ_UI_MAIN = ui_parts.o ui_main.o allapot.o utils.o ui_main_main.o ui_main_moc.o
 OBJ_UI_MAIN = $(patsubst %,$(OBJECTS)/%,$(_OBJ_UI_MAIN))
 _DEPS_UI_MAIN = ui_parts.h ui_main.h typedefs.h utils.h allapot.h
 DEPS_UI_MAIN = $(patsubst %,$(INCLUDE)/%,$(_DEPS_UI_MAIN))
@@ -91,6 +92,10 @@ $(OBJECTS)/elsoparseFlexer.o: ../elsoparse/elsoparse.yy.cc
 
 $(OBJECTS)/elsoparseParser.o: ../elsoparse/elsoparse.cc
 	$(CC) -c -o $@ $< $(FLAGS)
+	
+ui_main_moc.cpp : $(INCLUDE)/ui_main.h
+	$(MOC) $(DEFINES) $(QT_INCPATH) $(INCPATH) $< -o $@
+
 
 $(OBJECTS)/%.o: %.cpp $(DEPS)
 	$(CC) -c -o $@ $< $(FLAGS) $(CXXFLAGS) $(QT_INCPATH)
