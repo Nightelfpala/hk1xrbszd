@@ -289,9 +289,16 @@ utasitas:
 		}
 		baseval = Utils::vecc2uint( vec );
 		
-		unsigned long result = ((unsigned long) baseval) * ((unsigned long) mulval);
-		AP_UI resH = ((result >> 32) & 0xFFFFFFFF);
-		AP_UI resL = (result & 0xFFFFFFFF);
+		AP_UI cut = 0;
+		for ( int i = 0; i < argmeret; ++i)
+		{
+			cut <<= 8;
+			cut |= 0xFF;
+		}
+		
+		unsigned long long result = ((unsigned long long) baseval) * ((unsigned long long) mulval);
+		AP_UI resH = ( (result >> argmeret * 8) & cut );
+		AP_UI resL = ( result & cut );
 		std::vector<AP_UC> vecH(argmeret), vecL(argmeret);
 		Utils::uint2vecc( resH, vecH );
 		Utils::uint2vecc( resL, vecL );
@@ -319,7 +326,7 @@ utasitas:
 		std::vector<AP_UC> vecL;
 		std::vector<AP_UC> vecH;
 		bool b = $2->isverem;
-		unsigned long divval;
+		unsigned long long divval;
 		if ( argmeret == 4 )
 		{
 			allapot->get_reg( "edx" , vecH );

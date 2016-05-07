@@ -54,7 +54,7 @@ std::string interpretParser::get_error() const
 inline void interpretParser::error(char const *msg)
 {
     std::stringstream ss;
-	ss << d_loc__.first_line << ". sor: " << msg << std::endl;
+	ss << msg << std::endl;
     errorMsg = ss.str();
 	throw HIBA;
 }
@@ -71,7 +71,7 @@ inline int interpretParser::lex()
 	if (ret == LEXERROR)
 	{
 		std::stringstream ss;
-		ss << d_loc__.first_line << ". sor: lexikalis hiba: " << lexer->YYText() << std::endl;
+		ss << "lexikalis hiba: " << lexer->YYText() << std::endl;
 		errorMsg = ss.str();
 		throw HIBA;
 	}

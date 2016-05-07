@@ -51,6 +51,7 @@ int main( int argc, char *argv[] )
 		cout << "Adatok atvetele megtortent" << endl;
 		
 		allapot.init( valt_kezd, valtozok );
+		allapot.set_kovetkezo( kezdet );
 		cout << "Allapot inicializalva" << endl;
 		
 		allapot.print_allapot();
