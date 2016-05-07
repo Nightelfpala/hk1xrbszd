@@ -30,6 +30,7 @@ public:
 	std::map<std::string, int> get_ugrocimke() const;
 	std::vector<AP_UC> get_valtozok() const;
 	int get_elsoutasitas() const;
+	int get_utolsoutasitas() const;	// ha kov_utasitas == utolsoutasitas -> nincs tobb lepes
 	
 	std::string get_error() const;
 		// szintaktikus / szemantikus hiba eseten hibat dobunk, ez a fv megadja hogy milyen hiba tortent
@@ -54,6 +55,7 @@ private:
 	std::map<int, utasitas_data> utasitas_gyujto;
 	std::map<std::string, int> ugrocimke_kovutasitas;
 	std::string elsoutasitas_cimke;
+	int utolso_utasitas;
 	
 	std::map<std::string, int> valtozo_kezdetek;
 	std::vector<AP_UC> valtozok;

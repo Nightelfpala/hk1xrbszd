@@ -31,7 +31,7 @@ INTERPRET_OBJECTS = interpretFlexer.o interpretParser.o
 _OBJ = allapot.o utils.o ui_parts.o $(ELSOPARSE_OBJECTS) $(INTERPRET_OBJECTS) szimulacio.o ui_main.o ui_main_moc.o
 OBJ = $(patsubst %,$(OBJECTS)/%,$(_OBJ))
 #	teszteleshez hasznalt mainekbol keletkezo object fajlok
-_MAINS_OBJ = allapot_main.o ui_vec_main.o elsoparse.o utils_main.o ui_main_main.o
+_MAINS_OBJ = allapot_main.o ui_vec_main.o elsoparse.o utils_main.o ui_main_main.o interpret.o
 MAINS_OBJ = $(patsubst %,$(OBJECTS)/%,$(_MAINS_OBJ))
 
 _DEPS = allapot.h utils.h typedefs.h ui_parts.h semantics.h FlexLexer.h ui_main.h
@@ -74,6 +74,14 @@ _DEPS_ELSOP = typedefs.h $(ELSOPARSE_HEADERS) semantics.h FlexLexer.h utils.h
 DEPS_ELSOP = $(patsubst %,$(INCLUDE)/%,$(_DEPS_ELSOP))
 _OUT_ELSOP = teszt_elsoparse
 OUT_ELSOP = $(patsubst %,$(BIN)/%,$(_OUT_ELSOP))
+
+#	teszt_interpret:
+_OBJ_INTERP = $(INTERPRET_OBJECTS) $(ELSOPARSE_OBJECTS) allapot.o interpret.o utils.o
+OBJ_INTERP = $(patsubst %,$(OBJECTS)/%,$(_OBJ_INTERP))
+_DEPS_INTERP = typedefs.h $(INTERP_HEADERS) $(ELSOPARSE_HEADERS) allapot.h semantics.h typedefs.h FlexLexer.h utils.h
+DEPS_INTERP = $(patsubst %,$(INCLUDE)/%,$(_DEPS_INTERP))
+_OUT_INTERP = teszt_interpret
+OUT_INTERP = $(patsubst %,$(BIN)/%,$(_OUT_INTERP))
 
 #	teszt_ui_main:
 _OBJ_UI_MAIN = ui_parts.o ui_main.o allapot.o utils.o ui_main_main.o ui_main_moc.o $(ELSOPARSE_OBJECTS) $(INTERPRET_OBJECTS)
@@ -121,5 +129,9 @@ ui_main: $(OBJ_UI_MAIN)
 elsoparse: $(OBJ_ELSOP)
 	$(CC) -o $(OUT_ELSOP) $^
 
+interpret: $(OBJ_INTERP)
+	$(CC) -o $(OUT_INTERP) $^ $(FLAGS)
+
 clean:
 	rm -f $(OBJ) $(MAINS_OBJ)
+	

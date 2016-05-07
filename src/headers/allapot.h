@@ -41,6 +41,8 @@ public:
 	//kovetkezo utasitas muveletek
 	AP_UI get_kovetkezo() const;
 	void set_kovetkezo( const AP_UI &kov );
+	void kov_utasitas();
+	int get_utasitasszam() const;
 	
 	//lekerdezo muveletek -- kiirashoz hasznalhato interface
 	void valtozo_vector( std::vector<AP_UC> &to ) const;
@@ -86,6 +88,7 @@ private:
 	std::vector<AP_UC> verem;	// nem tenyleges veremkent tarolva, szukseg van a belsejeben talalhato ertekekre is a folyamatos kiirashoz
 	
 	AP_UI kovetkezo_utasitas;
+	AP_UI utasitasszam;
 };
 
 #endif	// ALLAPOT_H_INCLUDED 

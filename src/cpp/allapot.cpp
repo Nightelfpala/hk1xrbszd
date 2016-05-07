@@ -11,7 +11,7 @@ using namespace std;
 using namespace Utils;
 
 
-Allapot::Allapot() : zeroflag(false), signflag(false), kovetkezo_utasitas(0)
+Allapot::Allapot() : zeroflag(false), signflag(false), kovetkezo_utasitas(0), utasitasszam(0)
 {
 	eax.resize(4);
 	ebx.resize(4);
@@ -516,6 +516,15 @@ void Allapot::set_kovetkezo( const AP_UI &kov )
 	kovetkezo_utasitas = kov;
 }
 
+void Allapot::kov_utasitas()
+{
+	++utasitasszam;
+}
+int Allapot::get_utasitasszam() const
+{
+	return utasitasszam;
+}
+
 void Allapot::valtozo_vector( std::vector<AP_UC> &to ) const
 {
 	to.resize( valtozok.size() );
@@ -547,6 +556,8 @@ void Allapot::vec_pointerek( std::vector<std::string> &to ) const
 {
 	to.resize( 0 );
 	to.resize( verem.size() + 1, "");
+	cout << "ebp: " << -vecc2sint(ebp) << endl;
+	cout << "esp: " << -vecc2sint(esp) << endl;
 	to[ -vecc2sint(ebp) ] = "ebp";
 	to[ -vecc2sint(esp) ] = "esp";
 }
@@ -560,6 +571,7 @@ void Allapot::print_allapot() const
 {
 	cout << endl << "Allapot:" << endl;
 	cout << "kovetkezo utasitas szama: " << kovetkezo_utasitas << endl;
+	cout << "osszesen a " << utasitasszam << ". vegrehajtott utasitas" << endl;
 	
 	cout << "Zero flag:\t" << zeroflag << endl;
 	cout << "Sign flag:\t" << signflag << endl;
@@ -568,6 +580,9 @@ void Allapot::print_allapot() const
 	vec_cout(ebx, "ebx");
 	vec_cout(ecx, "ecx");
 	vec_cout(edx, "edx");
+	
+	vec_cout(esp, "esp");
+	vec_cout(ebp, "ebp");
 	
 	vector<string> vecStr;
 	elso_valtozok( vecStr );

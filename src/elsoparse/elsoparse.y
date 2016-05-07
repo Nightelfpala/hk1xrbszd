@@ -321,7 +321,7 @@ utasitas:
 cimke:
 	AZONOSITO KETTOSPONT
 	{
-		if ( ugrocimke_kovutasitas.count(*$1) > 0)
+		if ( ugrocimke_kovutasitas.count(*$1) > 0 && ugrocimke_kovutasitas[*$1] != -1)
 		{
 			std::stringstream ss;
 			ss << d_loc__.first_line << ". sor: " << "ujradefinialt ugras cimke" << std::endl
@@ -341,6 +341,57 @@ argumentum:
 	kifejezes
 	{
 		$$ = $1;
+	}
+|
+	BYTE kifejezes
+	{
+		if ( $2->argmeret != 1 && $2->argmeret != -1)
+		{
+			std::stringstream ss;
+			ss << d_loc__.first_line << ". sor: " << "eltero argumentummeret megadas" << std::endl
+				<< "\t" << $2->argmeret << " != 1" << std::endl;
+			errorMsg = ss.str();
+			
+			delete $2;
+			throw HIBA;
+		}
+		$$ = new kifejezes_data( "byte " + $2->kif, 1);
+		
+		delete $2;
+	}
+|
+	WORD kifejezes
+	{
+		if ( $2->argmeret != 2 && $2->argmeret != -1)
+		{
+			std::stringstream ss;
+			ss << d_loc__.first_line << ". sor: " << "eltero argumentummeret megadas" << std::endl
+				<< "\t" << $2->argmeret << " != 2" << std::endl;
+			errorMsg = ss.str();
+			
+			delete $2;
+			throw HIBA;
+		}
+		$$ = new kifejezes_data( "word " + $2->kif, 2);
+		
+		delete $2;
+	}
+|
+	DWORD kifejezes
+	{
+		if ( $2->argmeret != 4 && $2->argmeret != -1)
+		{
+			std::stringstream ss;
+			ss << d_loc__.first_line << ". sor: " << "eltero argumentummeret megadas" << std::endl
+				<< "\t" << $2->argmeret << " != 4" << std::endl;
+			errorMsg = ss.str();
+			
+			delete $2;
+			throw HIBA;
+		}
+		$$ = new kifejezes_data( "dword " + $2->kif, 4);
+		
+		delete $2;
 	}
 |
 	NYITOSZOGZAROJEL kifejezes CSUKOSZOGZAROJEL

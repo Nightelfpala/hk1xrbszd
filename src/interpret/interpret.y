@@ -53,11 +53,13 @@
 	kifejezes_ertek* kif;
 	elso_argumentum* earg;
 	AP_UI* szam;
+	masodik_argumentum* marg;
 }
 
 %type <kif> ertek
 %type <earg> elsoarg
-%type <szam> masodarg;
+//%type <szam> masodarg
+%type <marg> masodarg
 
 %%
 
@@ -71,13 +73,22 @@ utasitas:
 		AP_UI val = (*$4);
 		std::vector<AP_UC> vec(argmeret);
 		bool b = $2->isverem;
-		Utils::uint2vecc( val, vec );
 		if ( $2->isvalt )
 		{
+			Utils::uint2vecc( val, vec );
 			allapot->set_var( ($2->elsobyte), vec, b );
 		} else
 		{
-			allapot->set_reg( ($2->reg), vec );
+			bool b = ( $2->reg == "esp" || $2->reg == "ebp" || $2->reg == "sp" || $2->reg == "bp");
+			if ( b )
+			{
+				Utils::sint2vecc( val, vec );
+				allapot->set_reg( ($2->reg), vec );
+			} else
+			{
+				Utils::uint2vecc( val, vec );
+				allapot->set_reg( ($2->reg), vec );
+			}
 		}
 		
 		delete $2;
@@ -100,9 +111,22 @@ utasitas:
 		} else
 		{
 			allapot->get_reg( ($2->reg), vec );
-			plusz = Utils::vecc2uint( vec );
+			bool b = ( $2->reg == "esp" || $2->reg == "ebp" || $2->reg == "sp" || $2->reg == "bp");
+			if ( b )
+			{
+				plusz = Utils::vecc2sint( vec );
+			} else
+			{
+				plusz = Utils::vecc2uint( vec );
+			}
 			val += plusz;
-			Utils::uint2vecc( val, vec );
+			if ( b )
+			{
+				Utils::sint2vecc( val, vec );
+			} else
+			{
+				Utils::uint2vecc( val, vec );
+			}
 			allapot->set_reg( ($2->reg), vec );
 		}
 		allapot->set_zero( val == 0 );
@@ -129,10 +153,23 @@ utasitas:
 		} else
 		{
 			allapot->get_reg( ($2->reg), vec );
-			minusz = Utils::vecc2uint( vec );
+			bool b = ( $2->reg == "esp" || $2->reg == "ebp" || $2->reg == "sp" || $2->reg == "bp");
+			if ( b )
+			{
+				val = Utils::vecc2sint( vec );
+			} else
+			{
+				val = Utils::vecc2uint( vec );
+			}
 			allapot->set_sign( val < minusz );
 			val -= minusz;
-			Utils::uint2vecc( val, vec );
+			if ( b )
+			{
+				Utils::sint2vecc( val, vec );
+			} else
+			{
+				Utils::uint2vecc( val, vec );
+			}
 			allapot->set_reg( ($2->reg), vec );
 		}
 		allapot->set_zero( val == 0 );
@@ -408,17 +445,10 @@ utasitas:
 		delete $2;
 	}
 |
-	PUSH elsoarg
+	PUSH masodarg
 	{
-		std::vector<AP_UC> vec;
-		bool b = $2->isverem;
-		if ( $2->isvalt )
-		{
-			allapot->get_var( $2->elsobyte, argmeret, vec, b);
-		} else
-		{
-			allapot->get_reg( $2->reg, vec );
-		}
+		std::vector<AP_UC> vec(argmeret);
+		Utils::uint2vecc( *$2, vec );
 		allapot->verem_push( vec );
 		delete $2;
 	}
@@ -433,6 +463,18 @@ utasitas:
 			allapot->set_var( $2->elsobyte, vec, b);
 		} else
 		{
+			/* TODO
+			bool b = ( $2->reg == "esp" || $2->reg == "ebp" || $2->reg == "sp" || $2->reg == "bp");
+			if ( b )
+			{
+				Utils::sint2vecc( val, vec );
+				allapot->set_reg( ($2->reg), vec );
+			} else
+			{
+				Utils::uint2vecc( val, vec );
+				allapot->set_reg( ($2->reg), vec );
+			}
+			*/
 			allapot->set_reg( $2->reg, vec );
 		}
 		delete $2;
@@ -564,7 +606,7 @@ elsoarg:
 masodarg:
 	ertek
 	{
-		$$ = new AP_UI( $1->value);
+		$$ = new AP_UI( $1->value );
 		
 		delete $1;
 	}

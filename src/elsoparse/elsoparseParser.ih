@@ -42,6 +42,15 @@ void elsoparseParser::postParse()
 		errorMsg = ss.str();
 		throw HIBA;
 	}
+	
+	utolso_utasitas = get_elsoutasitas() + 1;
+	for (std::map<int, utasitas_data>::iterator it = utasitas_gyujto.begin(); it != utasitas_gyujto.end(); ++it)
+	{
+		if ( it->first + 1 > utolso_utasitas )
+		{
+			utolso_utasitas = it->first + 1;
+		}
+	}
 }
 
 std::map<int, utasitas_data> elsoparseParser::get_utasitasok() const
@@ -66,6 +75,11 @@ std::vector<AP_UC> elsoparseParser::get_valtozok() const
 int elsoparseParser::get_elsoutasitas() const
 {
 	return ugrocimke_kovutasitas.at(elsoutasitas_cimke);
+}
+
+int elsoparseParser::get_utolsoutasitas() const
+{
+	return utolso_utasitas;
 }
 	
 std::string elsoparseParser::get_error() const

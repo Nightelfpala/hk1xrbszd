@@ -2,6 +2,8 @@
 #ifndef TYPEDEFS_H_INCLUDED
 #define TYPEDEFS_H_INCLUDED
 
+#include <string>
+
 typedef unsigned char AP_UC;
 typedef unsigned int AP_UI;
 
