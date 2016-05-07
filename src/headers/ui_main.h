@@ -7,8 +7,13 @@
 #include <QLabel>
 #include <QPushbutton>
 
+#include <vector>
+#include <map>
+
 #include "ui_parts.h"
 #include "allapot.h"
+#include "interpretParser.h"
+#include "typedefs.h"
 
 class mainDisplay : public QMainWindow
 {
@@ -19,9 +24,16 @@ public:
 	
 private slots:
     void openFile();
+	void oF2();
+	void interpretNext();
 	
 private:
 	Allapot allapot;
+	
+	interpretParser iParser;
+	
+	std::map<int, utasitas_data> utasitasok;
+	std::map<std::string, int> ugrocimkek;
 
 	regDisplay *eax;
 	regDisplay *ebx;

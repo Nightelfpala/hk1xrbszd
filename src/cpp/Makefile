@@ -21,8 +21,14 @@ QT_INCPATH	= -I'/usr/x86_64-w64-mingw32/sys-root/mingw/include/qt4/QtCore' -I'/u
 QT_LIBS	= -L'/usr/x86_64-w64-mingw32/sys-root/mingw/lib' -lmingw32 -lqtmain -lQtGui -lQtCore
 
 #	---------------------------------------
+#	
+ELSOPARSE_HEADERS = elsoparseParser.h elsoparseParserbase.h
+INTERPRET_HEADERS = interpretParser.h interpretParserbase.h
+#	
+ELSOPARSE_OBJECTS = elsoparseFlexer.o elsoparseParser.o
+INTERPRET_OBJECTS = interpretFlexer.o interpretParser.o
 #	kiegeszitendo a tovabbi objectfajlokkal
-_OBJ = allapot.o utils.o ui_parts.o elsoparseFlexer.o elsoparseParser.o interpretFlexer.o interpretParser.o szimulacio.o ui_main.o ui_main_moc.o
+_OBJ = allapot.o utils.o ui_parts.o $(ELSOPARSE_OBJECTS) $(INTERPRET_OBJECTS) szimulacio.o ui_main.o ui_main_moc.o
 OBJ = $(patsubst %,$(OBJECTS)/%,$(_OBJ))
 #	teszteleshez hasznalt mainekbol keletkezo object fajlok
 _MAINS_OBJ = allapot_main.o ui_vec_main.o elsoparse.o utils_main.o ui_main_main.o
@@ -62,17 +68,17 @@ _OUT_UI_VEC = teszt_ui_vec
 OUT_UI_VEC = $(patsubst %,$(BIN)/%,$(_OUT_UI_VEC))
 
 #	teszt_elsoparse:
-_OBJ_ELSOP = elsoparseFlexer.o elsoparseParser.o elsoparse.o utils.o
+_OBJ_ELSOP = $(ELSOPARSE_OBJECTS) elsoparse.o utils.o
 OBJ_ELSOP = $(patsubst %,$(OBJECTS)/%,$(_OBJ_ELSOP))
-_DEPS_ELSOP = typedefs.h elsoparseParser.h elsoparseParserbase.h semantics.h FlexLexer.h utils.h
+_DEPS_ELSOP = typedefs.h $(ELSOPARSE_HEADERS) semantics.h FlexLexer.h utils.h
 DEPS_ELSOP = $(patsubst %,$(INCLUDE)/%,$(_DEPS_ELSOP))
 _OUT_ELSOP = teszt_elsoparse
 OUT_ELSOP = $(patsubst %,$(BIN)/%,$(_OUT_ELSOP))
 
 #	teszt_ui_main:
-_OBJ_UI_MAIN = ui_parts.o ui_main.o allapot.o utils.o ui_main_main.o ui_main_moc.o
+_OBJ_UI_MAIN = ui_parts.o ui_main.o allapot.o utils.o ui_main_main.o ui_main_moc.o $(ELSOPARSE_OBJECTS) $(INTERPRET_OBJECTS)
 OBJ_UI_MAIN = $(patsubst %,$(OBJECTS)/%,$(_OBJ_UI_MAIN))
-_DEPS_UI_MAIN = ui_parts.h ui_main.h typedefs.h utils.h allapot.h
+_DEPS_UI_MAIN = ui_parts.h ui_main.h typedefs.h utils.h allapot.h $(ELSOPARSE_HEADERS) $(INTERPRET_HEADERS)
 DEPS_UI_MAIN = $(patsubst %,$(INCLUDE)/%,$(_DEPS_UI_MAIN))
 _OUT_UI_MAIN = teszt_ui_main
 OUT_UI_MAIN = $(patsubst %,$(BIN)/%,$(_OUT_UI_MAIN))

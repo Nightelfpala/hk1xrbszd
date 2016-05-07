@@ -62,11 +62,23 @@ int regDisplay::size() const
 
 void regDisplay::setValues(const std::vector<AP_UC> &val)
 {
+	//cout << "vL.size(): " << valueLabel.size() << endl;
 	for (int i = 0; i < meret; ++i)
 	{
+		//cout << i << " / " << meret <<  endl;
 		valueVec[i] = val[i];
 		
-		valueLabel[i] -> setText( QString::number( valueVec[i] ));
+		//cout << i << "-" << (int)val[i] << "xx" << endl;
+		//cout << (int)valueVec[i] << "\t" << (QString::number( (int)valueVec[i] )).toStdString() << endl;
+		//cout << "ptr: " << (valueLabel[i]) << endl;
+		if ( valueLabel[i] == NULL)
+		{
+			cout << "NULL POINTER? WTF" << endl;
+		}
+		valueLabel[i] -> setText("kek");
+		//cout << "kek" << endl;
+		valueLabel[i] -> setText( QString::number( (int)valueVec[i] ));
+		//cout << i << "+" << endl;
 	}
 }
 
@@ -121,7 +133,7 @@ int veremDisplay::size() const
 void veremDisplay::updateValues(const std::vector<AP_UC> &vals)
 {
 	int prevsize = valueLabel.size();
-	//cout << prevsize << "\t" << vals.size() << endl;
+	cout << prevsize << "\t" << vals.size() << endl;
 	if ( vals.size() < valueLabel.size() )
 	{
 		for (int i = valueLabel.size() - 1; i >= vals.size(); --i)
@@ -137,7 +149,7 @@ void veremDisplay::updateValues(const std::vector<AP_UC> &vals)
 		QFont displayFont( "Arial", 12);
 		for (int i = prevsize; i < valueLabel.size(); ++i)
 		{
-			//cout << "new " << i << endl;
+			cout << "new " << i << endl;
 			valueLabel[i] = new QLabel( this );
 			valueLabel[i] -> setStyleSheet( "QLabel { background-color : white; color : black; }" );
 			valueLabel[i] -> setTextInteractionFlags( Qt::TextSelectableByMouse );	// kijelolhetove (masolhatova) teszi a szoveget
@@ -150,8 +162,17 @@ void veremDisplay::updateValues(const std::vector<AP_UC> &vals)
 	}
 	for (int i = 0; i < valueLabel.size(); ++i)
 	{
-		valueLabel[i] -> setText( QString::number( valueVec[i] ));
-		//cout << i << ". val: " << valueVec[i] << endl;
+		cout << "pre:\t" << i << ". val: " << (int)valueVec[i] << endl;
+		if ( !valueLabel[i] )
+		{
+			cout << "veremDisplay:\tNULLPTR" << endl;
+			valueLabel[i] -> setText( QString::number( valueVec[i] ));
+		} else
+		{
+			cout << i << "\t van ptr" << endl;
+		}
+		//valueLabel[i] -> setText( QString::number( valueVec[i] ));
+		cout << i << ". val: " << (int)valueVec[i] << endl;
 	}
 	scrollWidget -> setFixedSize( 45 * valueLabel.size(), 45 );
 }

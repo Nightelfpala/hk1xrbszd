@@ -17,8 +17,8 @@ int main( int argc, char *argv[])
 	
 	QVBoxLayout *_layout = new QVBoxLayout;
 	
-	regDisplay v1(4, &display);
-	regDisplay v2(4, &display);
+	regDisplay v1(4, "v1", &display);
+	regDisplay v2(4, "v2", &display);
 	veremDisplay v3("verem", &display);
 	
 	flagDisplay sf("sf", &display);
@@ -29,9 +29,6 @@ int main( int argc, char *argv[])
 	_layout -> addWidget(&v3);
 	_layout -> addWidget(&sf);
 	_layout -> addWidget(&zf);
-	
-	v1.setName("v1 neve");
-	v2.setName("v2 neve");
 	
 	vector<AP_UC> fill1(v1.size());
 	for (unsigned int i = 0; i < v1.size(); ++i)

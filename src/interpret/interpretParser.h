@@ -30,6 +30,8 @@ class interpretParser: public interpretParserBase
 		
 		void initAp(Allapot* ap, std::map<std::string, int> *uc);
 		
+		std::string get_error() const;
+		
 		enum Exceptions
 		{
 			HIBA,

@@ -4,17 +4,20 @@
 
 // $insert class.h
 #include "interpretParser.h"
+#include <iostream>
 
 
-interpretParser::interpretParser()
+interpretParser::interpretParser() : lexer(NULL)
 {
 	
 }
 
 interpretParser::~interpretParser()
 {
-	if (lexer)
+	if ( lexer != 0)
+	{
 		delete lexer;
+	}
 }
 
 void interpretParser::initAp(Allapot* ap, std::map<std::string, int> *uc)
@@ -41,6 +44,11 @@ void interpretParser::preParse(std::istream& in, int argsize)
 	lexer = new interpretFlexLexer( &in, &std::cerr);
 	
 	argmeret = argsize;
+}
+
+std::string interpretParser::get_error() const
+{
+	return errorMsg;
 }
 
 inline void interpretParser::error(char const *msg)
