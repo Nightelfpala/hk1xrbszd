@@ -3,6 +3,7 @@
 #	'allapot'	hozza tartozo main segitsegevel letrehoz egy tesztkornyezetet: teszt_allapot
 #	'ui_vec'	hozza tartozo main segitsegevel letrehoz egy tesztkornyezetet: teszt_ui_vec
 #	'elsoparse'	hozza tartozo main segitsegevel letrehoz egy tesztkornyezetet: teszt_elsoparse
+#	'interpret'	hozza tartozo main segitsegevel letrehoz egy tesztkornyezetet: teszt_interpret
 
 INCLUDE = ../headers
 INCLUDE_ELSOPARSE = ../elsoparse

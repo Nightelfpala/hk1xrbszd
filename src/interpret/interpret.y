@@ -262,10 +262,9 @@ utasitas:
 		delete $4;
 	}
 |
-	MUL elsoarg
+	MUL masodarg
 	{
 		std::vector<AP_UC> vec;
-		bool b = $2->isverem;
 		AP_UI mulval;
 		if ( argmeret == 4 )
 		{
@@ -279,15 +278,7 @@ utasitas:
 		}
 		mulval = Utils::vecc2uint( vec );
 		
-		AP_UI baseval;
-		if ( $2->isvalt )
-		{
-			allapot->get_var( ($2->elsobyte), argmeret, vec, b);
-		} else
-		{
-			allapot->get_reg( ($2->reg), vec );
-		}
-		baseval = Utils::vecc2uint( vec );
+		AP_UI baseval = $2->value;
 		
 		AP_UI cut = 0;
 		for ( int i = 0; i < argmeret; ++i)
@@ -321,11 +312,10 @@ utasitas:
 		delete $2;
 	}
 |
-	DIV elsoarg
+	DIV masodarg
 	{
 		std::vector<AP_UC> vecL;
 		std::vector<AP_UC> vecH;
-		bool b = $2->isverem;
 		unsigned long long divval;
 		if ( argmeret == 4 )
 		{
@@ -340,17 +330,16 @@ utasitas:
 			allapot->get_reg( "ah" , vecH );
 			allapot->get_reg( "al" , vecL );
 		}
-		divval = (Utils::vecc2uint( vecH ) << (argmeret * 4)) | (Utils::vecc2uint(vecL));
+		divval = (( ((unsigned long long)Utils::vecc2uint( vecH )) << (argmeret * 8)) | ((unsigned long long)(Utils::vecc2uint(vecL))));
 		
-		std::vector<AP_UC> vec;
-		if ( $2->isvalt )
+		AP_UI oszto = $2->value;
+		if (oszto == 0)
 		{
-			allapot->get_var( ($2->elsobyte), argmeret, vec, b);
-		} else
-		{
-			allapot->get_reg( ($2->reg), vec );
+			std::stringstream ss;
+			ss << "0-val torteno osztas!" << std::endl;
+			errorMsg = ss.str();
+			throw HIBA;
 		}
-		AP_UI oszto = Utils::vecc2uint( vec );
 		
 		AP_UI res = divval / oszto;
 		AP_UI rem = divval % oszto;

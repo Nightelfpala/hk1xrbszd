@@ -6,6 +6,7 @@
 #include <sstream>
 #include <vector>
 #include <cstdlib>
+#include <iostream>
 
 #include "typedefs.h"
 
@@ -42,8 +43,8 @@ struct masodik_argumentum
 {
 	int value;
 	bool issigned;
-	masodik_argumentum(){}
-	masodik_argumentum(int ert) : value(ert), issigned(ert < 0) {}
+	masodik_argumentum(){ }
+	masodik_argumentum( int ert ) : value(ert), issigned(ert < 0) {}
 	masodik_argumentum( int ert, bool is ) : value(ert), issigned(is) {}
 };
 

@@ -15,5 +15,5 @@ logical:
 	xor ecx, ebx
 division:
 	mov eax, 50
-	mov ecx, 7
-	div dword ecx
+	;mov ecx, 7
+	div dword 7
