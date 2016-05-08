@@ -5,7 +5,8 @@ A projekt futtatasa
 		a "make utils" parancs a utils kisegitoallomanyt fordítja le							-> teszt_utils
 		a "make allapot" parancs az allapot modult es a tesztelokornyezetet forditja le			-> teszt_allapot
 		a "make elsoparse" parancs az elsoparse modult forditja le								-> teszt_elsoparse
-		a "make interpret" parancs a program grafikus felület nélküli részét készíti el			-> teszt_interpret
+		a "make interpret" parancs a program grafikus felulet nelkuli részét készíti el			-> teszt_interpret
+			parancssori argumentumkent adhato meg a szimulalando file, alapertelmezett bemenet: testfiles/teszt1.asm
 		a "make ui_vec" parancs a megjelenito modult forditja le								-> teszt_ui_vec
 	a futtathato allomanyok a "bin" mappabol indithatoak
 		Windows kornyezetben .exe kiterjesztessel rendelkeznek
@@ -23,3 +24,5 @@ A projekt futtatasa
 	az elsoparse modulhoz tartozo flex, bisonc++ kodok, illetve a beloluk generalt allomanyok
 "interpret" mappa:
 	az interpretalo modulhoz tartozo flex, bisonc++ kodok, illetve a beloluk generalt allomanyok
+"testfiles" mappa:
+	a teszteleshez hasznalt NASM assembly kodfile-okat tartalmazza

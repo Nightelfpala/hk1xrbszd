@@ -288,6 +288,7 @@ utasitas:
 		}
 		
 		unsigned long long result = ((unsigned long long) baseval) * ((unsigned long long) mulval);
+		allapot->set_zero( result == 0);
 		AP_UI resH = ( (result >> argmeret * 8) & cut );
 		AP_UI resL = ( result & cut );
 		std::vector<AP_UC> vecH(argmeret), vecL(argmeret);
