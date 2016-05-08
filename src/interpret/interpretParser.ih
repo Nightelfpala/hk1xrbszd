@@ -4,17 +4,20 @@
 
 // $insert class.h
 #include "interpretParser.h"
+#include <iostream>
 
 
-interpretParser::interpretParser()
+interpretParser::interpretParser() : lexer(NULL)
 {
 	
 }
 
 interpretParser::~interpretParser()
 {
-	if (lexer)
+	if ( lexer != 0)
+	{
 		delete lexer;
+	}
 }
 
 void interpretParser::initAp(Allapot* ap, std::map<std::string, int> *uc)
@@ -43,10 +46,15 @@ void interpretParser::preParse(std::istream& in, int argsize)
 	argmeret = argsize;
 }
 
+std::string interpretParser::get_error() const
+{
+	return errorMsg;
+}
+
 inline void interpretParser::error(char const *msg)
 {
     std::stringstream ss;
-	ss << d_loc__.first_line << ". sor: " << msg << std::endl;
+	ss << msg << std::endl;
     errorMsg = ss.str();
 	throw HIBA;
 }
@@ -63,7 +71,7 @@ inline int interpretParser::lex()
 	if (ret == LEXERROR)
 	{
 		std::stringstream ss;
-		ss << d_loc__.first_line << ". sor: lexikalis hiba: " << lexer->YYText() << std::endl;
+		ss << "lexikalis hiba: " << lexer->YYText() << std::endl;
 		errorMsg = ss.str();
 		throw HIBA;
 	}

@@ -5,7 +5,7 @@
 #include "ui_main.h"
 #include "utils.h"
 
-//#include "elsoparseParser.h"
+#include "elsoparseParser.h"
 
 #include <iostream>
 #include <fstream>
@@ -32,8 +32,9 @@ mainDisplay::mainDisplay( )
 		quitAct = new QAction( QString::fromUtf8("Kilépés"), this);
 		
 		//connect( openAct, SIGNAL( triggered() ), this, SLOT( openFile() ));
+		connect( openAct, SIGNAL( triggered() ), this, SLOT( oF2() ));
 		connect( quitAct, SIGNAL( triggered() ), this, SLOT( close() ));
-		connect( nextButton, SIGNAL( clicked() ), this, SLOT( openFile() ));
+		connect( nextButton, SIGNAL( clicked() ), this, SLOT( interpretNext() ));
 		
 		fileMenu = menuBar() -> addMenu( tr("File"));
 		
@@ -61,7 +62,7 @@ mainDisplay::mainDisplay( )
 	mainWidget -> setLayout(layout);
 	controlWidget -> setLayout(controlLayout);
 	
-	//displayAllapot();
+	displayAllapot();
 }
 
 mainDisplay::~mainDisplay( )
@@ -75,22 +76,82 @@ void mainDisplay::openFile()
 	
 	ifstream infile;
 	infile.open( fileName.toStdString().c_str() );
-	/*
+	
 	elsoparseParser elsoParser( infile );
 	
 	try
 	{
 		elsoParser.completeParse();
-	} catch (  )
-	{
 		
+		vector<AP_UC> valtozok;
+		map<std::string, int> valtozo_kezdetek;
+		
+		utasitasok = elsoParser.get_utasitasok();
+		ugrocimkek = elsoParser.get_ugrocimke();
+		valtozo_kezdetek = elsoParser.get_valtozokezdet();
+		valtozok = elsoParser.get_valtozok();
+		
+		allapot.init( valtozo_kezdetek, valtozok );
+		iParser.initAp( &allapot, &ugrocimkek );
+		
+		displayAllapot();
+		cout << "done?######################x" << endl;
+	} catch ( elsoparseParser::Exceptions ex )
+	{
+		QMessageBox msgBox;
+		msgBox.setWindowTitle( QString::fromUtf8( "Hiba!" ));
+		msgBox.setText( QString::fromUtf8("Hiba történt a kezdeti elemzés közben") );
+		msgBox.setInformativeText( QString::fromStdString( elsoParser.get_error() ));
+		msgBox.exec();
 	}
-	*/
 	infile.close();
+	cout << "nooo" << endl;
+}
+
+void mainDisplay::oF2()
+{
+	openFile();
+	cout << "ja" << endl;
+}
+
+void mainDisplay::interpretNext()
+{
+	int kov = allapot.get_kovetkezo();
+	string kovStr = utasitasok[kov].sor;
+	istringstream iStream( kovStr );
+	
+	try
+	{
+		iParser.completeParse( iStream, utasitasok[kov].argmeret );
+	} catch ( interpretParser::Exceptions ex )
+	{
+		QMessageBox msgBox;
+		msgBox.setWindowTitle( QString::fromUtf8( "Hiba!" ));
+		msgBox.setText( QString::fromUtf8("Hiba történt a muvelet vegrehajtasa kozben") );
+		msgBox.setInformativeText( QString::fromStdString( iParser.get_error() ));
+		msgBox.exec();
+	} catch ( Allapot::Exceptions ex)
+	{
+		switch (ex)
+		{
+		case Allapot::URES_VEREM:
+			break;
+		case Allapot::TELE_VEREM:
+			break;
+		case Allapot::HATARON_KIVULI_VALTOZO:
+			break;
+		case Allapot::HATARON_KIVULI_VEREM:
+			break;
+		default:
+			break;
+		}
+	}
 }
 
 void mainDisplay::createWidgets()
 {
+	QFont displayFont( "Arial", 12);
+	
 	eax = new regDisplay(4, "eax", this );
 	ebx = new regDisplay(4, "ebx", this );
 	ecx = new regDisplay(4, "ecx", this );
@@ -101,39 +162,62 @@ void mainDisplay::createWidgets()
 	
 	signFlag = new flagDisplay( "sign", this );
 	zeroFlag = new flagDisplay( "zero", this );
+	
+	nextInstruction -> setStyleSheet( "QLabel { background-color : white; color : black; }" );
+	nextInstruction -> setTextInteractionFlags( Qt::TextSelectableByMouse );
+	nextInstruction -> setFont( displayFont );
 }
 
 void mainDisplay::displayAllapot()
 {
-	vector<AP_UC> vecUC;
+	cout << endl << "displayAllapot()" << endl << endl;
+	vector<AP_UC> vecUC(4);
 	vector<std::string> vecStr;
 	bool b;
 	
+	cout << "1" << endl;
+	
 	allapot.get_reg("eax", vecUC);
-	eax->setValues( vecUC );
+	Utils::vec_cout(vecUC, "eax");
+	cout << "a" << vecUC.size() << endl;
+	eax -> setValues( vecUC );
+	cout << "a2" << endl;
 	
 	allapot.get_reg("ebx", vecUC);
-	ebx->setValues( vecUC );
+	Utils::vec_cout(vecUC, "ebx");
+	ebx -> setValues( vecUC );
+	cout << "b" << endl;
 	
 	allapot.get_reg("ecx", vecUC);
-	ecx->setValues( vecUC );
+	Utils::vec_cout(vecUC, "ecx");
+	ecx -> setValues( vecUC );
+	cout << "c" << endl;
 	
 	allapot.get_reg("edx", vecUC);
-	edx->setValues( vecUC );
+	Utils::vec_cout(vecUC, "edx");
+	edx -> setValues( vecUC );
+	cout << "d" << endl;
 	
 	allapot.valtozo_vector( vecUC );
 	allapot.elso_valtozok( vecStr );
-	valtozok->updateValues( vecUC );
-	valtozok->updateKieg( vecStr );
+	Utils::vec_cout(vecUC, "valtozok:");
+	valtozok -> updateValues( vecUC );
+	valtozok -> updateKieg( vecStr );
+	cout << "valt" << endl;
 	
 	allapot.verem_vector( vecUC );
 	allapot.vec_pointerek( vecStr );
-	verem->updateValues( vecUC );
-	verem->updateKieg( vecStr );
+	Utils::vec_cout(vecUC, "verem:");
+	verem -> updateValues( vecUC );
+	verem -> updateKieg( vecStr );
+	cout << "verem" << endl;
 	
 	b = allapot.get_sign();
-	signFlag->setFlag(b);
+	signFlag -> setFlag(b);
+	cout << "sign" << endl;
 	
 	b = allapot.get_zero();
-	zeroFlag->setFlag(b);
+	zeroFlag -> setFlag(b);
+	cout << "zero" << endl;
 }
+

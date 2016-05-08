@@ -41,6 +41,8 @@ public:
 	//kovetkezo utasitas muveletek
 	AP_UI get_kovetkezo() const;
 	void set_kovetkezo( const AP_UI &kov );
+	void kov_utasitas();
+	int get_utasitasszam() const;
 	
 	//lekerdezo muveletek -- kiirashoz hasznalhato interface
 	void valtozo_vector( std::vector<AP_UC> &to ) const;
@@ -48,6 +50,8 @@ public:
 	void elso_valtozok( std::vector<std::string> &to ) const;	// ad egy vektort, amiben azokon az indexeken ahol valtozo kezdodik talalhato a valtozo neve, a tobbi ures string
 	void vec_pointerek( std::vector<std::string> &to ) const;	// ad egy vektort, amiben az esp illetve ebp mutatasi helye be van jelolve (a tobbi ures string)
 																	// ha ugyanoda mutatnak, akkor esp van kiirva
+	
+	void print_allapot() const;
 	
 	//hibakezeles
 		// csak olyan hibak kerulnek lekezelesre, ami a szimulalt program futasabol szarmaznak - feltetelezzuk, hogy a szimulalo program kodja helyes
@@ -84,6 +88,7 @@ private:
 	std::vector<AP_UC> verem;	// nem tenyleges veremkent tarolva, szukseg van a belsejeben talalhato ertekekre is a folyamatos kiirashoz
 	
 	AP_UI kovetkezo_utasitas;
+	AP_UI utasitasszam;
 };
 
 #endif	// ALLAPOT_H_INCLUDED 

@@ -22,3 +22,6 @@ jmpide:
 	mov byte [z], 11
 	mov [z + 1], al
 	mov bx, [x]
+	mov ebx, 7
+	push ebx
+	pop ecx

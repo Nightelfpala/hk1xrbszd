@@ -1,0 +1,77 @@
+Az elemzésnél és szimulálásnál használt szintaxis
+	intel x86 NASM assembly műveleteire épít elsősorban
+	a 'testfiles' mappában találhatók példák
+
+felépítés:
+	global <azonosító>
+		megadja a program belépési pontját (az <azonosító> címkéjét követő első utasítás fog elsőként lefutni)
+	section .data
+		<azonosito>: <méretjelölés> <szám>
+			adott azonosítónévvel lefoglal változót, minden byte 0-ra inicializálva
+			<méretjelölés> lehet 1(resb), 2(resw), 4(resd) * <szám> byte-ot foglal le összesen
+	section .bss
+		<azonosito>: <méretjelölés> <számok>
+			adott azonosítónévvel lefoglal változót, <számok> -ként inicializálva
+			<számok>  <szám> -ok sorozata, közöttük vessző az elválasztójel
+			<méretjelölés> lehet 1(db), 2(dw), 4(dd) minden egyes szám egy ilyen hosszú változóba kerül
+			pl. x: dw 1,2,3
+				lefoglal egy 'x' nevű változót, összesen 6 byteon, az első (két) bytejára eltárolja az 1-es értéket (ami az első byteban elfér, ezért a második byte 0), a 3.-4. bytera a 2-es értéket, az 5.-6. bytera a 3-as értéket
+	section .text
+			itt lesznek a program utasításai
+		global <azonosító>
+			első "utasításaként" tartalmazhatja itt is a globális deklarációt - viszont a programon belül összesen pontosan 1 darab ilyen deklaráció lehet
+		utasítások sorozata
+		
+utasítások
+		a megfelelő NASM assembly utasítással egyezik meg
+		minden utasítás argumentumméretének egyértelműnek kell lennie - a regisztereknél ez következik a regiszterből, egyéb esetben (változó/verem hivatkozás, konstans) 'byte', 'word', 'dword' kulcsszavakkal lehet megadni a méretet (1, 2, 4 byte-ot jelentenek megfelelő sorrendben)
+			ha egy műveletnek két argumentuma van, akkor vagy meg kell egyeznie a méretüknek, vagy az egyiknek nem definiáltnak kell lennie (hivatkozás vagy konstans méret megadása nélkül)
+	mov <hely>, <érték>
+	add <hely>, <érték>
+	sub <hely>, <érték>
+	and <hely>, <érték>
+	or <hely>, <érték>
+	xor <hely>, <érték>
+	cmp <érték>, <érték>
+	inc <hely>
+	dec <hely>
+	not <hely>
+	mul <érték>
+		https://en.wikibooks.org/wiki/X86_Assembly/Arithmetic alapján
+		az eax regiszter (vagy része, ha nem 4-byteos az argumentum) tartalmát megszorozza <érték>-kel, a 8 byteos eredmény legnagyobb helyiértékű 4 byteja az edx-be kerül, a 4 kisebb eax-be
+	div <érték>
+		https://en.wikibooks.org/wiki/X86_Assembly/Arithmetic alapján
+		az edx regiszter adja a nagyobb helyiértékű 4 byte-ot (4 byteos argumentumméret esetén), az eax a 4 kisebb helyiértékűt, ez elosztódik <érték>-kel, a maradék edx-be kerül, az eredmény eax-be
+	push <érték>
+		hibát jelez, ha 268.435.455-ot meghaladja a veremben tárolt byteok száma
+	pop <hely>
+		amennyiben nincs annyi byte a veremben, ahányat pusholna, akkor hibát jelez
+	ugró utasítások
+		<ugrás> <azonosító>	-	<ugrás> lehet: jmp, ja, jb, je, jz, jna, jnb, jne, jnz
+			feltételes ugrások számára az {add, sub, cmp, and, or, xor, mul, inc, dec, not} módosíthatja a zero flag értékét, a {sub, cmp} a sign flag értékét
+		<feltugrás> near <azonosító>
+			lehet near kulcsszót is alkalmazni (normál esetben a "hosszú" ugrások jelölését szolgálja), a szimuláció szempontjából ezek figyelmen kívül vannak hagyva
+	call <azonosító>
+		a következő sor sorszámát eltárolja a veremben (4 byte), majd az azonosító címkéjéhez ugorva onnan folytatja a végrehajtást
+	ret
+		kiveszi a veremből a következőként végrehajtandó utasítás sorszámát (4 byte), és onnan folytatja a végrehajtást
+	<hely>
+		jelez valamilyen helyet, aminek az értékét tudjuk módosítani
+		regisztermegnevezés (eax, ebx, ecx, edx, esp, ebp illetve 1 vagy 2 byte-os részeik)
+		hivatkozás változóra vagy veremre: [ <érték> ]
+			FONTOS: az, hogy ez veremre hivatkozik-e, onnan derül ki, hogy van-e 'ebp' vagy 'esp' regiszterre (vagy 2-byteos részükre) hivatkozás a kifejezésen belül
+				amennyiben van, akkor verem hivatkozásként lesz kezelve, ha nincs, akkor változóhivatkozásként
+			az <érték> utal a hivatkozandó hely első byte-jára
+				változó esetén a további byte-okat a később deklarált változók irányába ("hátrafelé") haladva veszi ki
+				verem esetén a további byte-okat a verem alja felé haladva veszi ki
+				-- amennyiben akár az eleje, akár a vége érvénytelen helyre mutat, a szimuláció hibát jelez
+	<érték>
+		számként kezelt
+		<érték> +-*/ <érték>
+		( <érték> )
+		konstans
+		regiszter
+			a regiszter tartalmát (legfeljebb 4 byte) átkonvertálja egy számmá
+			ebp, esp regiszterek (és részeik) esetén negatív számmá konvertálódik
+		azonosító
+			a változó számára lefoglalt terület első byte-jának sorszámává alakul

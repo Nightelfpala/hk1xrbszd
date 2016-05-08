@@ -57,6 +57,9 @@ int main(int argc, char* argv[])
 			cout << (int)*it << "\t";
 		}
 		cout << endl;
+		
+		cout << "Veget jelzo utasitasszam: " << epP.get_utolsoutasitas() << endl;
+		cout << endl;
 	} catch(elsoparseParser::Exceptions ex)
 	{
 		

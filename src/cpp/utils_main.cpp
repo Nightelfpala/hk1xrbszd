@@ -41,10 +41,15 @@ int main()
 	vec_cout(vec, ss.str());
 	cout << "visszakonvertalva:\t" << vecc2sint(vec) << endl;
 	
-	int a = 5;
+	int a = -2;
 	sint2vecc( a, vec );
 	sint2vecc( vecc2sint( vec ) - 8, vec);
 	cout << a << "\tkonvertalas, -8, visszakonvertalas:\t" << vecc2sint( vec ) << endl;
+	
+	a = -12;
+	sint2vecc( a, vec );
+	sint2vecc( vecc2sint( vec ) + 8, vec);
+	cout << a << "\tkonvertalas, +8, visszakonvertalas:\t" << vecc2sint( vec ) << endl;
 	
 	return 0;
 }

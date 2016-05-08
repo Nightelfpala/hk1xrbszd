@@ -1,5 +1,6 @@
 
 #include <algorithm>
+#include <iostream>
 
 #include "allapot.h"
 #include "utils.h"
@@ -10,7 +11,7 @@ using namespace std;
 using namespace Utils;
 
 
-Allapot::Allapot() : zeroflag(false), signflag(false), kovetkezo_utasitas(0)
+Allapot::Allapot() : zeroflag(false), signflag(false), kovetkezo_utasitas(0), utasitasszam(0)
 {
 	eax.resize(4);
 	ebx.resize(4);
@@ -291,7 +292,7 @@ void Allapot::set_reg( const std::string &reg_azon, const std::vector<AP_UC> &fr
 					}
 				case 'b':
 					{
-						if ( reg_azon == "eb" )
+						if ( reg_azon == "bx" )
 						{
 							for (int i = 0; i < 2; ++i)
 							{
@@ -515,6 +516,15 @@ void Allapot::set_kovetkezo( const AP_UI &kov )
 	kovetkezo_utasitas = kov;
 }
 
+void Allapot::kov_utasitas()
+{
+	++utasitasszam;
+}
+int Allapot::get_utasitasszam() const
+{
+	return utasitasszam;
+}
+
 void Allapot::valtozo_vector( std::vector<AP_UC> &to ) const
 {
 	to.resize( valtozok.size() );
@@ -526,7 +536,8 @@ void Allapot::valtozo_vector( std::vector<AP_UC> &to ) const
 
 void Allapot::verem_vector( std::vector<AP_UC> &to ) const
 {
-	to.resize( verem.size() );
+	int meret = verem_teteje();
+	to.resize( meret );
 	for (int i = 0; i < to.size(); ++i)
 	{
 		to[i] = verem[i];
@@ -546,6 +557,8 @@ void Allapot::vec_pointerek( std::vector<std::string> &to ) const
 {
 	to.resize( 0 );
 	to.resize( verem.size() + 1, "");
+	cout << "ebp: " << -vecc2sint(ebp) << endl;
+	cout << "esp: " << -vecc2sint(esp) << endl;
 	to[ -vecc2sint(ebp) ] = "ebp";
 	to[ -vecc2sint(esp) ] = "esp";
 }
@@ -553,4 +566,43 @@ void Allapot::vec_pointerek( std::vector<std::string> &to ) const
 int Allapot::verem_teteje() const
 {
 	return -vecc2sint(esp);
+}
+
+void Allapot::print_allapot() const
+{
+	cout << endl << "Allapot:" << endl;
+	cout << "kovetkezo utasitas szama: " << kovetkezo_utasitas << endl;
+	cout << "osszesen a " << utasitasszam << ". vegrehajtott utasitas" << endl;
+	
+	cout << "Zero flag:\t" << zeroflag << endl;
+	cout << "Sign flag:\t" << signflag << endl;
+	
+	vec_cout(eax, "eax");
+	vec_cout(ebx, "ebx");
+	vec_cout(ecx, "ecx");
+	vec_cout(edx, "edx");
+	
+	vec_cout(esp, "esp");
+	vec_cout(ebp, "ebp");
+	
+	vector<string> vecStr;
+	elso_valtozok( vecStr );
+	cout << "valtozok, hossza: " << valtozok.size() << endl;
+	for (int i = 0; i < vecStr.size(); ++i )
+	{
+		cout << vecStr[i] << "\t";
+	}
+	cout << endl;
+	vec_cout( valtozok );
+	
+	vec_pointerek( vecStr );
+	cout << "verem, hossza: " << verem.size() << endl;
+	for (int i = 0; i < vecStr.size(); ++i )
+	{
+		cout << vecStr[i] << "\t";
+	}
+	cout << endl;
+	vector<AP_UC> veremp;
+	verem_vector( veremp );
+	vec_cout( veremp );
 }
