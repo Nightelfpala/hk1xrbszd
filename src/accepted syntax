@@ -26,6 +26,7 @@ utasítások
 		a megfelelő NASM assembly utasítással egyezik meg
 		minden utasítás argumentumméretének egyértelműnek kell lennie - a regisztereknél ez következik a regiszterből, egyéb esetben (változó/verem hivatkozás, konstans) 'byte', 'word', 'dword' kulcsszavakkal lehet megadni a méretet (1, 2, 4 byte-ot jelentenek megfelelő sorrendben)
 			ha egy műveletnek két argumentuma van, akkor vagy meg kell egyeznie a méretüknek, vagy az egyiknek nem definiáltnak kell lennie (hivatkozás vagy konstans méret megadása nélkül)
+		normál esetben az assembly nem fogad el olyan utasításokat, ahol két hivatkozás ([]-jel jelölve) van, itt kivételt teszünk, lehet ilyen utasításokat megadni
 	mov <hely>, <érték>
 	add <hely>, <érték>
 	sub <hely>, <érték>

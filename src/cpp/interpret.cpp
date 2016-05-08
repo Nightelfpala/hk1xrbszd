@@ -72,7 +72,7 @@ int main( int argc, char *argv[] )
 	while ( allapot.get_kovetkezo() != vege)
 	{
 		cout << "Kovetkezo utasitas:" << endl;
-		cout << "\t" << utas_data[ allapot.get_kovetkezo() ].sor << endl;
+		cout << "\t" << utas_data[ allapot.get_kovetkezo() ].eredetisorszam << ". sor:\t" << utas_data[ allapot.get_kovetkezo() ].sor << endl;
 		cout << "Nyomjon entert a vegrehajtashoz!" << endl;
 		{
 			string tmp;
