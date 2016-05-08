@@ -122,16 +122,16 @@ allapot: $(OBJ_ALLAPOT)
 	$(CC) -o $(OUT_ALLAPOT) $^ $(MINGWSTATIC)
 	
 ui_vec: $(OBJ_UI_VEC)
-	$(CC) -o $(OUT_UI_VEC) $^ $(QT_INCPATH) $(QT_LIBS)
+	$(CC) -o $(OUT_UI_VEC) $^ $(QT_INCPATH) $(QT_LIBS) $(MINGWSTATIC)
 
 ui_main: $(OBJ_UI_MAIN)
-	$(CC) -o $(OUT_UI_MAIN) $^ $(QT_INCPATH) $(QT_LIBS)
+	$(CC) -o $(OUT_UI_MAIN) $^ $(QT_INCPATH) $(QT_LIBS) $(MINGWSTATIC)
 
 elsoparse: $(OBJ_ELSOP)
-	$(CC) -o $(OUT_ELSOP) $^
+	$(CC) -o $(OUT_ELSOP) $^ $(MINGWSTATIC)
 
 interpret: $(OBJ_INTERP)
-	$(CC) -o $(OUT_INTERP) $^ $(FLAGS)
+	$(CC) -o $(OUT_INTERP) $^ $(FLAGS) $(MINGWSTATIC)
 
 clean:
 	rm -f $(OBJ) $(MAINS_OBJ)
