@@ -23,7 +23,7 @@ mainDisplay::mainDisplay( )
 	
 	QGridLayout *layout = new QGridLayout(this);
 	QGridLayout *controlLayout = new QGridLayout(controlWidget);
-	nextInstruction = new QLabel(controlWidget);
+	nextInstruction = new QLabel(this);
 	nextButton = new QPushButton( QString::fromUtf8("Végrehajtás"), controlWidget);
 	
 	createWidgets();
@@ -32,7 +32,6 @@ mainDisplay::mainDisplay( )
 		quitAct = new QAction( QString::fromUtf8("Kilépés"), this);
 		
 		//connect( openAct, SIGNAL( triggered() ), this, SLOT( openFile() ));
-		connect( openAct, SIGNAL( triggered() ), this, SLOT( oF2() ));
 		connect( quitAct, SIGNAL( triggered() ), this, SLOT( close() ));
 		connect( nextButton, SIGNAL( clicked() ), this, SLOT( interpretNext() ));
 		
@@ -54,7 +53,7 @@ mainDisplay::mainDisplay( )
 	layout -> addWidget(zeroFlag, 0, 2);
 	layout -> addWidget(signFlag, 1, 2);
 	
-	layout -> addWidget(controlWidget, 0, 3, 1, 2);
+	layout -> addWidget(controlWidget, 0, 3, 2, 2);
 	
 	controlLayout -> addWidget( nextInstruction, 0, 0, 1, 3);
 	controlLayout -> addWidget( nextButton, 1, 2, 1, 1);
@@ -63,6 +62,9 @@ mainDisplay::mainDisplay( )
 	controlWidget -> setLayout(controlLayout);
 	
 	displayAllapot();
+	
+	
+	openFile();
 }
 
 mainDisplay::~mainDisplay( )
@@ -77,11 +79,14 @@ void mainDisplay::openFile()
 	ifstream infile;
 	infile.open( fileName.toStdString().c_str() );
 	
+	cout << "opening file" << endl;
 	elsoparseParser elsoParser( infile );
 	
 	try
 	{
+		cout << "yep" << endl;
 		elsoParser.completeParse();
+		cout << "parse done" << endl;
 		
 		vector<AP_UC> valtozok;
 		map<std::string, int> valtozo_kezdetek;
@@ -90,10 +95,12 @@ void mainDisplay::openFile()
 		ugrocimkek = elsoParser.get_ugrocimke();
 		valtozo_kezdetek = elsoParser.get_valtozokezdet();
 		valtozok = elsoParser.get_valtozok();
+		cout << "req done" << endl;
 		
 		allapot.init( valtozo_kezdetek, valtozok );
 		iParser.initAp( &allapot, &ugrocimkek );
 		
+		allapot.set_kovetkezo( elsoParser.get_elsoutasitas() );
 		displayAllapot();
 		cout << "done?######################x" << endl;
 	} catch ( elsoparseParser::Exceptions ex )
@@ -105,13 +112,6 @@ void mainDisplay::openFile()
 		msgBox.exec();
 	}
 	infile.close();
-	cout << "nooo" << endl;
-}
-
-void mainDisplay::oF2()
-{
-	openFile();
-	cout << "ja" << endl;
 }
 
 void mainDisplay::interpretNext()
@@ -123,6 +123,7 @@ void mainDisplay::interpretNext()
 	try
 	{
 		iParser.completeParse( iStream, utasitasok[kov].argmeret );
+		displayAllapot();
 	} catch ( interpretParser::Exceptions ex )
 	{
 		QMessageBox msgBox;
@@ -132,19 +133,30 @@ void mainDisplay::interpretNext()
 		msgBox.exec();
 	} catch ( Allapot::Exceptions ex)
 	{
+		QMessageBox msgBox;
+		msgBox.setWindowTitle( QString::fromUtf8( "Hiba!" ));
+		msgBox.setText( QString::fromUtf8("Hiba történt a muvelet vegrehajtasa kozben") );
+		string error;
 		switch (ex)
 		{
 		case Allapot::URES_VEREM:
+			error = "Üres veremből pop művelet végrehajtása sikertelen!";
 			break;
 		case Allapot::TELE_VEREM:
+			error = "Nem fér a verembe több változó!";
 			break;
 		case Allapot::HATARON_KIVULI_VALTOZO:
+			error = "Nem érvényes változó hivatkozás!";
 			break;
 		case Allapot::HATARON_KIVULI_VEREM:
+			error = "Nem érvényes verem hivatkozás!";
 			break;
 		default:
+			error = "Ismeretlen hiba történt!";
 			break;
 		}
+		msgBox.setInformativeText( QString::fromStdString( error ));
+		msgBox.exec();
 	}
 }
 
@@ -175,33 +187,33 @@ void mainDisplay::displayAllapot()
 	vector<std::string> vecStr;
 	bool b;
 	
-	cout << "1" << endl;
+	//cout << "1" << endl;
 	
 	allapot.get_reg("eax", vecUC);
-	Utils::vec_cout(vecUC, "eax");
-	cout << "a" << vecUC.size() << endl;
+	//Utils::vec_cout(vecUC, "eax");
+	//cout << "a" << vecUC.size() << endl;
 	eax -> setValues( vecUC );
-	cout << "a2" << endl;
 	
 	allapot.get_reg("ebx", vecUC);
-	Utils::vec_cout(vecUC, "ebx");
+	//Utils::vec_cout(vecUC, "ebx");
 	ebx -> setValues( vecUC );
-	cout << "b" << endl;
+	//cout << "b" << endl;
 	
 	allapot.get_reg("ecx", vecUC);
-	Utils::vec_cout(vecUC, "ecx");
+	//Utils::vec_cout(vecUC, "ecx");
 	ecx -> setValues( vecUC );
-	cout << "c" << endl;
+	//cout << "c" << endl;
 	
 	allapot.get_reg("edx", vecUC);
-	Utils::vec_cout(vecUC, "edx");
+	//Utils::vec_cout(vecUC, "edx");
 	edx -> setValues( vecUC );
-	cout << "d" << endl;
+	//cout << "d" << endl;
 	
 	allapot.valtozo_vector( vecUC );
 	allapot.elso_valtozok( vecStr );
 	Utils::vec_cout(vecUC, "valtozok:");
 	valtozok -> updateValues( vecUC );
+	cout << "valtkieg" << endl;
 	valtozok -> updateKieg( vecStr );
 	cout << "valt" << endl;
 	
@@ -219,5 +231,14 @@ void mainDisplay::displayAllapot()
 	b = allapot.get_zero();
 	zeroFlag -> setFlag(b);
 	cout << "zero" << endl;
+	
+	if ( nextInstruction )
+	{
+		nextInstruction -> setText( QString::fromStdString( utasitasok[allapot.get_kovetkezo()].sor ) );
+		cout << "NI text setup" << endl;
+	} else 
+	{
+		cout << "NO NEXTINSTRUCTION" << endl;
+	}
 }
 

@@ -1,9 +1,10 @@
 megjelenítés, terv
 	Qt-ban elkészítve
-		---------fordítás parancssorban, saját makefile használatával (amibe a megfelelő linkeléseket és includeokat a qmake által generált makefile-ból átemeljük)
-		felülbírálva: megfelelő QtCreator verzióba egy projektbe berakjuk az eddig elkészített fileokat és abban megcsináljuk a kezelőfelületet
+		fordítás parancssorban, saját makefile használatával (amibe a megfelelő linkeléseket és includeokat a qmake által generált makefile-ból átemeljük)
+		---------felülbírálva: megfelelő QtCreator verzióba egy projektbe berakjuk az eddig elkészített fileokat és abban megcsináljuk a kezelőfelületet
 			mivel nem találhatóak olyan .dll állományok, amikkel a Cygwin alatt lefordított qt-t használó program a Windows explorerből futtatható
 				(Qt4.8.7-hez korábbi mingw verziós libek vannak, a cygwines Qt4Core.dll-lel nem fut, QtCreator frissebb verziójával csak Qt5-höz vannak .dll-ek)
+			visszavonva - valószínűleg a dll állományok hibája megoldható (csak a hibaüzetet eddig nehezen értelmezhető volt)
 
 részek:
 	vector<unsigned char> megjelenítésére szolgáló osztály		-	QWidget-ből öröklődéssel

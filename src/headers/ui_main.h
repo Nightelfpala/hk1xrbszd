@@ -24,7 +24,6 @@ public:
 	
 private slots:
     void openFile();
-	void oF2();
 	void interpretNext();
 	
 private:
