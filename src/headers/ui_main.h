@@ -24,7 +24,10 @@ public:
 private slots:
 	void openFile();
 private:
+
+	regDisplay* eax;
 	
+	void displayAllapot();
 };
 
 
