@@ -9,13 +9,13 @@
 #include <QGridLayout>
 #include <QScrollArea>
 #include <QFrame>
-#include <QCheckBox>
 
 #include <vector>
 #include <string>
 
 class regDisplay : public QFrame
 {	// a regiszterek kijelzeseert felelos, fix meretu
+	Q_OBJECT
 public:
 	regDisplay(int _meret, const std::string &nev, QWidget *parent = 0);
 	~regDisplay();
@@ -38,6 +38,7 @@ private:
 
 class veremDisplay : public QFrame
 {	// a verem illetve a valtozok kijelzeseert felelos, valtoztathato meretu, gorditosavval ellatott
+	Q_OBJECT
 public:
 	veremDisplay( const std::string &nev, QWidget *parent );
 	~veremDisplay();
@@ -69,6 +70,7 @@ private:
 
 class flagDisplay : public QFrame
 {
+	Q_OBJECT
 public:
 	flagDisplay( const std::string &nev, QWidget* parent );
 	~flagDisplay();
@@ -78,7 +80,7 @@ public:
 private:
 	const std::string name;
 	QLabel* nameLabel;
-	QCheckBox* checkBox;
+	QLabel* valueLabel;
 	
 	bool flag;
 };

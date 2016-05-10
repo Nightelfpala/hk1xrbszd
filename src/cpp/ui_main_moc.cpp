@@ -22,7 +22,7 @@ static const uint qt_meta_data_mainDisplay[] = {
        6,       // revision
        0,       // classname
        0,    0, // classinfo
-       2,   14, // methods
+       1,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -31,13 +31,12 @@ static const uint qt_meta_data_mainDisplay[] = {
 
  // slots: signature, parameters, type, tag, flags
       13,   12,   12,   12, 0x08,
-      24,   12,   12,   12, 0x08,
 
        0        // eod
 };
 
 static const char qt_meta_stringdata_mainDisplay[] = {
-    "mainDisplay\0\0openFile()\0interpretNext()\0"
+    "mainDisplay\0\0openFile()\0"
 };
 
 void mainDisplay::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
@@ -47,7 +46,6 @@ void mainDisplay::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id,
         mainDisplay *_t = static_cast<mainDisplay *>(_o);
         switch (_id) {
         case 0: _t->openFile(); break;
-        case 1: _t->interpretNext(); break;
         default: ;
         }
     }
@@ -86,9 +84,9 @@ int mainDisplay::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 2)
+        if (_id < 1)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 2;
+        _id -= 1;
     }
     return _id;
 }
