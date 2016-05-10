@@ -23,6 +23,7 @@ public:
 	~mainDisplay( );
 private slots:
 	void openFile();
+	void interpretNext();
 private:
 
 	regDisplay* eax;

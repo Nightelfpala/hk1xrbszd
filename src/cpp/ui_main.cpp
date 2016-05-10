@@ -15,6 +15,8 @@ using namespace std;
 
 mainDisplay::mainDisplay( QWidget *parent ) : QMainWindow(parent)
 {
+	setWindowTitle( QString::fromUtf8("Assembly szimuláció") );
+	
 	QWidget *mainWidget = new QWidget( this );
 	setCentralWidget(mainWidget);
 	//openFile();
@@ -53,17 +55,35 @@ void mainDisplay::openFile()
 {
 	QString fileName = QFileDialog::getOpenFileName( this, ".asm file megnyitasa" );
 	
-	ifstream infile;
-	infile.open( fileName.toStdString().c_str() );
-	
-	while (infile)
+	if ( fileName.isEmpty() )
 	{
-		string s;
-		getline(infile, s);
-		cout << s << endl;
+		ifstream infile;
+		infile.open( fileName.toStdString().c_str() );
+		
+		elsoparseParser eParser(infile);
+		
+		try
+		{
+			eParser.completeParse();
+			
+			
+			displayAllapot();
+			
+		} catch (elsoparseParser::Exceptions ex)
+		{
+			QMessageBox msg;
+			msg.setWindowTitle( QString::fromUtf8(" ") );
+			msg.setText( QString::fromUtf8("Nem történt fájlmegnyitás"));
+			msg.exec();
+		}
+		
+		infile.close();
 	}
+}
+
+void mainDisplay::interpretNext()
+{
 	
-	infile.close();
 }
 
 void mainDisplay::displayAllapot()

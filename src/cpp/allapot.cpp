@@ -41,6 +41,24 @@ void Allapot::init( const std::map<std::string, int> &valtozo_kezdetek, const st
 {
 	valtozo_elso = valtozo_kezdetek;
 	valtozok = valt_vector;
+	
+	eax.resize(4);
+	ebx.resize(4);
+	ecx.resize(4);
+	edx.resize(4);
+	
+	ebp.resize(4);
+	esp.resize(4);
+	
+	uint2vecc( 0, eax);
+	ebx = eax;
+	ecx = eax;
+	edx = eax;
+	
+	sint2vecc( 0, esp);
+	ebp = esp;
+	
+	verem.resize(0);
 }
 
 void Allapot::get_reg( const std::string &reg_azon, std::vector<AP_UC> &to ) const
