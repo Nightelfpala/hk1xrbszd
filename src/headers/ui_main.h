@@ -26,6 +26,9 @@ private slots:
 private:
 
 	regDisplay* eax;
+	regDisplay* ebx;
+	regDisplay* ecx;
+	regDisplay* edx;
 	
 	Allapot allapot;
 	
