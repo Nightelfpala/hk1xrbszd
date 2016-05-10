@@ -27,6 +27,8 @@ private:
 
 	regDisplay* eax;
 	
+	Allapot allapot;
+	
 	void displayAllapot();
 };
 

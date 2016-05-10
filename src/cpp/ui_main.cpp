@@ -56,10 +56,7 @@ void mainDisplay::openFile()
 void mainDisplay::displayAllapot()
 {
 	vector<AP_UC> vecUC(4);
-	for (int i = 0; i < vecUC.size(); ++i)
-	{
-		vecUC[i] = 3 - i + i * i * 2;
-	}
+	allapot.get_reg("eax", vecUC);
 	
 	eax -> setValues( vecUC );
 }
