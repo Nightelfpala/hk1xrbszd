@@ -15,7 +15,10 @@ using namespace std;
 
 mainDisplay::mainDisplay( QWidget *parent ) : QMainWindow(parent)
 {
-	openFile();
+	//openFile();
+	
+	QPushButton *btn = new QPushButton(this);
+	connect( btn, SIGNAL( clicked() ), this, SLOT(openFile()));
 }
 
 mainDisplay::~mainDisplay( )
@@ -29,6 +32,13 @@ void mainDisplay::openFile()
 	
 	ifstream infile;
 	infile.open( fileName.toStdString().c_str() );
+	
+	while (infile)
+	{
+		string s;
+		getline(infile, s);
+		cout << s << endl;
+	}
 	
 	infile.close();
 }
