@@ -20,7 +20,7 @@
 class elsoparseParser : public elsoparseParserBase
 {
 public:
-	elsoparseParser( std::istream &in) : lexer( &in, &std::cerr ), utasitasszam(0), elsoutasitas_cimke(""), errorMsg("") {}
+	elsoparseParser( std::istream &in) : lexer( &in, &std::cerr ), utasitasszam(0), elsoutasitas_cimke(""), errorMsg(""), valtozok(0) {}
 	~elsoparseParser() {}
 	
 	int completeParse();

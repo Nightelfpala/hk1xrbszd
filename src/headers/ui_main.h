@@ -15,6 +15,8 @@
 #include "interpretParser.h"
 #include "typedefs.h"
 
+class elsoparseParser;
+
 class mainDisplay : public QMainWindow
 {
 	Q_OBJECT
@@ -24,6 +26,8 @@ public:
 private slots:
 	void openFile();
 	void interpretNext();
+	
+	void displayAllapot();
 private:
 
 	regDisplay* eax;
@@ -31,9 +35,16 @@ private:
 	regDisplay* ecx;
 	regDisplay* edx;
 	
+	veremDisplay* valtozok;
+	veremDisplay* verem;
+	
+	std::map<int, utasitas_data> utasitasok;
+	std::map<std::string, int> ugrocimkek;
+	
 	Allapot allapot;
 	
-	void displayAllapot();
+	elsoparseParser *eParser;
+	
 };
 
 

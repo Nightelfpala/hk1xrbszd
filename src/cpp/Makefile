@@ -11,8 +11,8 @@ INCLUDE_INTERPRET = ../interpret
 OBJECTS = ../objects
 BIN = ../bin
 
-#CC = x86_64-w64-mingw32-g++ -g -Wall
-CC = x86_64-w64-mingw32-g++
+CC = x86_64-w64-mingw32-g++ -g -Wall -Wextra
+#CC = x86_64-w64-mingw32-g++
 MOC = moc.exe
 FLAGS = -I$(INCLUDE) -I$(INCLUDE_ELSOPARSE) -I$(INCLUDE_INTERPRET)
 
