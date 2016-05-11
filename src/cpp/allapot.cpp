@@ -457,7 +457,7 @@ void Allapot::get_var( const int &elso_byte, const AP_UI &hossz, std::vector<AP_
 	} else	// verembol == 1, verembol veszunk ki
 	{
 		elso *= -1;
-		if ( (elso > verem.size() ) || (( elso - hossz ) < 0) )
+		if ( (elso > verem.size() ) || (elso < hossz ) )
 			throw HATARON_KIVULI_VEREM;
 		for ( int i = 0; i < hossz; ++i)
 		{
@@ -575,8 +575,6 @@ void Allapot::vec_pointerek( std::vector<std::string> &to ) const
 {
 	to.resize( 0 );
 	to.resize( verem.size() + 1, "");
-	cout << "ebp: " << -vecc2sint(ebp) << endl;
-	cout << "esp: " << -vecc2sint(esp) << endl;
 	to[ -vecc2sint(ebp) ] = "ebp";
 	to[ -vecc2sint(esp) ] = "esp";
 }
