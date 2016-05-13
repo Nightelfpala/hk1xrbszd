@@ -1,0 +1,852 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<sim-project version="7.7" multi-file="no">
+  <meta>
+    <name>Project</name>
+    <authors> </authors>
+    <description />
+  </meta>
+  <counters models="1">
+    <entity-names>
+      <counter>
+        <item-type stereotype="" type="UmlClass" />
+        <value>12</value>
+      </counter>
+      <counter>
+        <item-type stereotype="" type="UmlEnumeration" />
+        <value>3</value>
+      </counter>
+      <counter>
+        <item-type stereotype="" type="UmlPackage" />
+        <value>2</value>
+      </counter>
+      <counter>
+        <item-type stereotype="" type="UmlCollaboration" />
+        <value>1</value>
+      </counter>
+    </entity-names>
+    <entity-ids>
+      <counter>
+        <item-type stereotype="" type="UmlClass" />
+        <value>13</value>
+      </counter>
+      <counter>
+        <item-type stereotype="" type="UmlGeneralization" />
+        <value>5</value>
+      </counter>
+      <counter>
+        <item-type stereotype="" type="UmlEnumeration" />
+        <value>4</value>
+      </counter>
+      <counter>
+        <item-type stereotype="" type="UmlAssociation" />
+        <value>5</value>
+      </counter>
+      <counter>
+        <item-type stereotype="" type="UmlComment" />
+        <value>2</value>
+      </counter>
+      <counter>
+        <item-type stereotype="" type="UmlCommentConnector" />
+        <value>2</value>
+      </counter>
+      <counter>
+        <item-type stereotype="" type="UmlDependency" />
+        <value>5</value>
+      </counter>
+      <counter>
+        <item-type stereotype="" type="UmlPackage" />
+        <value>3</value>
+      </counter>
+      <counter>
+        <item-type stereotype="" type="UmlContainment" />
+        <value>2</value>
+      </counter>
+      <counter>
+        <item-type stereotype="" type="UmlCollaboration" />
+        <value>2</value>
+      </counter>
+      <counter>
+        <item-type stereotype="" type="AbstractElementGroup" />
+        <value>5</value>
+      </counter>
+    </entity-ids>
+    <diagrams>
+      <counter>
+        <type>SoftwareIdeasModeler.Core.Diagrams.UmlDiagrams.UmlClassDiagram</type>
+        <value>1</value>
+      </counter>
+    </diagrams>
+    <fields>
+      <counter>
+        <type>SoftwareIdeasModeler.Core.DiagramItems.Fields.OperationField</type>
+        <value>67</value>
+      </counter>
+      <counter>
+        <type>SoftwareIdeasModeler.Core.DiagramItems.Fields.AttributeField</type>
+        <value>30</value>
+      </counter>
+      <counter>
+        <type>SoftwareIdeasModeler.Core.DiagramItems.Fields.EnumerationItemField</type>
+        <value>7</value>
+      </counter>
+    </fields>
+  </counters>
+  <management>
+    <persons>
+      <person id="Pb9d4a4e79d084f2f97b01e634a9e99a5">
+        <first-name />
+        <last-name />
+        <role />
+        <e-mail />
+        <phone-number />
+        <description />
+        <color>#00000000</color>
+      </person>
+    </persons>
+    <tasks />
+    <requirements />
+    <issues />
+    <to-dos />
+  </management>
+  <glossary />
+  <types>
+    <type-sets>
+      <type-set file="UmlTypes.xml" />
+    </type-sets>
+    <custom-types>
+      <type id="bool" tid="" name="bool" description="" nullable="false" />
+      <type id="unsigned char" tid="" name="unsigned char" description="" nullable="false" />
+      <type id="int" tid="" name="int" description="" nullable="false" />
+      <type id="unsigned int" tid="" name="unsigned int" description="" nullable="false" />
+      <type id="vector&lt;unsigned char&gt;" tid="" name="vector&lt;unsigned char&gt;" description="" nullable="false" />
+      <type id="map&lt;string, int&gt;" tid="" name="map&lt;string, int&gt;" description="" nullable="false" />
+      <type id="map&lt;int, utasitas_data&gt;" tid="" name="map&lt;int, utasitas_data&gt;" description="" nullable="false" />
+      <type id="string" tid="" name="string" description="" nullable="false" />
+      <type id="Class:di774172496565707111" tid="" name="elsoparseFlexLexer" description="" nullable="false" class-ref="di774172496565707111" />
+      <type id=":exception" tid="" name=":exception" description="" nullable="false" />
+      <type id="interpretFlexLexer*" tid="" name="interpretFlexLexer*" description="" nullable="false" />
+      <type id="Allapot*" tid="" name="Allapot*" description="" nullable="false" />
+      <type id="map&lt;string, int&gt;*" tid="" name="map&lt;string, int&gt;*" description="" nullable="false" />
+    </custom-types>
+  </types>
+  <filters />
+  <items />
+  <models>
+    <model id="p741433390645974026" name="Model 1" type="model" namespace="" order-index="1">
+      <meta>
+        <authors>
+          <author> </author>
+        </authors>
+        <description />
+        <creation-date>05/13/2016 18:50:25</creation-date>
+        <change-date>01/01/0001 00:00:00</change-date>
+        <revision-count>0</revision-count>
+        <version />
+      </meta>
+      <abstract-items />
+      <sub-models />
+      <diagram type="uml-class" id="p979969283295681868" name="ClassDiagram1" order-index="1" show-id="false" show-name="true" show-parent-name="false" show-stereotypes="true" show-tagged-values="false" show-template-parameters="true" show-fields="true" show-empty-compartments="true" show-attributes="true" show-attribute-visibility="true" show-operations="true" show-operation-parameters="true" show-operation-visibility="true" show-nullability="true" show-sequence-number="false" show-extension-points="true" show-relationship-texts="true" auto-routed-paths="false">
+        <style>
+          <background-color index="1" color="#FFE9E9E9" />
+          <background-color index="2" color="#FFE9E9E9" />
+          <background-type type="solid" />
+        </style>
+        <meta>
+          <authors>
+            <author> </author>
+          </authors>
+          <description />
+          <creation-date>05/13/2016 18:50:25</creation-date>
+          <change-date>05/13/2016 20:19:15</change-date>
+          <revision-count>0</revision-count>
+          <version />
+        </meta>
+        <abstract-items>
+          <item id="di745623683807833891" cid="C001" type="class" name="Allapot" style-class="default" is-abstract="false" is-root="false" is-leaf="false" is-active="false" creator="Pb9d4a4e79d084f2f97b01e634a9e99a5" creation-date="05/13/2016 18:50:29">
+            <stereotypes />
+            <associated-diagrams />
+            <owned-items />
+            <style class="default" />
+            <attributes>
+              <attribute id="af42b8969a38c4b8faa0463ce3293729b138" cid="AT002" name="valtozo_elso" type="map&lt;string, int&gt;" type-id="map&lt;string, int&gt;" visibility="private" abstract="false" virtual="false" static="false" />
+              <attribute id="a72798717b95c4069bc1cd5757455d3a0118" cid="AT003" name="valtozok" type="vector&lt;unsigned char&gt;" type-id="vector&lt;unsigned char&gt;" visibility="private" abstract="false" virtual="false" static="false" />
+              <attribute id="a53b8fa0d86954927a8edca32e80fe767271" cid="AT004" name="eax, ebx, ecx, edx" type="vector&lt;unsigned char&gt;" type-id="vector&lt;unsigned char&gt;" visibility="private" abstract="false" virtual="false" static="false" />
+              <attribute id="a171a66fcec974b8ab55424145ff944cc939" cid="AT005" name="ebp, esp" type="vector&lt;unsigned char&gt;" type-id="vector&lt;unsigned char&gt;" visibility="private" abstract="false" virtual="false" static="false" />
+              <attribute id="af5d8beb4ac7e47a8a1094d2a7397ebc0277" cid="AT006" name="zeroflag" type="bool" type-id="bool" visibility="private" abstract="false" virtual="false" static="false" />
+              <attribute id="a6a5b6d2fd9644e44b81107f6523244ee471" cid="AT007" name="signflag" type="bool" type-id="bool" visibility="private" abstract="false" virtual="false" static="false" />
+              <attribute id="a901faef74606490aae5d88fceeeb00c7161" cid="AT008" name="verem" type="vector&lt;unsigned char&gt;" type-id="vector&lt;unsigned char&gt;" visibility="private" abstract="false" virtual="false" static="false" />
+              <attribute id="a6f6698ad4b694c9397503f6135a7b19c627" cid="AT028" name="kovetkezo_utasitas" type="unsigned int" type-id="unsigned int" visibility="private" abstract="false" virtual="false" static="false" />
+              <attribute id="aab6007f6fd1041248b369186f9e84b62256" cid="AT029" name="utasitasszam" type="unsigned int" type-id="unsigned int" visibility="private" abstract="false" virtual="false" static="false" />
+            </attributes>
+            <operations>
+              <operation id="o632b84e3070f4b8c89e1adcd18901cad272" cid="OP001" name="Allapot" type="" type-id="" visibility="public" abstract="false" virtual="false" static="false">
+                <source-codes />
+              </operation>
+              <operation id="ob0ddfdf73bc34f7e8c7e9a31b3ed4d97218" cid="OP002" name="~Allapot" type="" type-id="" visibility="public" abstract="false" virtual="false" static="false">
+                <source-codes />
+              </operation>
+              <operation id="ofc4ef58256ee47d39aa6fe46eb95aa9e692" cid="OP003" name="init" type="" type-id="" visibility="public" abstract="false" virtual="false" static="false">
+                <parameters>
+                  <parameter id="" name="map&lt;string" type="" type-id="" />
+                  <parameter id="" name="int&gt;" type="" type-id="" />
+                  <parameter id="" name="vector&lt;unsigned char&gt;" type="" type-id="" />
+                </parameters>
+                <source-codes />
+              </operation>
+              <operation id="oba44db943b8442ebb6df89e95f0bf1b0642" cid="OP004" name="get_reg" type="" type-id="" visibility="public" abstract="false" virtual="false" static="false">
+                <parameters>
+                  <parameter id="" name="string" type="" type-id="" />
+                  <parameter id="" name="vector&lt;unsigned char&gt;" type="" type-id="" />
+                </parameters>
+                <source-codes />
+              </operation>
+              <operation id="o332781c3f40e48e1b1c8204902e8f335808" cid="OP005" name="set_reg" type="" type-id="" visibility="public" abstract="false" virtual="false" static="false">
+                <parameters>
+                  <parameter id="" name="string" type="" type-id="" />
+                  <parameter id="" name="vector&lt;unsigned char&gt;" type="" type-id="" />
+                </parameters>
+                <source-codes />
+              </operation>
+              <operation id="oc85b8d38e442465889d8af0d3540d84e527" cid="OP006" name="get_zero" type="bool" type-id="bool" visibility="public" abstract="false" virtual="false" static="false">
+                <source-codes />
+              </operation>
+              <operation id="o9fc6f51a4f604488a20d9d510eb49e1f876" cid="OP007" name="set_zero" type="" type-id="" visibility="public" abstract="false" virtual="false" static="false">
+                <parameters>
+                  <parameter id="" name="bool" type="" type-id="" />
+                </parameters>
+                <source-codes />
+              </operation>
+              <operation id="o4ccdf32d52914e5dbdf3b580ccd2e3e469" cid="OP008" name="get_sign" type="bool" type-id="bool" visibility="public" abstract="false" virtual="false" static="false">
+                <source-codes />
+              </operation>
+              <operation id="o3c74d038003948428228044c6481f41b231" cid="OP009" name="set_sign" type="" type-id="" visibility="public" abstract="false" virtual="false" static="false">
+                <parameters>
+                  <parameter id="" name="bool" type="" type-id="" />
+                </parameters>
+                <source-codes />
+              </operation>
+              <operation id="o95a053fbbc9245d89058701edf7689f4631" cid="OP011" name="elso_byte" type="unsigned char" type-id="unsigned char" visibility="public" abstract="false" virtual="false" static="false">
+                <parameters>
+                  <parameter id="" name="string" type="" type-id="" />
+                </parameters>
+                <source-codes />
+              </operation>
+              <operation id="of4b99ea481234cea8753907a6ea10374692" cid="OP012" name="get_var" type="" type-id="" visibility="public" abstract="false" virtual="false" static="false">
+                <parameters>
+                  <parameter id="" name="int" type="" type-id="" />
+                  <parameter id="" name="unsigned int" type="" type-id="" />
+                  <parameter id="" name="vector&lt;unsigned char&gt;" type="" type-id="" />
+                  <parameter id="" name="bool" type="" type-id="" />
+                </parameters>
+                <source-codes />
+              </operation>
+              <operation id="ob70654f2bda84117a34d86e7410b7017128" cid="OP013" name="set_var" type="" type-id="" visibility="public" abstract="false" virtual="false" static="false">
+                <parameters>
+                  <parameter id="" name="int" type="" type-id="" />
+                  <parameter id="" name="vector&lt;unsigned char&gt;" type="" type-id="" />
+                  <parameter id="" name="bool" type="" type-id="" />
+                </parameters>
+                <source-codes />
+              </operation>
+              <operation id="o147b1e8eed7d4f728d44b0a3ba567fff258" cid="OP014" name="verem_push" type="" type-id="" visibility="public" abstract="false" virtual="false" static="false">
+                <parameters>
+                  <parameter id="" name="vector&lt;unsigned char" type="" type-id="" />
+                </parameters>
+                <source-codes />
+              </operation>
+              <operation id="oaa9ee7f00f9941fbbd31de68ba551935732" cid="OP015" name="verem_pop" type="" type-id="" visibility="public" abstract="false" virtual="false" static="false">
+                <parameters>
+                  <parameter id="" name="unsigned int" type="" type-id="" />
+                  <parameter id="" name="vector&lt;unsigned char&gt;" type="" type-id="" />
+                </parameters>
+                <source-codes />
+              </operation>
+              <operation id="oa7ab69968df444448bf5c496cb34ee86261" cid="OP016" name="verem_teteje" type="int" type-id="int" visibility="public" abstract="false" virtual="false" static="false">
+                <source-codes />
+              </operation>
+              <operation id="o7bc79d6b082f46b7bee488f6c5521558623" cid="OP017" name="get_kovetkezo" type="unsigned int" type-id="unsigned int" visibility="public" abstract="false" virtual="false" static="false">
+                <source-codes />
+              </operation>
+              <operation id="oe7f6b102f6d345d0acf3d51413fee4ed347" cid="OP018" name="set_kovetkezo" type="" type-id="" visibility="public" abstract="false" virtual="false" static="false">
+                <parameters>
+                  <parameter id="" name="unsigned int" type="" type-id="" />
+                </parameters>
+                <source-codes />
+              </operation>
+              <operation id="o18d4c6179ac44a07b00009193e7accab841" cid="OP019" name="kov_utasitas" type="" type-id="" visibility="public" abstract="false" virtual="false" static="false">
+                <source-codes />
+              </operation>
+              <operation id="o449d5c1a670d45dca99b2dd40ebe20e0550" cid="OP020" name="get_utasitasszam" type="int" type-id="int" visibility="public" abstract="false" virtual="false" static="false">
+                <source-codes />
+              </operation>
+              <operation id="o9a252208d5f94547af6201e34a403ac6764" cid="OP021" name="valtozo_vector" type="" type-id="" visibility="public" abstract="false" virtual="false" static="false">
+                <parameters>
+                  <parameter id="" name="vector&lt;unsigned char&gt;" type="" type-id="" />
+                </parameters>
+                <source-codes />
+              </operation>
+              <operation id="o6be2c89a5eac4953aef23f6874cad165258" cid="OP022" name="verem_vector" type="" type-id="" visibility="public" abstract="false" virtual="false" static="false">
+                <parameters>
+                  <parameter id="" name="vector&lt;unsigned char&gt;" type="" type-id="" />
+                </parameters>
+                <source-codes />
+              </operation>
+              <operation id="o6d831cceb6eb48f1bfe9b389cdcf2349843" cid="OP023" name="elso_valtozok" type="" type-id="" visibility="public" abstract="false" virtual="false" static="false">
+                <parameters>
+                  <parameter id="" name="vector&lt;string&gt;" type="" type-id="" />
+                </parameters>
+                <source-codes />
+              </operation>
+              <operation id="o0a83fd1559944c008cecddabf1e073cf586" cid="OP024" name="vec_pointerek" type="" type-id="" visibility="public" abstract="false" virtual="false" static="false">
+                <parameters>
+                  <parameter id="" name="vector&lt;string&gt;" type="" type-id="" />
+                </parameters>
+                <source-codes />
+              </operation>
+              <operation id="o38d74be2be7d493a84c590950c8b9969549" cid="OP025" name="print_allapot" type="" type-id="" visibility="public" abstract="false" virtual="false" static="false">
+                <source-codes />
+              </operation>
+            </operations>
+            <template-parameters>
+              <source-codes />
+            </template-parameters>
+          </item>
+          <item id="di815444108491605307" cid="REL001" type="relationship" name="" style-class="default" is-abstract="false" is-root="false" is-leaf="false" is-active="false" creator="Pb9d4a4e79d084f2f97b01e634a9e99a5" creation-date="05/13/2016 18:57:23">
+            <stereotypes />
+            <associated-diagrams />
+            <owned-items />
+            <style class="default" />
+            <relation from="di717711536555741410" to="di745623683807833891">
+              <start-role id="" name="" navigability="" association-type="association" visibility="private" />
+              <end-role id="" name="" navigability="" association-type="association" visibility="private" />
+            </relation>
+          </item>
+          <item id="di717711536555741410" cid="E001" type="enumeration" name="Allapot::Exceptions" style-class="default" is-abstract="false" is-root="false" is-leaf="false" is-active="false" creator="Pb9d4a4e79d084f2f97b01e634a9e99a5" creation-date="05/13/2016 18:56:22">
+            <stereotypes>
+              <stereotype name="enumeration" />
+            </stereotypes>
+            <associated-diagrams />
+            <owned-items />
+            <style class="default" />
+            <enumeration-items>
+              <enumeration-item id="a1a914fc3a7364dc293fb3b61d37ad74f370" cid="ENI001" name="URES_VEREM" />
+              <enumeration-item id="aef5513350cf74e988bba444f38b55bc7766" cid="ENI002" name="TELE_VEREM" />
+              <enumeration-item id="ab1b876f7c47b45b4b21495d202029b1f566" cid="ENI003" name="HATARON_KIVULI_VALTOZO" />
+              <enumeration-item id="a6796f64fd9154c2d9e3de6c88b001cf9442" cid="ENI004" name="HATARON_KIVULI_VEREM" />
+            </enumeration-items>
+          </item>
+          <item id="di420810337444613546" cid="C003" type="class" name="elsoparseParser" style-class="default" is-abstract="false" is-root="false" is-leaf="false" is-active="false" creator="Pb9d4a4e79d084f2f97b01e634a9e99a5" creation-date="05/13/2016 19:02:05">
+            <stereotypes />
+            <associated-diagrams />
+            <owned-items />
+            <style class="default" />
+            <attributes>
+              <attribute id="ae751cbe9d9f746afaef2559ce2091309697" cid="AT009" name="lexer" type="elsoparseFlexLexer" type-id="Class:di774172496565707111" visibility="private" abstract="false" virtual="false" static="false" />
+              <attribute id="a35e2e9e681ae4254952afa075150b46c650" cid="AT011" name="utasitasszam" type="int" type-id="int" visibility="private" abstract="false" virtual="false" static="false" />
+              <attribute id="a10f5c17609404c3abd2ebc56bf69e81390" cid="AT012" name="utasitas_gyujto" type="map&lt;int, utasitas_data&gt;" type-id="map&lt;int, utasitas_data&gt;" visibility="private" abstract="false" virtual="false" static="false" />
+              <attribute id="a5552dc83ffa74da4998b2980fb7480c5462" cid="AT013" name="ugrocimke_kovutasitas" type="map&lt;string, int&gt;" type-id="map&lt;string, int&gt;" visibility="private" abstract="false" virtual="false" static="false" />
+              <attribute id="afc7ec2e5d7e74497b578ef4ee0ea9bfc55" cid="AT014" name="utolso_utasitas" type="int" type-id="int" visibility="private" abstract="false" virtual="false" static="false" />
+              <attribute id="aed7055ab9f6c434c8b751b947464076c394" cid="AT015" name="valtozo_kezdetek" type="map&lt;string, int&gt;" type-id="map&lt;string, int&gt;" visibility="private" abstract="false" virtual="false" static="false" />
+              <attribute id="a791eceabf3b54217bb04e9fe179393b1850" cid="AT016" name="valtozok" type="vector&lt;unsigned char&gt;" type-id="vector&lt;unsigned char&gt;" visibility="private" abstract="false" virtual="false" static="false" />
+              <attribute id="a20fc87ebbf30437a87828c9422b81f5a722" cid="AT017" name="errorMsg" type="string" type-id="string" visibility="private" abstract="false" virtual="false" static="false" />
+            </attributes>
+            <operations>
+              <operation id="o1941c84280c849d9b98094ceed2cbe15572" cid="OP026" name="elsoparseParser" type="" type-id="" visibility="public" abstract="false" virtual="false" static="false">
+                <parameters>
+                  <parameter id="" name="istream" type="" type-id="" />
+                </parameters>
+                <source-codes />
+              </operation>
+              <operation id="o91d607aefd04405887503e71d6a543ee701" cid="OP027" name="~elsoparseParser" type="" type-id="" visibility="public" abstract="false" virtual="false" static="false">
+                <source-codes />
+              </operation>
+              <operation id="o7e7c65db5cc844ae9bfc1e5a5b435087910" cid="OP028" name="completeParse" type="int" type-id="int" visibility="public" abstract="false" virtual="false" static="false">
+                <source-codes />
+              </operation>
+              <operation id="o41589e62894d4ab8911a130e59d1ad5c800" cid="OP029" name="get_utasitasok" type="map&lt;int, utasitas_data&gt;" type-id="map&lt;int, utasitas_data&gt;" visibility="public" abstract="false" virtual="false" static="false">
+                <source-codes />
+              </operation>
+              <operation id="o634220283f534f18b297540e3e02bb38672" cid="OP030" name="get_valtozokezdet" type="map&lt;string, int&gt;" type-id="map&lt;string, int&gt;" visibility="public" abstract="false" virtual="false" static="false">
+                <source-codes />
+              </operation>
+              <operation id="o127ccfa7b66e40a298a3b44da6c76157776" cid="OP031" name="get_ugrocimke" type="map&lt;string, int&gt;" type-id="map&lt;string, int&gt;" visibility="public" abstract="false" virtual="false" static="false">
+                <source-codes />
+              </operation>
+              <operation id="oad7a2bb51db642ab90c1b2e7e74c385c137" cid="OP032" name="get_valtozok" type="vector&lt;unsigned char&gt;" type-id="vector&lt;unsigned char&gt;" visibility="public" abstract="false" virtual="false" static="false">
+                <source-codes />
+              </operation>
+              <operation id="oca0a6ef03cb84a9391d51aa872083097982" cid="OP033" name="get_elsoutasitas" type="int" type-id="int" visibility="public" abstract="false" virtual="false" static="false">
+                <source-codes />
+              </operation>
+              <operation id="o7d905ea3c05546ffac4587b687142ec6910" cid="OP034" name="get_utolsoutasitas" type="int" type-id="int" visibility="public" abstract="false" virtual="false" static="false">
+                <source-codes />
+              </operation>
+              <operation id="ocb0d35f72a134be4afb2dd90e069ccae678" cid="OP035" name="get_error" type="string" type-id="string" visibility="public" abstract="false" virtual="false" static="false">
+                <source-codes />
+              </operation>
+              <operation id="o35bb04f363804d01bd0cf0a3aaade4e3738" cid="OP036" name="parse" type="int" type-id="int" visibility="private" abstract="false" virtual="false" static="false">
+                <source-codes />
+              </operation>
+              <operation id="of9e68acfe9b74e19ba5d557688c74d50968" cid="OP037" name="postParse" type="" type-id="" visibility="private" abstract="false" virtual="false" static="false">
+                <source-codes />
+              </operation>
+              <operation id="ofbd04d1b724d4cf19c9009e7cb52a649545" cid="OP038" name="error" type="" type-id="" visibility="private" abstract="false" virtual="false" static="false">
+                <parameters>
+                  <parameter id="" name="char*" type="" type-id="" />
+                </parameters>
+                <source-codes />
+              </operation>
+              <operation id="obdbf011037544bf0843794a4b2299d89630" cid="OP039" name="lex" type="int" type-id="int" visibility="private" abstract="false" virtual="false" static="false">
+                <source-codes />
+              </operation>
+              <operation id="o06ada9d00c5246e78710dcdbb44e599f175" cid="OP040" name="print" type="" type-id="" visibility="private" abstract="false" virtual="false" static="false">
+                <source-codes />
+              </operation>
+              <operation id="oae7e969d496143f6bc2d4b02d1775295711" cid="OP041" name="getRegSize" type="int" type-id="int" visibility="private" abstract="false" virtual="false" static="false">
+                <parameters>
+                  <parameter id="" name="string" type="" type-id="" />
+                </parameters>
+                <source-codes />
+              </operation>
+              <operation id="o8890f04146234a77ad3c00cd4363009a565" cid="OP042" name="toLower" type="string" type-id="string" visibility="private" abstract="false" virtual="false" static="false">
+                <parameters>
+                  <parameter id="" name="string" type="" type-id="" />
+                </parameters>
+                <source-codes />
+              </operation>
+              <operation id="oc1dfb8beaa6d414b835d930b3a818863815" cid="OP043" name="executeAction" type="" type-id="" visibility="private" abstract="false" virtual="false" static="false">
+                <parameters>
+                  <parameter id="" name="int" type="" type-id="" />
+                </parameters>
+                <source-codes />
+              </operation>
+              <operation id="oae2c2bcec3644b4db4a04c12821b322b645" cid="OP044" name="errorRecovery" type="" type-id="" visibility="private" abstract="false" virtual="false" static="false">
+                <source-codes />
+              </operation>
+              <operation id="of37a410f8b1244fc9b81a6237e41549d750" cid="OP045" name="lookup" type="int" type-id="int" visibility="private" abstract="false" virtual="false" static="false">
+                <parameters>
+                  <parameter id="" name="bool" type="" type-id="" />
+                </parameters>
+                <source-codes />
+              </operation>
+              <operation id="od629cb7a443d4d8eb35897d67b9677ce241" cid="OP046" name="nextToken" type="" type-id="" visibility="private" abstract="false" virtual="false" static="false">
+                <source-codes />
+              </operation>
+              <operation id="obdb0f3d7222040589cafdfb4cfba607938" cid="OP047" name="print__" type="" type-id="" visibility="private" abstract="false" virtual="false" static="false">
+                <source-codes />
+              </operation>
+              <operation id="o59c85eb954f24733a51ace6d42ed4093838" cid="OP048" name="exceptionHandler__" type="" type-id="" visibility="private" abstract="false" virtual="false" static="false">
+                <parameters>
+                  <parameter id="" name="std" type=":exception" type-id=":exception" />
+                </parameters>
+                <source-codes />
+              </operation>
+            </operations>
+            <template-parameters>
+              <source-codes />
+            </template-parameters>
+          </item>
+          <item id="di497077479501510640" cid="C004" type="class" name="elsoparseParserBase" style-class="default" is-abstract="false" is-root="false" is-leaf="false" is-active="false" creator="Pb9d4a4e79d084f2f97b01e634a9e99a5" creation-date="05/13/2016 19:02:31">
+            <stereotypes />
+            <associated-diagrams />
+            <owned-items />
+            <style class="default" />
+            <attributes />
+            <operations />
+            <template-parameters>
+              <source-codes />
+            </template-parameters>
+          </item>
+          <item id="di477804290379484494" cid="GNR003" type="generalization" name="" style-class="default" is-abstract="false" is-root="false" is-leaf="false" is-active="false" creator="Pb9d4a4e79d084f2f97b01e634a9e99a5" creation-date="05/13/2016 19:03:12">
+            <stereotypes />
+            <associated-diagrams />
+            <owned-items />
+            <style class="default" />
+          </item>
+          <item id="di365183011735475764" cid="E002" type="enumeration" name="elsoparseParser::Exceptions" style-class="default" is-abstract="false" is-root="false" is-leaf="false" is-active="false" creator="Pb9d4a4e79d084f2f97b01e634a9e99a5" creation-date="05/13/2016 19:05:24">
+            <stereotypes>
+              <stereotype name="enumeration" />
+            </stereotypes>
+            <associated-diagrams />
+            <owned-items />
+            <style class="default" />
+            <enumeration-items>
+              <enumeration-item id="af1d4665df7f04f14bc7c0c99983ad677767" cid="ENI005" name="HIBA" />
+            </enumeration-items>
+          </item>
+          <item id="di130744232310654257" cid="REL003" type="relationship" name="" style-class="default" is-abstract="false" is-root="false" is-leaf="false" is-active="false" creator="Pb9d4a4e79d084f2f97b01e634a9e99a5" creation-date="05/13/2016 19:06:07">
+            <stereotypes />
+            <associated-diagrams />
+            <owned-items />
+            <style class="default" />
+            <relation from="di420810337444613546" to="di365183011735475764">
+              <start-role id="" name="" navigability="" association-type="association" visibility="private" />
+              <end-role id="" name="" navigability="" association-type="association" visibility="private" />
+            </relation>
+          </item>
+          <item id="di774172496565707111" cid="C005" type="class" name="elsoparseFlexLexer" style-class="default" is-abstract="false" is-root="false" is-leaf="false" is-active="false" creator="Pb9d4a4e79d084f2f97b01e634a9e99a5" creation-date="05/13/2016 19:07:08">
+            <stereotypes />
+            <associated-diagrams />
+            <owned-items />
+            <style class="default" />
+            <attributes />
+            <operations />
+            <template-parameters>
+              <source-codes />
+            </template-parameters>
+          </item>
+          <item id="di148238860929109274" cid="DEP001" type="dependency" name="" style-class="default" is-abstract="false" is-root="false" is-leaf="false" is-active="false" creator="Pb9d4a4e79d084f2f97b01e634a9e99a5" creation-date="05/13/2016 19:07:16">
+            <stereotypes>
+              <stereotype name="use" />
+            </stereotypes>
+            <associated-diagrams />
+            <owned-items />
+            <style class="default" />
+          </item>
+          <item id="di829383362378449633" cid="C006" type="class" name="utasitas_data" style-class="default" is-abstract="false" is-root="false" is-leaf="false" is-active="false" creator="Pb9d4a4e79d084f2f97b01e634a9e99a5" creation-date="05/13/2016 19:11:34">
+            <stereotypes>
+              <stereotype name="struct" />
+            </stereotypes>
+            <associated-diagrams />
+            <owned-items />
+            <style class="default" />
+            <attributes>
+              <attribute id="a3d51e92a30c24a829edb680b369226de442" cid="AT018" name="sor" type="string" type-id="string" visibility="public" abstract="false" virtual="false" static="false" />
+              <attribute id="a875b395a59fc4391af118ef70ff15e5b837" cid="AT019" name="eredetisorszam" type="int" type-id="int" visibility="public" abstract="false" virtual="false" static="false" />
+              <attribute id="add45c3c0ed6a49b4b9f981e281f96280706" cid="AT020" name="utasitassorszam" type="int" type-id="int" visibility="public" abstract="false" virtual="false" static="false" />
+              <attribute id="ae9de4890588f42d1b6642826d3bed807372" cid="AT021" name="argmeret" type="int" type-id="int" visibility="public" abstract="false" virtual="false" static="false" />
+            </attributes>
+            <operations>
+              <operation id="o0ccfe9b947994855861955c75c1be981837" cid="OP049" name="utasitas_data" type="" type-id="" visibility="public" abstract="false" virtual="false" static="false">
+                <source-codes />
+              </operation>
+              <operation id="oae5a8bd3f2bc496aa04ad82468eaebe8853" cid="OP050" name="utasitas_data" type="" type-id="" visibility="public" abstract="false" virtual="false" static="false">
+                <parameters>
+                  <parameter id="" name="string" type="" type-id="" />
+                  <parameter id="" name="int" type="" type-id="" />
+                  <parameter id="" name="int" type="" type-id="" />
+                  <parameter id="" name="int" type="" type-id="" />
+                </parameters>
+                <source-codes />
+              </operation>
+            </operations>
+            <template-parameters>
+              <source-codes />
+            </template-parameters>
+          </item>
+          <item id="di610557693195673922" cid="DEP002" type="dependency" name="" style-class="default" is-abstract="false" is-root="false" is-leaf="false" is-active="false" creator="Pb9d4a4e79d084f2f97b01e634a9e99a5" creation-date="05/13/2016 19:12:42">
+            <stereotypes>
+              <stereotype name="use" />
+            </stereotypes>
+            <associated-diagrams />
+            <owned-items />
+            <style class="default" />
+          </item>
+          <item id="di836826326861009183" cid="C008" type="class" name="interpretParserBase" style-class="default" is-abstract="false" is-root="false" is-leaf="false" is-active="false" creator="Pb9d4a4e79d084f2f97b01e634a9e99a5" creation-date="05/13/2016 19:15:24">
+            <stereotypes />
+            <associated-diagrams />
+            <owned-items />
+            <style class="default" />
+            <attributes />
+            <operations />
+            <template-parameters>
+              <source-codes />
+            </template-parameters>
+          </item>
+          <item id="di205815380720044566" cid="GNR004" type="generalization" name="" style-class="default" is-abstract="false" is-root="false" is-leaf="false" is-active="false" creator="Pb9d4a4e79d084f2f97b01e634a9e99a5" creation-date="05/13/2016 19:15:35">
+            <stereotypes />
+            <associated-diagrams />
+            <owned-items />
+            <style class="default" />
+          </item>
+          <item id="di263609644436796373" cid="C007" type="class" name="interpretParser" style-class="default" is-abstract="false" is-root="false" is-leaf="false" is-active="false" creator="Pb9d4a4e79d084f2f97b01e634a9e99a5" creation-date="05/13/2016 19:15:13">
+            <stereotypes />
+            <associated-diagrams />
+            <owned-items />
+            <style class="default" />
+            <attributes>
+              <attribute id="a3383a67a18d34d25b28a649464df9ef598" cid="AT023" name="lexer" type="interpretFlexLexer*" type-id="interpretFlexLexer*" visibility="private" abstract="false" virtual="false" static="false" />
+              <attribute id="a90ed985362c14ce3a4a840e77bb87d04972" cid="AT024" name="argmeret" type="int" type-id="int" visibility="private" abstract="false" virtual="false" static="false" />
+              <attribute id="aa8ea6986e72749f99ad912c0c18261eb660" cid="AT025" name="allapot" type="Allapot*" type-id="Allapot*" visibility="private" abstract="false" virtual="false" static="false" />
+              <attribute id="a7dc966aa2ba84181bef182f7f3c78106456" cid="AT026" name="ugrocimkek" type="map&lt;string, int&gt;*" type-id="map&lt;string, int&gt;*" visibility="private" abstract="false" virtual="false" static="false" />
+              <attribute id="a5273f12a4bce4dcebc03085038ede6ed240" cid="AT027" name="errorMsg" type="string" type-id="string" visibility="private" abstract="false" virtual="false" static="false" />
+            </attributes>
+            <operations>
+              <operation id="o415ab650c25c49ed9157131cf5acfdb9577" cid="OP051" name="interpretParser" type="" type-id="" visibility="public" abstract="false" virtual="false" static="false">
+                <source-codes />
+              </operation>
+              <operation id="obeaad21cc8aa4f938a64ac9a91da6e5a189" cid="OP052" name="~interpretParser" type="" type-id="" visibility="public" abstract="false" virtual="false" static="false">
+                <source-codes />
+              </operation>
+              <operation id="oca9f312066f44aefbeb5a11e0ab9624f298" cid="OP053" name="completeParse" type="int" type-id="int" visibility="public" abstract="false" virtual="false" static="false">
+                <parameters>
+                  <parameter id="" name="istream" type="" type-id="" />
+                  <parameter id="" name="int" type="" type-id="" />
+                </parameters>
+                <source-codes />
+              </operation>
+              <operation id="of5ffeeb328e3448b94f54a2fef91be0b719" cid="OP054" name="initAp" type="" type-id="" visibility="public" abstract="false" virtual="false" static="false">
+                <parameters>
+                  <parameter id="" name="Allapot*" type="" type-id="" />
+                  <parameter id="" name="map&lt;string" type="" type-id="" />
+                  <parameter id="" name="int&gt;*" type="" type-id="" />
+                </parameters>
+                <source-codes />
+              </operation>
+              <operation id="ob8261fe008ea4bd8a9a4348ae461576f125" cid="OP055" name="get_error" type="string" type-id="string" visibility="public" abstract="false" virtual="false" static="false">
+                <source-codes />
+              </operation>
+              <operation id="o0cc77ee2ca5144e0a60c8fcf13f3aedf605" cid="OP056" name="parse" type="int" type-id="int" visibility="private" abstract="false" virtual="false" static="false">
+                <source-codes />
+              </operation>
+              <operation id="o431acc2c4c064ea9b4d00a3274cd1ca1604" cid="OP057" name="preParse" type="" type-id="" visibility="private" abstract="false" virtual="false" static="false">
+                <parameters>
+                  <parameter id="" name="istream" type="" type-id="" />
+                  <parameter id="" name="int" type="" type-id="" />
+                </parameters>
+                <source-codes />
+              </operation>
+              <operation id="o036d1e6dc37c4b54ba85fdea746e4db2283" cid="OP058" name="error" type="" type-id="" visibility="private" abstract="false" virtual="false" static="false">
+                <parameters>
+                  <parameter id="" name="char*" type="" type-id="" />
+                </parameters>
+                <source-codes />
+              </operation>
+              <operation id="o3e2171b7cabe4a088cfcdff67850e0a6692" cid="OP059" name="lex" type="int" type-id="int" visibility="private" abstract="false" virtual="false" static="false">
+                <source-codes />
+              </operation>
+              <operation id="of57dbd7122944915a155d6feeabbf62b60" cid="OP060" name="print" type="" type-id="" visibility="private" abstract="false" virtual="false" static="false">
+                <source-codes />
+              </operation>
+              <operation id="o759390d805d44dcb8cb7d3cc600c6066367" cid="OP061" name="executeAction" type="" type-id="" visibility="private" abstract="false" virtual="false" static="false">
+                <parameters>
+                  <parameter id="" name="int" type="" type-id="" />
+                </parameters>
+                <source-codes />
+              </operation>
+              <operation id="o124542bd5bb345e4bb7ef1382f2108b331" cid="OP062" name="errorRecovery" type="" type-id="" visibility="private" abstract="false" virtual="false" static="false">
+                <source-codes />
+              </operation>
+              <operation id="oe114050576674fcea65fcb4202358849382" cid="OP063" name="lookup" type="int" type-id="int" visibility="private" abstract="false" virtual="false" static="false">
+                <parameters>
+                  <parameter id="" name="bool" type="" type-id="" />
+                </parameters>
+                <source-codes />
+              </operation>
+              <operation id="od4ede0ccaa1a43b8808f695db2e5e168589" cid="OP064" name="nextToken" type="" type-id="" visibility="private" abstract="false" virtual="false" static="false">
+                <source-codes />
+              </operation>
+              <operation id="oc940d729b50948ff8663de67363411f1580" cid="OP065" name="print__" type="" type-id="" visibility="private" abstract="false" virtual="false" static="false">
+                <source-codes />
+              </operation>
+              <operation id="o59b31c6d8cce41bd9a91987dfc27eb3032" cid="OP066" name="exceptionHandler__" type="" type-id="" visibility="private" abstract="false" virtual="false" static="false">
+                <parameters>
+                  <parameter id="" name="std" type=":exception" type-id=":exception" />
+                </parameters>
+                <source-codes />
+              </operation>
+            </operations>
+            <template-parameters>
+              <source-codes />
+            </template-parameters>
+          </item>
+          <item id="di785419122781615196" cid="C009" type="class" name="interpretFlexLexer" style-class="default" is-abstract="false" is-root="false" is-leaf="false" is-active="false" creator="Pb9d4a4e79d084f2f97b01e634a9e99a5" creation-date="05/13/2016 19:15:39">
+            <stereotypes />
+            <associated-diagrams />
+            <owned-items />
+            <style class="default" />
+            <attributes />
+            <operations />
+            <template-parameters>
+              <source-codes />
+            </template-parameters>
+          </item>
+          <item id="di318187339894821286" cid="DEP003" type="dependency" name="" style-class="default" is-abstract="false" is-root="false" is-leaf="false" is-active="false" creator="Pb9d4a4e79d084f2f97b01e634a9e99a5" creation-date="05/13/2016 19:15:52">
+            <stereotypes>
+              <stereotype name="use" />
+            </stereotypes>
+            <associated-diagrams />
+            <owned-items />
+            <style class="default" />
+          </item>
+          <item id="di760645891464738146" cid="E003" type="enumeration" name="interpretParser::Exceptions" style-class="default" is-abstract="false" is-root="false" is-leaf="false" is-active="false" creator="Pb9d4a4e79d084f2f97b01e634a9e99a5" creation-date="05/13/2016 19:16:16">
+            <stereotypes>
+              <stereotype name="enumeration" />
+            </stereotypes>
+            <associated-diagrams />
+            <owned-items />
+            <style class="default" />
+            <enumeration-items>
+              <enumeration-item id="abbb595a223a24b6c9e397ca8436d4830298" cid="ENI006" name="HIBA" />
+            </enumeration-items>
+          </item>
+          <item id="di518564401919284175" cid="REL004" type="relationship" name="" style-class="default" is-abstract="false" is-root="false" is-leaf="false" is-active="false" creator="Pb9d4a4e79d084f2f97b01e634a9e99a5" creation-date="05/13/2016 19:32:29">
+            <stereotypes />
+            <associated-diagrams />
+            <owned-items />
+            <style class="default" />
+            <relation from="di263609644436796373" to="di760645891464738146">
+              <start-role id="" name="" navigability="" association-type="association" visibility="private" />
+              <end-role id="" name="" navigability="" association-type="association" visibility="private" />
+            </relation>
+          </item>
+          <item id="di975106822696907712" cid="C010" type="class" name="Allapot" style-class="default" is-abstract="false" is-root="false" is-leaf="false" is-active="false" creator="Pb9d4a4e79d084f2f97b01e634a9e99a5" creation-date="05/13/2016 19:32:38">
+            <stereotypes />
+            <associated-diagrams />
+            <owned-items />
+            <style class="default" />
+            <attributes />
+            <operations />
+            <template-parameters>
+              <source-codes />
+            </template-parameters>
+          </item>
+          <item id="di481129058737644176" cid="DEP004" type="dependency" name="" style-class="default" is-abstract="false" is-root="false" is-leaf="false" is-active="false" creator="Pb9d4a4e79d084f2f97b01e634a9e99a5" creation-date="05/13/2016 19:32:53">
+            <stereotypes>
+              <stereotype name="use" />
+            </stereotypes>
+            <associated-diagrams />
+            <owned-items />
+            <style class="default" />
+          </item>
+        </abstract-items>
+        <layer name="Default" visible="true" enabled="true" locked="false">
+          <item id="di745623683807833891" iid="17915d7e2cf64e579594ac5bf812de94" creation-date="05/13/2016 18:50:29" order-index="0" type="entity">
+            <layout ax="83" ay="61" awidth="399" aheight="572" x="83" y="61" width="399" height="572" angle="0" />
+            <class />
+          </item>
+          <item id="di420810337444613546" iid="9416350ba84a4bb08403346cfdec326e" creation-date="05/13/2016 19:02:05" order-index="3" type="entity">
+            <layout ax="819" ay="120" awidth="386" aheight="539" x="819" y="120" width="386" height="539" angle="0" />
+            <class />
+          </item>
+          <item id="di497077479501510640" iid="b8551c8e385b48ed82b441019605c938" creation-date="05/13/2016 19:02:31" order-index="4" type="entity">
+            <layout ax="1019.5" ay="-11" awidth="171" aheight="50" x="1019.5" y="-11" width="171" height="50" angle="0" />
+            <class />
+          </item>
+          <item id="di717711536555741410" iid="bbd146e0519a455fb214e67956e65c54" creation-date="05/13/2016 18:56:22" order-index="1" type="entity">
+            <layout ax="527" ay="308" awidth="204" aheight="121" x="527" y="308" width="204" height="121" angle="0" />
+            <enumeration />
+          </item>
+          <item id="di477804290379484494" iid="997960cd0b1a44319cc13d5d11cdf6be" creation-date="05/13/2016 19:03:12" order-index="5" type="relation">
+            <layout line-style="oblique" lock-start-point="false" lock-end-point="false" lock-to-fields="false" name-position="10,-10" auto-path="" x1="1079" y1="120" x2="1099" y2="39" start-border-pos="0.168252500227696" end-border-pos="0.634040163274397">
+              <points>
+                <point x="1079" y="120" />
+                <point x="1099" y="39" />
+              </points>
+            </layout>
+            <relation from="di420810337444613546" from-iid="9416350ba84a4bb08403346cfdec326e" to="di497077479501510640" to-iid="b8551c8e385b48ed82b441019605c938" />
+          </item>
+          <item id="di815444108491605307" iid="5670a7162eed4eb9b37969e36cbca9be" creation-date="05/13/2016 18:57:23" order-index="2" type="relation">
+            <layout line-style="oblique" lock-start-point="false" lock-end-point="false" lock-to-fields="true" name-position="10,-10" auto-path="" x1="527" y1="367" x2="482" y2="362" start-border-pos="0.878887496831763" end-border-pos="0.381555944055944">
+              <points>
+                <point x="527" y="367" />
+                <point x="482" y="362" />
+              </points>
+            </layout>
+            <relation from="di717711536555741410" from-iid="bbd146e0519a455fb214e67956e65c54" from-field="aef5513350cf74e988bba444f38b55bc7766" to="di745623683807833891" to-iid="17915d7e2cf64e579594ac5bf812de94" to-field="o4ccdf32d52914e5dbdf3b580ccd2e3e469" />
+            <role-positions start-role="25,15" end-role="25,-15" start-multiplicity="25,-15" end-multiplicity="25,15" />
+          </item>
+          <item id="di365183011735475764" iid="869d55ed7e7b48cfa71ac694638ba490" creation-date="05/13/2016 19:05:24" order-index="6" type="entity">
+            <layout ax="1275" ay="120" awidth="146" aheight="97.5" x="1275" y="120" width="146" height="97.5" angle="0" />
+            <enumeration />
+          </item>
+          <item id="di130744232310654257" iid="747d4a6017e440a29c34ebb477eeb9d8" creation-date="05/13/2016 19:06:07" order-index="7" type="relation">
+            <layout line-style="oblique" lock-start-point="false" lock-end-point="false" lock-to-fields="false" name-position="10,-10" auto-path="" x1="1205" y1="263" x2="1275" y2="218" start-border-pos="0.316352759309956" end-border-pos="0.749961330466074">
+              <points>
+                <point x="1205" y="263" />
+                <point x="1275" y="218" />
+              </points>
+            </layout>
+            <relation from="di420810337444613546" from-iid="9416350ba84a4bb08403346cfdec326e" to="di365183011735475764" to-iid="869d55ed7e7b48cfa71ac694638ba490" />
+            <role-positions start-role="25,15" end-role="25,-15" start-multiplicity="25,-15" end-multiplicity="25,15" />
+          </item>
+          <item id="di774172496565707111" iid="967ea38f3da1450ca5ff3c2036df174b" creation-date="05/13/2016 19:07:08" order-index="8" type="entity">
+            <layout ax="833" ay="-11" awidth="160" aheight="50" x="833" y="-11" width="160" height="50" angle="0" />
+            <class />
+          </item>
+          <item id="di148238860929109274" iid="236ab1da031e4e1e9dc852624d9103ef" creation-date="05/13/2016 19:07:16" order-index="9" type="relation">
+            <layout line-style="oblique" lock-start-point="false" lock-end-point="false" lock-to-fields="false" name-position="10,-10" auto-path="" x1="941" y1="120" x2="920" y2="39" start-border-pos="0.0789569597787808" end-border-pos="0.614714908599854">
+              <points>
+                <point x="941" y="120" />
+                <point x="920" y="39" />
+              </points>
+            </layout>
+            <relation from="di420810337444613546" from-iid="9416350ba84a4bb08403346cfdec326e" from-field="of9e68acfe9b74e19ba5d557688c74d50968" to="di774172496565707111" to-iid="967ea38f3da1450ca5ff3c2036df174b" />
+          </item>
+          <item id="di829383362378449633" iid="3bf4437fef434cf0bdc5d16290f10ca4" creation-date="05/13/2016 19:11:34" order-index="10" type="entity">
+            <layout ax="1291" ay="275" awidth="239" aheight="154" x="1291" y="275" width="239" height="154" angle="0" />
+            <class />
+          </item>
+          <item id="di610557693195673922" iid="5adcb7de4420408d84b04587b7eb5fc7" creation-date="05/13/2016 19:12:42" order-index="11" type="relation">
+            <layout line-style="oblique" lock-start-point="false" lock-end-point="false" lock-to-fields="true" name-position="10,-10" auto-path="" x1="1205" y1="389" x2="1291" y2="344" start-border-pos="0.374768089053803" end-border-pos="0.887987012987013">
+              <points>
+                <point x="1205" y="389" />
+                <point x="1291" y="344" />
+              </points>
+            </layout>
+            <relation from="di420810337444613546" from-iid="9416350ba84a4bb08403346cfdec326e" from-field="oad7a2bb51db642ab90c1b2e7e74c385c137" to="di829383362378449633" to-iid="3bf4437fef434cf0bdc5d16290f10ca4" to-field="a875b395a59fc4391af118ef70ff15e5b837" />
+          </item>
+          <item id="di263609644436796373" iid="bc5eb50e6d48488097f381ded101d615" creation-date="05/13/2016 19:15:13" order-index="12" type="entity">
+            <layout ax="1625" ay="120" awidth="281" aheight="379" x="1625" y="120" width="281" height="379" angle="0" />
+            <class />
+          </item>
+          <item id="di760645891464738146" iid="cf338bdda7e245c8ad4a40a3aeb61138" creation-date="05/13/2016 19:16:16" order-index="17" type="entity">
+            <layout ax="1968" ay="120" awidth="141" aheight="97.5" x="1968" y="120" width="141" height="97.5" angle="0" />
+            <enumeration />
+          </item>
+          <item id="di836826326861009183" iid="c76e877363564444b812fec3df300a48" creation-date="05/13/2016 19:15:24" order-index="13" type="entity">
+            <layout ax="1750" ay="-11" awidth="185" aheight="50" x="1750" y="-11" width="185" height="50" angle="0" />
+            <class />
+          </item>
+          <item id="di518564401919284175" iid="c9e196f4eb1d44e8a91779552c973274" creation-date="05/13/2016 19:32:29" order-index="18" type="relation">
+            <layout line-style="oblique" lock-start-point="false" lock-end-point="false" lock-to-fields="false" name-position="10,-10" auto-path="" x1="1906" y1="237" x2="1968" y2="205" start-border-pos="0.327458092279359" end-border-pos="0.78131600404397">
+              <points>
+                <point x="1906" y="237" />
+                <point x="1968" y="205" />
+              </points>
+            </layout>
+            <relation from="di263609644436796373" from-iid="bc5eb50e6d48488097f381ded101d615" from-field="ob8261fe008ea4bd8a9a4348ae461576f125" to="di760645891464738146" to-iid="cf338bdda7e245c8ad4a40a3aeb61138" />
+            <role-positions start-role="25,15" end-role="25,-15" start-multiplicity="25,-15" end-multiplicity="25,15" />
+          </item>
+          <item id="di205815380720044566" iid="323a53da698c4c929037ed68a1f7fe9a" creation-date="05/13/2016 19:15:35" order-index="14" type="relation">
+            <layout line-style="oblique" lock-start-point="false" lock-end-point="false" lock-to-fields="false" name-position="10,-10" auto-path="" x1="1815" y1="120" x2="1836" y2="39" start-border-pos="0.168846809142849" end-border-pos="0.634349926097973">
+              <points>
+                <point x="1815" y="120" />
+                <point x="1836" y="39" />
+              </points>
+            </layout>
+            <relation from="di263609644436796373" from-iid="bc5eb50e6d48488097f381ded101d615" to="di836826326861009183" to-iid="c76e877363564444b812fec3df300a48" />
+          </item>
+          <item id="di975106822696907712" iid="8477c237c4c7438d911e9ee30c50237b" creation-date="05/13/2016 19:32:38" order-index="19" type="entity">
+            <layout ax="1958" ay="335.25" awidth="151" aheight="42.5" x="1958" y="335.25" width="151" height="42.5" angle="0" />
+            <class />
+          </item>
+          <item id="di785419122781615196" iid="bd96187c21f14582b90a289b8fcf8913" creation-date="05/13/2016 19:15:39" order-index="15" type="entity">
+            <layout ax="1568" ay="-11" awidth="154" aheight="50" x="1568" y="-11" width="154" height="50" angle="0" />
+            <class />
+          </item>
+          <item id="di481129058737644176" iid="09832bbb8b39428c96771808aca70e1a" creation-date="05/13/2016 19:32:53" order-index="20" type="relation">
+            <layout line-style="oblique" lock-start-point="false" lock-end-point="false" lock-to-fields="false" name-position="10,-10" auto-path="" x1="1906" y1="334" x2="1958" y2="343" start-border-pos="0.391180637329424" end-border-pos="0.954675113453585">
+              <points>
+                <point x="1906" y="334" />
+                <point x="1958" y="343" />
+              </points>
+            </layout>
+            <relation from="di263609644436796373" from-iid="bc5eb50e6d48488097f381ded101d615" from-field="ob8261fe008ea4bd8a9a4348ae461576f125" to="di975106822696907712" to-iid="8477c237c4c7438d911e9ee30c50237b" />
+          </item>
+          <item id="di318187339894821286" iid="66b548e69c7d44caacbaad58ac4207ae" creation-date="05/13/2016 19:15:52" order-index="16" type="relation">
+            <layout line-style="oblique" lock-start-point="false" lock-end-point="false" lock-to-fields="false" name-position="10,-10" auto-path="" x1="1688" y1="120" x2="1655" y2="39" start-border-pos="0.0563443547041815" end-border-pos="0.608409732967228">
+              <points>
+                <point x="1688" y="120" />
+                <point x="1655" y="39" />
+              </points>
+            </layout>
+            <relation from="di263609644436796373" from-iid="bc5eb50e6d48488097f381ded101d615" to="di785419122781615196" to-iid="bd96187c21f14582b90a289b8fcf8913" />
+          </item>
+        </layer>
+      </diagram>
+    </model>
+  </models>
+  <documents />
+  <document-templates />
+</sim-project>
