@@ -7,7 +7,7 @@
 #include <wx/msgdlg.h>
 
 #include "ui_parts.h"
-#include "ui_main.h"
+#include "ui_parts_main.h"
 
 mainDisplay::mainDisplay( const wxString &title ) : wxFrame(NULL, wxID_ANY, title, wxDefaultPosition, wxSize(800, 600) )
 {

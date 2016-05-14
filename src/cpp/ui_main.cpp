@@ -2,6 +2,8 @@
 #include <fstream>
 
 #include "elsoparseParser.h"
+#include "interpretParser.h"
+		// interpretParser.h -> ERROR() atirva IP_ERROR() -ra, hogy ne conflictolja a wxWidgets-szel
 #include "ui_parts.h"
 #include "ui_main.h"
 
@@ -9,15 +11,22 @@
 #include <wx/event.h>
 #include <wx/filedlg.h>
 #include <wx/msgdlg.h>
+#include <wx/button.h>
 #include <wx/filefn.h>	// wxGetCwd()
 
-mainDisplay::mainDisplay( const wxString &title ) : wxFrame(NULL, wxID_ANY, title, wxDefaultPosition, wxSize(800, 600) )
+using namespace std;
+
+mainDisplay::mainDisplay( const wxString &title ) : wxFrame(NULL, wxID_ANY, title, wxDefaultPosition, wxSize(800, 600) ), iParser( NULL )
 {
-	wxPanel *mainPanel = new wxPanel( this, wxID_ANY  );
+	wxFont displayFont(wxFontInfo( 12 ) );
+	
+	wxPanel *mainPanel = new wxPanel( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL | wxBORDER_SIMPLE );
 	mainPanel -> 
 		SetAutoLayout( true );
 	//mainPanel -> 
 		SetMinSize( wxSize(900, 600) );
+		
+	wxGridBagSizer *controlSizer = new wxGridBagSizer( 2, 2 );
 	
 	menuBar = new wxMenuBar;
 	file = new wxMenu;
@@ -29,10 +38,9 @@ mainDisplay::mainDisplay( const wxString &title ) : wxFrame(NULL, wxID_ANY, titl
 	
 	SetMenuBar( menuBar );
 	
-	//Connect( wxID_EXIT, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( mainDisplay::OnQuit ));
-	//file -> Bind( wxEVT_COMMAND_MENU_SELECTED, &mainDisplay::OnQuit, this );
-	
-	sizer = new wxGridBagSizer( 1, 1 );
+	sizer = new wxGridBagSizer( 
+	//1, 1
+	);
 	eax = new regDisplay( mainPanel, 4, "EAX" );
 	ebx = new regDisplay( mainPanel, 4, "EBX" );
 	ecx = new regDisplay( mainPanel, 4, "ECX" );
@@ -50,9 +58,28 @@ mainDisplay::mainDisplay( const wxString &title ) : wxFrame(NULL, wxID_ANY, titl
 	sizer -> Add( edx, wxGBPosition(1, 1) );
 	sizer -> Add( sign, wxGBPosition(0, 2) );
 	sizer -> Add( zero, wxGBPosition(1, 2) );
-	sizer -> Add( valtozok, wxGBPosition(2, 0), wxGBSpan( 1, 3) );
-	sizer -> Add( verem, wxGBPosition(3, 0), wxGBSpan( 1, 3) );
-
+	sizer -> Add( valtozok, wxGBPosition(2, 0), wxGBSpan( 1, 4) );
+	sizer -> Add( verem, wxGBPosition(3, 0), wxGBSpan( 1, 4) );
+	
+	nextButton = new wxButton( this, UI_MAIN_NEXT_INSTRUCTION_EVENT, wxString::FromUTF8("Végrehajt"));
+	//nextButton -> SetFocus();
+	nextButton -> Enable( false );
+	
+	nextInstruction = new wxTextCtrl( this, wxID_ANY, "", wxDefaultPosition, wxSize( 200, 30), wxTE_READONLY | wxTE_RIGHT | wxBORDER_SIMPLE );
+	nextInstruction -> SetFont( displayFont );
+	nextInstruction -> SetBackgroundColour( wxColour( *wxWHITE ) );
+	nextRow = new wxTextCtrl( this, wxID_ANY, "", wxDefaultPosition, wxSize( 30, 30), wxTE_READONLY | wxTE_RIGHT | wxBORDER_SIMPLE );
+	nextRow -> SetFont( displayFont );
+	//nextRow -> SetBackgroundColour( wxColour( *wxWHITE ) );
+	
+	controlSizer -> Add( nextButton, wxGBPosition( 1, 2), wxDefaultSpan, wxALIGN_RIGHT );
+	controlSizer -> Add( nextInstruction, wxGBPosition( 0, 1), wxGBSpan(1, 3) );
+	controlSizer -> Add( nextRow, wxGBPosition( 0, 0) );
+	
+	controlSizer -> Layout();
+	
+	sizer -> Add( controlSizer, wxGBPosition( 0, 3), wxGBSpan( 2, 1) );
+	
 #if 1
 	mainPanel -> SetSizer( sizer );
 	sizer -> Layout();
@@ -62,7 +89,10 @@ mainDisplay::mainDisplay( const wxString &title ) : wxFrame(NULL, wxID_ANY, titl
 	sizer -> Layout();
 	Fit();
 #endif
+
+	nextButton -> Raise();
 	
+	SetBackgroundColour( mainPanel -> GetBackgroundColour() );
 	Centre();
 	
 	displayRefresh();
@@ -70,8 +100,10 @@ mainDisplay::mainDisplay( const wxString &title ) : wxFrame(NULL, wxID_ANY, titl
 
 mainDisplay::~mainDisplay()
 {
-	//if (menuBar) delete menuBar;
-	//if (file) delete file;
+	if ( iParser )
+	{
+		delete iParser;
+	}
 }
 
 void mainDisplay::OnQuit( wxCommandEvent& event)
@@ -81,6 +113,7 @@ void mainDisplay::OnQuit( wxCommandEvent& event)
 
 void mainDisplay::OpenFile( wxCommandEvent& event)
 {
+	// nem ismetelheto, fura segfaultok
 	wxFileDialog dialog( this, wxString::FromUTF8("Assembly kódfájl megnyitása"), wxGetCwd(), "", wxString::FromUTF8("Assembly fájlok (*.asm)|*.asm"), wxFD_OPEN | wxFD_FILE_MUST_EXIST );
 	
 	if ( dialog.ShowModal() == wxID_CANCEL)
@@ -88,9 +121,63 @@ void mainDisplay::OpenFile( wxCommandEvent& event)
 		return;
 	}
 	
-	wxMessageDialog msg( this, dialog.GetPath(), "eredmeny:");
-	msg.ShowModal();
-	//ifstream infile( dialog.GetPath().ToStdString() );
+	//wxMessageDialog msg( this, dialog.GetPath(), "eredmeny:");
+	//msg.ShowModal();
+	
+	ifstream infile( dialog.GetPath().ToStdString().c_str() );
+	
+	map<string, int> valt_kezd;
+	vector<AP_UC> valtozok;
+	int kezdet;
+	
+	elsoparseParser eParser( infile );
+	try
+	{
+		eParser.completeParse();
+		
+		infile.close();
+		
+		utas_data = eParser.get_utasitasok();
+		valt_kezd = eParser.get_valtozokezdet();
+		ugro_cimkek = eParser.get_ugrocimke();
+		valtozok = eParser.get_valtozok();
+		kezdet = eParser.get_elsoutasitas();
+		vege = eParser.get_utolsoutasitas();
+		
+		allapot.init( valt_kezd, valtozok );
+		allapot.set_kovetkezo( kezdet );
+		
+		if ( iParser )
+		{
+			delete iParser;
+		}
+		
+		iParser = new interpretParser;
+		iParser -> initAp( &allapot, &ugro_cimkek );
+		
+		displayRefresh();
+		
+		if ( vege > kezdet )
+		{
+			nextButton -> Enable( true );
+			
+			stringstream ss;
+			ss << utas_data[ allapot.get_kovetkezo() ].eredetisorszam << ". sor:";
+			nextRow -> SetValue( ss.str() );
+			nextInstruction -> SetValue(utas_data[ allapot.get_kovetkezo() ].sor);
+		}
+		
+	} catch ( elsoparseParser::Exceptions ex)
+	{
+		infile.close();
+		wxMessageDialog msg( this, eParser.get_error(), wxString::FromUTF8("Hiba történt a kezdeti elemzés során"));
+		msg.ShowModal();
+	}
+}
+
+void mainDisplay::NextInstruction( wxCommandEvent& event)
+{
+	
 }
 
 void mainDisplay::displayRefresh()
@@ -101,50 +188,37 @@ void mainDisplay::displayRefresh()
 	allapot.get_reg( "eax", vec );
 	eax -> updateValues( vec );
 	
-	/*
-	vec[2] = 42;
+	allapot.get_reg( "ebx", vec );
 	ebx -> updateValues( vec );
 	
-	vec[0] = 13;
+	allapot.get_reg( "ecx", vec );
 	ecx -> updateValues( vec );
 	
-	vec[3] = 255;
+	allapot.get_reg( "edx", vec );
 	edx -> updateValues( vec );
 	
-	vec[1] = 0;
-	edx -> updateValues( vec );
-	
+	allapot.valtozo_vector( vec );
+	allapot.elso_valtozok( labels );
 	valtozok -> updateValues( vec );
 	valtozok -> updateLabels( labels );
 	
-	vec.push_back( 44 );
-	valtozok -> updateValues( vec );
-	verem -> updateValues( vec );
-	
-	vec.resize( 4 );
-	vec[1] = 6;
-	verem -> updateValues( vec );
-	valtozok -> updateValues( vec );
-	labels.resize( 3 );
-	labels[2] = "esp";
-	verem -> updateLabels( labels );
-	
-	vec.resize(39, 2);
-	labels.resize( 40, "");
-	labels[15] = "ebp";
-	vec[21] = 100;
+	allapot.verem_vector( vec );
+	allapot.vec_pointerek( labels );
 	verem -> updateValues( vec );
 	verem -> updateLabels( labels );
 	
-	sign -> set( true );
-	*/
+	sign -> set(allapot.get_sign());
+	zero -> set(allapot.get_zero());
+	
 	sizer -> Layout();
 	Fit();
 }
 
 wxDEFINE_EVENT( UI_MAIN_FILE_OPEN_EVENT, wxCommandEvent );
+wxDEFINE_EVENT( UI_MAIN_NEXT_INSTRUCTION_EVENT, wxCommandEvent );
 
 wxBEGIN_EVENT_TABLE(mainDisplay, wxFrame)
 	EVT_MENU( UI_MAIN_FILE_OPEN_EVENT, mainDisplay::OpenFile )
 	EVT_MENU( wxID_EXIT, mainDisplay::OnQuit )
+	EVT_BUTTON( UI_MAIN_NEXT_INSTRUCTION_EVENT, mainDisplay::NextInstruction )
 wxEND_EVENT_TABLE()

@@ -4,19 +4,23 @@
 
 #include "typedefs.h"
 #include "allapot.h"
-#include "interpretParser.h"
-		// interpretParser.h -> ERROR() atirva IP_ERROR() -ra, hogy ne conflictolja a wxWidgets-szel
+
+#include <map>
 
 #include <wx/wx.h>
 #include <wx/menu.h>
 
 wxDECLARE_EVENT( UI_MAIN_FILE_OPEN_EVENT, wxCommandEvent );
+wxDECLARE_EVENT( UI_MAIN_NEXT_INSTRUCTION_EVENT, wxCommandEvent );
 
 class wxGridBagSizer;
+class wxButton;
 
 class regDisplay;
 class varDisplay;
 class flagDisplay;
+
+class interpretParser;
 
 class mainDisplay : public wxFrame
 {
@@ -27,8 +31,15 @@ public:
 private:	
 	void OnQuit( wxCommandEvent& event);
 	void OpenFile( wxCommandEvent& event);
+	void NextInstruction( wxCommandEvent& event);
 	
 	Allapot allapot;
+	
+	std::map<int, utasitas_data> utas_data;
+	std::map<std::string, int> ugro_cimkek;
+	int vege;
+	
+	interpretParser *iParser;
 
 	regDisplay* eax;
 	regDisplay* ebx;
@@ -45,6 +56,10 @@ private:
 	wxMenu *file;
 	
 	wxGridBagSizer *sizer;
+	
+	wxButton *nextButton;
+	wxTextCtrl *nextInstruction;
+	wxTextCtrl *nextRow;
 	
 	void displayRefresh();
 	
