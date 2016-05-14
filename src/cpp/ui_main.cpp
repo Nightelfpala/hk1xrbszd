@@ -68,7 +68,7 @@ mainDisplay::mainDisplay( const wxString &title ) : wxFrame(NULL, wxID_ANY, titl
 	nextInstruction = new wxTextCtrl( this, wxID_ANY, "", wxDefaultPosition, wxSize( 200, 30), wxTE_READONLY | wxTE_RIGHT | wxBORDER_SIMPLE );
 	nextInstruction -> SetFont( displayFont );
 	nextInstruction -> SetBackgroundColour( wxColour( *wxWHITE ) );
-	nextRow = new wxTextCtrl( this, wxID_ANY, "", wxDefaultPosition, wxSize( 30, 30), wxTE_READONLY | wxTE_RIGHT | wxBORDER_SIMPLE );
+	nextRow = new wxTextCtrl( this, wxID_ANY, "", wxDefaultPosition, wxSize( 60, 30), wxTE_READONLY | wxTE_RIGHT | wxBORDER_SIMPLE );
 	nextRow -> SetFont( displayFont );
 	//nextRow -> SetBackgroundColour( wxColour( *wxWHITE ) );
 	
@@ -160,11 +160,6 @@ void mainDisplay::OpenFile( wxCommandEvent& event)
 		if ( vege > kezdet )
 		{
 			nextButton -> Enable( true );
-			
-			stringstream ss;
-			ss << utas_data[ allapot.get_kovetkezo() ].eredetisorszam << ". sor:";
-			nextRow -> SetValue( ss.str() );
-			nextInstruction -> SetValue(utas_data[ allapot.get_kovetkezo() ].sor);
 		}
 		
 	} catch ( elsoparseParser::Exceptions ex)
@@ -177,7 +172,46 @@ void mainDisplay::OpenFile( wxCommandEvent& event)
 
 void mainDisplay::NextInstruction( wxCommandEvent& event)
 {
+	istringstream iss(utas_data[ allapot.get_kovetkezo() ].sor);
 	
+	try
+	{
+		iParser -> completeParse( iss, utas_data[ allapot.get_kovetkezo() ].argmeret );
+		allapot.kov_utasitas();
+	} catch ( interpretParser::Exceptions ex )
+	{
+		nextButton -> Enable( false );
+		wxMessageDialog msg( this, iParser -> get_error(), wxString::FromUTF8("Hiba történt a művelet végrehajtása során"));
+		msg.ShowModal();
+	} catch ( Allapot::Exceptions ex )
+	{
+		wxString errorMsg;
+		switch (ex)
+		{
+		case Allapot::URES_VEREM:
+			errorMsg = wxString::FromUTF8("A veremben nincs annyi byte, amennyit a \"pop\" utasítás ki akart venni!");
+			break;
+		case Allapot::TELE_VEREM:
+			errorMsg = wxString::FromUTF8("Megtelt a verem! A tartalom mérete túllépte a 268.435.455 byteot.");
+			break;
+		case Allapot::HATARON_KIVULI_VALTOZO:
+			errorMsg = wxString::FromUTF8("Érvénytelen változó hivatkozás!");
+			break;
+		case Allapot::HATARON_KIVULI_VEREM:
+			errorMsg = wxString::FromUTF8("Érvénytelen verem hivatkozás!");
+			break;
+		}
+		nextButton -> Enable( false );
+		wxMessageDialog msg( this, errorMsg, wxString::FromUTF8("Hiba történt a művelet végrehajtása során"));
+		msg.ShowModal();
+	}
+	
+	displayRefresh();
+	
+	if ( allapot.get_kovetkezo() >= vege)
+	{
+		nextButton -> Enable( false );
+	}
 }
 
 void mainDisplay::displayRefresh()
@@ -209,6 +243,14 @@ void mainDisplay::displayRefresh()
 	
 	sign -> set(allapot.get_sign());
 	zero -> set(allapot.get_zero());
+	
+	if ( vege > allapot.get_kovetkezo() )
+	{
+		stringstream ss;
+		ss << utas_data[ allapot.get_kovetkezo() ].eredetisorszam << ". sor:";
+		nextRow -> SetValue( ss.str() );
+		nextInstruction -> SetValue(utas_data[ allapot.get_kovetkezo() ].sor);
+	}
 	
 	sizer -> Layout();
 	Fit();
