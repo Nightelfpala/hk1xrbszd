@@ -1,272 +1,262 @@
 
-#include <QVBoxLayout>
+#include "ui_parts.h"
+
+#include <sstream>
+#include <wx/gbsizer.h>
+#include <wx/font.h>
+#include <wx/scrolwin.h>
 
 #include <iostream>
 
-#include "ui_parts.h"
-
-#define UI_REG_HEIGHT 60
+#define UI_LABEL_WIDTH 50
 
 using namespace std;
 
-regDisplay::regDisplay(int _meret, const std::string &nev, QWidget *parent) : QFrame(parent), name(nev), meret(_meret)
+regDisplay::regDisplay( wxPanel *parent, const int &size, const std::string &nev ) :
+	wxPanel( parent, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL | wxBORDER_SIMPLE ), name(nev), meret(size)
 {
-	setFixedSize(  200, UI_REG_HEIGHT );
-	valueVec.resize(meret, 0);
-	valueLabel.resize(meret, NULL);
+	vecValue.resize( meret, 0 );
+	vecLabel.resize( meret );
 	
-	QFont nameFont( "Arial", 16);
-	QFont displayFont( "Arial", 12);
+	wxFont nameFont(wxFontInfo( 16 ).Bold( true ) );
+	wxFont displayFont(wxFontInfo( 12 ) );
 	
-	gridLayout = new QGridLayout(this);
-	nameLabel = new QLabel(this);
+	wxGridBagSizer *sizer = new wxGridBagSizer( 1, 1 );
+	nameLabel = new wxTextCtrl( this, wxID_ANY, name, wxDefaultPosition, wxDefaultSize, wxTE_READONLY | wxTE_LEFT | wxBORDER_NONE );
+	nameLabel -> SetMinSize( wxSize(140, 25) );
+	nameLabel -> SetFont( nameFont );
+	nameLabel -> SetDefaultStyle( wxTextAttr( *wxBLACK ));
 	
-	nameLabel -> setFont(nameFont);
-	//nameLabel -> setGeometry(20, 20, 400, 200);
-	nameLabel -> setFixedSize( 80, 20 );
-	nameLabel -> setAlignment(Qt::AlignCenter);
-	nameLabel -> setText( QString::fromStdString( name ));
+	sizer -> Add( nameLabel, wxGBPosition(0, 0), wxGBSpan( 1, meret ) );
 	
-	gridLayout -> addWidget(nameLabel, 0, 0, 0, -1, Qt::AlignTop);
-	//gridLayout -> addWidget(nameLabel, 0, 0, meret, 0);
-	
-	for (int i = 0; i < meret; ++i)
+	for ( int i = 0; i < meret; ++i )
 	{
-		valueLabel[i] = new QLabel(this);
+		vecLabel[i] = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_READONLY | wxTE_CENTRE | wxTE_RICH );
+		//vecLabel[i] -> SetEditable( false );
+		vecLabel[i] -> SetMinSize( wxSize(50, 20) );
+		vecLabel[i] -> SetFont( displayFont );
+		vecLabel[i] -> SetDefaultStyle( wxTextAttr( *wxBLACK ));
 		
-		valueLabel[i] -> setStyleSheet("QLabel { background-color : white; color : black; }");
-		valueLabel[i] -> setTextInteractionFlags(Qt::TextSelectableByMouse);	// kijelolhetove (masolhatova) teszi a szoveget
-		valueLabel[i] -> setFont(displayFont);
+		sizer -> Add( vecLabel[i], wxGBPosition( 1, i) );
 		
-		//valueLabel[i] -> setGeometry(20, 20, 360, 120);
-		valueLabel[i] -> setFixedSize( 40, 20 );
-		valueLabel[i] -> setAlignment(Qt::AlignCenter);
-		
-		//gridLayout -> addWidget( valueLabel[i], disRow, i);
-		gridLayout -> addWidget( valueLabel[i], 1, i);
+		std::stringstream ss;
+		ss << (int)vecValue[i];
+		vecLabel[i] -> SetValue( ss.str() );
 	}
 	
-	setLayout(gridLayout);
-	setFrameShape( QFrame::Box );	// fekete keret
+	SetSizer( sizer );
+	Fit();
 }
 
-regDisplay::~regDisplay()
+void regDisplay::updateValues( const std::vector<unsigned char> &values )
 {
-	// null
-}
-
-int regDisplay::size() const
-{
-	return meret;
-}
-
-void regDisplay::setValues(const std::vector<AP_UC> &val)
-{
-	//cout << "vL.size(): " << valueLabel.size() << endl;
-	for (int i = 0; i < meret; ++i)
+	for ( int i = 0; i < meret; ++i)
 	{
-		//cout << i << " / " << meret <<  endl;
-		valueVec[i] = val[i];
-		
-		/*
-		//cout << i << "-" << (int)val[i] << "xx" << endl;
-		cout << (int)valueVec[i] << "\t" << (QString::number( (int)valueVec[i] )).toStdString() << endl;
-		cout << "ptr: " << (valueLabel[i]) << endl;
-		if ( valueLabel[i] == NULL )
+		if ( vecValue[i] != values[i] )
 		{
-			cout << "NULL POINTER? WTF " << i << endl;
+			vecLabel[i] -> SetForegroundColour( *wxRED );
+			vecValue[i] = values[i];
 		} else
 		{
-			cout << "not null pointer " << i << endl;
+			vecLabel[i] -> SetForegroundColour( *wxBLACK );
 		}
-		//cout << "kek" << endl;
-		*/
-		valueLabel[i] -> setText( QString::number( (int)valueVec[i] ));
-		//valueLabel[i] -> setText( "12");
-		//cout << i << "+" << endl;
+		
+		std::stringstream ss;
+		ss << (int)vecValue[i];
+		vecLabel[i] -> SetValue( ss.str() );
 	}
 }
 
-// -----------------------------------------------
+// ---------------------------------------------------------
 
-veremDisplay::veremDisplay( const std::string &nev, QWidget *parent = 0 ) : QFrame(parent), name(nev)
+varDisplay::varDisplay( wxPanel *parent, const std::string &nev )
+	: wxPanel( parent, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL | wxBORDER_SIMPLE ), name(nev)
 {
-	setFixedSize( 800, 110 );
+	vecValue.resize(0);
+	vecLabel.resize(0);
 	
-	QFont nameFont( "Arial", 16);
-	//QFont displayFont( "Arial", 12);
+	//SetMinSize( wxSize(800, 110) );
+	//SetMaxSize( wxSize(800, 110) );
 	
-	nameLabel = new QLabel( this );
-	scrollArea = new QScrollArea( this);
-	scrollWidget = new QWidget( scrollArea );
-	gridLayout = new QGridLayout( this );
-	QVBoxLayout *mainLayout = new QVBoxLayout( this );
+	wxFont nameFont(wxFontInfo( 16 ).Bold( true ) );
 	
-	nameLabel -> setFont( nameFont );
-	nameLabel -> setFixedSize( 80, 20 );
-	nameLabel -> setAlignment(Qt::AlignCenter);
-	nameLabel -> setText( QString::fromStdString( name ));
+	//cout << "scroll constr" << endl;
+	scroll = new wxScrolledWindow( this );
+	scroll -> EnableScrolling( true, false );
+	scroll -> ShowScrollbars( wxSHOW_SB_ALWAYS, wxSHOW_SB_NEVER );
+	scroll -> SetMinSize( wxSize(800, 80) );
+	scroll -> SetMaxSize( wxSize(800, 80) );
 	
-	mainLayout -> addWidget( nameLabel, Qt::AlignTop );
+	outSizer = new wxGridBagSizer( 1, 1 );
 	
-	mainLayout -> addWidget( scrollArea );
-	scrollArea -> setWidget( scrollWidget );
-	scrollArea -> setFrameShape(QFrame::NoFrame);
+	inSizer = new wxGridBagSizer( 1, 1 );
+	nameLabel = new wxTextCtrl( this, wxID_ANY, name, wxDefaultPosition, wxDefaultSize, wxTE_READONLY | wxTE_LEFT | wxBORDER_NONE );
+	nameLabel -> SetMinSize( wxSize(140, 25) );
+	nameLabel -> SetFont( nameFont );
+	nameLabel -> SetDefaultStyle( wxTextAttr( *wxBLACK ));
 	
-	scrollWidget -> setLayout( gridLayout );
-//	scrollWidget -> setFixedSize( 780, 50 );
+	outSizer -> Add( nameLabel, wxGBPosition(0, 0), wxGBSpan( 1, 1 ) );
+	//cout << "scroll add" << endl;
+	outSizer -> Add( scroll, wxGBPosition(1, 0), wxGBSpan(1, 3));
 	
-	setLayout( mainLayout );
-	setFrameShape( QFrame::Box );	// fekete keret
-	
-	valueVec.resize(0);
-	valueLabel.resize(0);
-	kiegVec.resize(0);
-	kiegLabel.resize(0);
+	//cout << "scroll setsizer" << endl;
+	scroll -> SetSizer( inSizer );
+	//scroll -> Refresh();
+	inSizer -> Layout();
+	scroll -> FitInside();
+	SetSizer( outSizer );
+	outSizer -> Layout();
+	Fit();
 }
 
-veremDisplay::~veremDisplay()
+void varDisplay::updateValues( const std::vector<unsigned char> &values )
 {
-	// null
-}
-
-int veremDisplay::size() const
-{
-	return valueVec.size();
-}
-
-void veremDisplay::updateValues(const std::vector<AP_UC> &vals)
-{
-	unsigned int prevsize = valueLabel.size();
-	//cout << "psize newsize: " << prevsize << "\t" << vals.size() << endl;
-	if ( vals.size() < valueLabel.size() )
+	int prevsize = vecLabel.size();
+	int newsize = values.size();
+	
+	if ( newsize > prevsize );
 	{
-		for (unsigned int i = valueLabel.size() - 1; i >= vals.size(); --i)
+		wxFont displayFont(wxFontInfo( 12 ) );
+		vecValue.resize( newsize );
+		vecLabel.resize( newsize );
+		
+		for ( int i = prevsize; i < newsize; ++i)
 		{
-			gridLayout -> removeWidget( valueLabel[i] );
-			delete valueLabel[i];
-		}
-	}
-	valueLabel.resize( vals.size(), NULL);
-	valueVec = vals;
-	if (prevsize < vals.size() )
-	{
-		//cout << "psize newsize: " << prevsize << "\t" << vals.size() << "\t" << valueLabel.size() << endl;
-		QFont displayFont( "Arial", 12);
-		for (unsigned int i = prevsize; i < valueLabel.size(); ++i)
-		{
-			//cout << "new " << i << endl;
-			valueLabel[i] = new QLabel( this );
-			if ( (valueLabel[i] == NULL) )
-			{
-				//cout << "miert nem new? rossz " << i << endl;
-			}
-			valueLabel[i] -> setStyleSheet( "QLabel { background-color : white; color : black; }" );
-			valueLabel[i] -> setTextInteractionFlags( Qt::TextSelectableByMouse );	// kijelolhetove (masolhatova) teszi a szoveget
-			valueLabel[i] -> setFont( displayFont );
-			valueLabel[i] -> setFixedSize( 40, 20 );
-			valueLabel[i] -> setAlignment(Qt::AlignCenter);
+			vecValue[i] = values[i];
+			vecLabel[i] = new wxTextCtrl( scroll, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_READONLY | wxTE_CENTRE | wxTE_RICH );
+			vecLabel[i] -> SetForegroundColour( *wxRED );
+			vecLabel[i] -> SetMinSize( wxSize(50, 20) );
+			vecLabel[i] -> SetFont( displayFont );
 			
-			//cout << "adding " << i << "\tptrval: " << (valueLabel[i] == NULL) << endl;
-			gridLayout -> addWidget( valueLabel[i], 1, i, Qt::AlignBottom);
+			inSizer -> Add( vecLabel[i], wxGBPosition( 2, i ) );
+			
+			std::stringstream ss;
+			ss << (int)vecValue[i];
+			vecLabel[i] -> SetValue( ss.str() );
 		}
 	}
-//	cout << endl << "feltolt" << endl;
-	for (unsigned int i = 0; i < valueLabel.size(); ++i)
+	if ( newsize < prevsize )
 	{
-		/*
-//		cout << "pre:\t" << i << ". val: " << (int)valueVec[i] << "\t" << (QString::number( (int)valueVec[i] )).toStdString() << endl;
-		if ( (valueLabel[i] == NULL) )
+		for (int i = newsize; i < prevsize; ++i)
 		{
-			//cout << i << " veremDisplay:\tNULLPTR" << endl;
+			inSizer -> Detach( vecLabel[i] );
+			delete vecLabel[i];
+		}
+		vecValue.resize( newsize );
+		vecLabel.resize( newsize );
+	}
+	
+	for ( int i = 0; i < ((prevsize < newsize) ? (prevsize) : (newsize)); ++i)
+	{
+		if ( vecValue[i] != values[i])
+		{
+			vecValue[i] = values[i];
+			vecLabel[i] -> SetForegroundColour( *wxRED );
 		} else
 		{
-			//cout << i << "\tveremDisplay:\t van ptr" << endl;
-			valueLabel[i] -> setText( QString::number( (int)valueVec[i] ));
+			vecLabel[i] -> SetForegroundColour( *wxBLACK );
 		}
-		*/
-		valueLabel[i] -> setText( QString::number( (int)valueVec[i] ));
-		//valueLabel[i] -> setText( "abc");
-		//cout << i << ". val: " << (int)valueVec[i] << endl;
+		
+		std::stringstream ss;
+		ss << (int)vecValue[i];
+		vecLabel[i] -> SetValue( ss.str() );
 	}
-	//scrollWidget -> setFixedSize( 45 * valueLabel.size(), 45 );	// ezt eleg, ha a kiegeszitoszoveg csinalja, az nagyobbra allitja
+	inSizer -> Layout();
+	scroll -> FitInside();
+	outSizer -> Layout();
+	Fit();
 }
 
-void veremDisplay::updateKieg(const std::vector<std::string> &kiegs)
+void varDisplay::updateLabels( const std::vector< std::string > &values )
 {
-	unsigned int prevsize = kiegLabel.size();
-	if ( kiegs.size() < kiegLabel.size() )
+	int prevsize = nameLabels.size();
+	int newsize = values.size();
+	
+	if ( newsize > prevsize )
 	{
-		for (unsigned int i = kiegLabel.size() - 1; i >= kiegs.size(); --i)
+		wxFont displayFont(wxFontInfo( 12 ) );
+		vecNames.resize( newsize );
+		nameLabels.resize( newsize );
+		
+		for ( int i = prevsize; i < newsize; ++i)
 		{
-			gridLayout -> removeWidget( kiegLabel[i] );
-			delete kiegLabel[i];
-		}
-	}
-	kiegLabel.resize( kiegs.size(), NULL );
-	kiegVec = kiegs;
-	if (prevsize < kiegs.size() )
-	{
-		QFont displayFont( "Arial", 12);
-		for (unsigned int i = prevsize; i < kiegLabel.size(); ++i)
-		{
-			kiegLabel[i] = new QLabel( this );
-			kiegLabel[i] -> setStyleSheet( "QLabel { color : black; }" );
-			kiegLabel[i] -> setFont( displayFont );
-			kiegLabel[i] -> setFixedSize( 40, 20 );
-			kiegLabel[i] -> setAlignment(Qt::AlignCenter);
+			vecNames[i] = values[i];
+			nameLabels[i] = new wxTextCtrl( scroll, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_READONLY | wxTE_CENTRE | wxTE_RICH | wxBORDER_NONE );
+			nameLabels[i] -> SetMinSize( wxSize(50, 20) );
+			nameLabels[i] -> SetFont( displayFont );
+			nameLabels[i] -> SetBackgroundColour( GetBackgroundColour() );
+			nameLabels[i] -> SetForegroundColour( *wxRED );
 			
-			gridLayout -> addWidget( kiegLabel[i], 0, i, Qt::AlignTop);
+			inSizer -> Add( nameLabels[i], wxGBPosition( 1, i ) );
+			
+			nameLabels[i] -> SetValue( vecNames[i] );
 		}
 	}
-	for (unsigned int i = 0; i < kiegLabel.size(); ++i)
+	
+	if (newsize < prevsize)
 	{
-		kiegLabel[i] -> setText( QString::fromStdString( kiegVec[i] ));
+		for ( int i = newsize; i < prevsize; ++i)
+		{
+			inSizer -> Detach( nameLabels[i] );
+			delete nameLabels[i];
+		}
+		vecNames.resize( newsize );
+		nameLabels.resize( newsize );
 	}
-	scrollWidget -> setFixedSize( 45 * kiegLabel.size(), 45 );
+	
+	for ( int i = 0; i < ((prevsize < newsize) ? (prevsize) : (newsize)); ++i)
+	{
+		if ( vecNames[i] != values[i])
+		{
+			vecNames[i] = values[i];
+			nameLabels[i] -> SetForegroundColour( *wxRED );
+		} else
+		{
+			nameLabels[i] -> SetForegroundColour( *wxBLACK );
+		}
+		
+		nameLabels[i] -> SetValue( vecNames[i] );
+	}
+	inSizer -> Layout();
+	scroll -> SetScrollbars( UI_LABEL_WIDTH, 0, newsize , 1 );
+	scroll -> FitInside();
+	outSizer -> Layout();
+	Fit();
 }
 
-// ------------------------
+// ----------------------------------------
 
-flagDisplay::flagDisplay( const std::string &nev, QWidget *parent = 0) : QFrame(parent), name(nev), flag(0)
+flagDisplay::flagDisplay( wxPanel *parent, const std::string &nev) :
+	wxPanel( parent, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL | wxBORDER_SIMPLE ), name(nev), value(0)
 {
-	setFixedSize(UI_REG_HEIGHT, UI_REG_HEIGHT);
-	setFrameShape( QFrame::Box );
+	wxFont nameFont(wxFontInfo( 16 ).Bold( true ) );
+	wxFont displayFont(wxFontInfo( 12 ) );
 	
-	QFont nameFont( "Arial", 16);
-	QFont displayFont( "Arial", 12);
-	QVBoxLayout *mainLayout = new QVBoxLayout( this );
-	nameLabel = new QLabel( this );
-	valueLabel = new QLabel( this );
+	wxGridBagSizer *sizer = new wxGridBagSizer(1,1);
 	
-	nameLabel -> setFont( nameFont );
-	nameLabel -> setFixedSize( 40, 20 );
-	nameLabel -> setAlignment(Qt::AlignCenter);
-	nameLabel -> setText( QString::fromStdString( name ));
+	nameLabel = new wxTextCtrl( this, wxID_ANY, name, wxDefaultPosition, wxDefaultSize, wxTE_READONLY | wxTE_LEFT | wxBORDER_NONE );
+	nameLabel -> SetMinSize( wxSize(80, 25) );
+	nameLabel -> SetFont( nameFont );
+	nameLabel -> SetDefaultStyle( wxTextAttr( *wxBLACK ));
 	
-	valueLabel -> setDisabled( true );
-	valueLabel -> setStyleSheet( "QLabel { background-color : white; color : black; }" );
-	valueLabel -> setTextInteractionFlags( Qt::TextSelectableByMouse );	// kijelolhetove (masolhatova) teszi a szoveget
-	valueLabel -> setFont( displayFont );
-	valueLabel -> setFixedSize( 40, 20 );
-	valueLabel -> setAlignment(Qt::AlignCenter);
+	valLabel = new wxTextCtrl( this, wxID_ANY, name, wxDefaultPosition, wxDefaultSize, wxTE_READONLY | wxTE_LEFT | wxBORDER_NONE );
+	valLabel -> SetMinSize( wxSize(25, 20) );
+	valLabel -> SetFont( displayFont );
+	valLabel -> SetDefaultStyle( wxTextAttr( *wxBLACK ));
+	set( false );
 	
-	mainLayout -> addWidget( nameLabel, Qt::AlignTop );
-	mainLayout -> addWidget( valueLabel, Qt::AlignCenter );
+	sizer -> Add( nameLabel, wxGBPosition(0, 0));
+	sizer -> Add( valLabel, wxGBPosition(1, 0));
+	
+	SetSizer( sizer );
+	Fit();
 }
 
-flagDisplay::~flagDisplay()
+void flagDisplay::set( bool b )
 {
-	// null
-}
-
-bool flagDisplay::getFlag() const
-{
-	return flag;
-}
-
-void flagDisplay::setFlag(bool b)
-{
-	flag = b;
-	valueLabel -> setText( QString::number( b ) );
+	value = b;
+	
+	std::stringstream ss;
+	ss << (value ? 1 : 0);
+	valLabel -> SetValue( ss.str() );
 }
