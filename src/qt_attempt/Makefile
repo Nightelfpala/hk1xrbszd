@@ -11,12 +11,12 @@ INCLUDE_INTERPRET = ../interpret
 OBJECTS = ../objects
 BIN = ../bin
 
-#CC = x86_64-w64-mingw32-g++ -g -Wall -Wextra
-CC = x86_64-w64-mingw32-g++
-#MOC = moc.exe
+CC = x86_64-w64-mingw32-g++ -g -Wall -Wextra
+#CC = x86_64-w64-mingw32-g++
+MOC = moc.exe
 FLAGS = -I$(INCLUDE) -I$(INCLUDE_ELSOPARSE) -I$(INCLUDE_INTERPRET)
 
-#DEFINES		= -DUNICODE -DQT_DLL -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -DQT_NEEDS_QMAIN -DQT_SHARED
+DEFINES		= -DUNICODE -DQT_DLL -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -DQT_NEEDS_QMAIN -DQT_SHARED
 #DEFINES		= -DUNICODE -DQT_DLL -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -DQT_NEEDS_QMAIN -DQT_SHARED
 #DEFINES		= -DUNICODE -DQT_DLL -DQT_GUI_LIB -DQT_CORE_LIB -DQT_NEEDS_QMAIN -DQT_SHARED
 #DEFINES		= -DQT_DLL -DQT_GUI_LIB -DQT_CORE_LIB -DQT_NEEDS_QMAIN -DQT_SHARED
@@ -24,15 +24,8 @@ FLAGS = -I$(INCLUDE) -I$(INCLUDE_ELSOPARSE) -I$(INCLUDE_INTERPRET)
 #CXXFLAGS	= -pipe -O2 -frtti -fexceptions -mthreads $(DEFINES)
 CXXFLAGS	= -pipe -O2 -frtti -fexceptions $(DEFINES)
 #MINGWSTATIC	= -static-libgcc -static-libstdc++
-#QT_INCPATH	= -I'/usr/x86_64-w64-mingw32/sys-root/mingw/include/qt4/QtCore' -I'/usr/x86_64-w64-mingw32/sys-root/mingw/include/qt4/QtGui' -I'/usr/x86_64-w64-mingw32/sys-root/mingw/include/qt4' -I'/usr/x86_64-w64-mingw32/sys-root/mingw/include/qt4/ActiveQt' -I'release' -I'/usr/x86_64-w64-mingw32/sys-root/mingw/share/qt4/mkspecs/win32-g++'
-#QT_LIBS	= -L'/usr/x86_64-w64-mingw32/sys-root/mingw/lib' -lmingw32 -lqtmain -lQtGui -lQtCore
-
-WX_INC = -I/usr/x86_64-w64-mingw32/sys-root/mingw/include/wx-3.0 \
-	-I/usr/x86_64-w64-mingw32/sys-root/mingw/lib/wx/include/x86_64-w64-mingw32-msw-unicode-3.0/
-
-WX_LIB = -L/usr/x86_64-w64-mingw32/sys-root/mingw/lib \
-	-lwx_baseu-3.0-x86_64-w64-mingw32 \
-	-lwx_mswu_core-3.0-x86_64-w64-mingw32
+QT_INCPATH	= -I'/usr/x86_64-w64-mingw32/sys-root/mingw/include/qt4/QtCore' -I'/usr/x86_64-w64-mingw32/sys-root/mingw/include/qt4/QtGui' -I'/usr/x86_64-w64-mingw32/sys-root/mingw/include/qt4' -I'/usr/x86_64-w64-mingw32/sys-root/mingw/include/qt4/ActiveQt' -I'release' -I'/usr/x86_64-w64-mingw32/sys-root/mingw/share/qt4/mkspecs/win32-g++'
+QT_LIBS	= -L'/usr/x86_64-w64-mingw32/sys-root/mingw/lib' -lmingw32 -lqtmain -lQtGui -lQtCore
 
 #	---------------------------------------
 #	
@@ -42,13 +35,13 @@ INTERPRET_HEADERS = interpretParser.h interpretParserbase.h
 ELSOPARSE_OBJECTS = elsoparseFlexer.o elsoparseParser.o
 INTERPRET_OBJECTS = interpretFlexer.o interpretParser.o
 #	kiegeszitendo a tovabbi objectfajlokkal
-_OBJ = allapot.o utils.o ui_parts.o $(ELSOPARSE_OBJECTS) $(INTERPRET_OBJECTS) ui_main.o appmain.o
+_OBJ = allapot.o utils.o ui_parts.o ui_parts_moc.o $(ELSOPARSE_OBJECTS) $(INTERPRET_OBJECTS) szimulacio.o ui_main.o ui_main_moc.o
 OBJ = $(patsubst %,$(OBJECTS)/%,$(_OBJ))
 #	teszteleshez hasznalt mainekbol keletkezo object fajlok
-_MAINS_OBJ = allapot_main.o elsoparse.o utils_main.o ui_parts_main.o ui_parts_appmain.o interpret.o
+_MAINS_OBJ = allapot_main.o ui_vec_main.o elsoparse.o utils_main.o ui_main_main.o interpret.o
 MAINS_OBJ = $(patsubst %,$(OBJECTS)/%,$(_MAINS_OBJ))
 
-_DEPS = allapot.h utils.h typedefs.h ui_parts.h semantics.h FlexLexer.h ui_main.h appmain.h
+_DEPS = allapot.h utils.h typedefs.h ui_parts.h semantics.h FlexLexer.h ui_main.h
 _DEPS_ELSOPARSE = elsoparseParser.h elsoparseParserbase.h
 _DEPS_INTERPRET = interpretParser.h interpretParserbase.h
 DEPS = $(patsubst %,$(INCLUDE)/%,$(_DEPS)) $(patsubst %,$(INCLUDE_ELSOPARSE)/%,$(_DEPS_ELSOPARSE)) $(patsubst %,$(INCLUDE_INTERPRET)/%,$(_DEPS_INTERPRET))
@@ -73,6 +66,14 @@ DEPS_ALLAPOT = $(patsubst %,$(INCLUDE)/%,$(_DEPS_ALLAPOT))
 _OUT_ALLAPOT = teszt_allapot
 OUT_ALLAPOT = $(patsubst %,$(BIN)/%,$(_OUT_ALLAPOT))
 
+#	teszt_ui_vec:
+_OBJ_UI_VEC = ui_parts.o ui_vec_main.o ui_parts_moc.o
+OBJ_UI_VEC = $(patsubst %,$(OBJECTS)/%,$(_OBJ_UI_VEC))
+_DEPS_UI_VEC = ui_parts.h typedefs.h
+DEPS_UI_VEC = $(patsubst %,$(INCLUDE)/%,$(_DEPS_UI_VEC))
+_OUT_UI_VEC = teszt_ui_vec
+OUT_UI_VEC = $(patsubst %,$(BIN)/%,$(_OUT_UI_VEC))
+
 #	teszt_elsoparse:
 _OBJ_ELSOP = $(ELSOPARSE_OBJECTS) elsoparse.o utils.o
 OBJ_ELSOP = $(patsubst %,$(OBJECTS)/%,$(_OBJ_ELSOP))
@@ -89,25 +90,17 @@ DEPS_INTERP = $(patsubst %,$(INCLUDE)/%,$(_DEPS_INTERP))
 _OUT_INTERP = teszt_interpret
 OUT_INTERP = $(patsubst %,$(BIN)/%,$(_OUT_INTERP))
 
-#	teszt_ui_parts:
-_OBJ_UI_VEC = ui_parts.o ui_parts_main.o ui_parts_appmain.o
-OBJ_UI_VEC = $(patsubst %,$(OBJECTS)/%,$(_OBJ_UI_VEC))
-_DEPS_UI_VEC = ui_parts.h ui_parts_main.h ui_parts_appmain.h typedefs.h
-DEPS_UI_VEC = $(patsubst %,$(INCLUDE)/%,$(_DEPS_UI_VEC))
-_OUT_UI_VEC = teszt_ui_parts
-OUT_UI_VEC = $(patsubst %,$(BIN)/%,$(_OUT_UI_VEC))
-
-#	#	teszt_ui_main:
-#	_OBJ_UI_MAIN = ui_parts.o ui_main.o allapot.o utils.o ui_main_main.o  $(ELSOPARSE_OBJECTS) $(INTERPRET_OBJECTS)
-#	OBJ_UI_MAIN = $(patsubst %,$(OBJECTS)/%,$(_OBJ_UI_MAIN))
-#	_DEPS_UI_MAIN = ui_parts.h ui_main.h typedefs.h utils.h allapot.h $(ELSOPARSE_HEADERS) $(INTERPRET_HEADERS)
-#	DEPS_UI_MAIN = $(patsubst %,$(INCLUDE)/%,$(_DEPS_UI_MAIN))
-#	_OUT_UI_MAIN = teszt_ui_main
-#	OUT_UI_MAIN = $(patsubst %,$(BIN)/%,$(_OUT_UI_MAIN))
+#	teszt_ui_main:
+_OBJ_UI_MAIN = ui_parts.o ui_parts_moc.o ui_main.o allapot.o utils.o ui_main_main.o  $(ELSOPARSE_OBJECTS) $(INTERPRET_OBJECTS) ui_main_moc.o
+OBJ_UI_MAIN = $(patsubst %,$(OBJECTS)/%,$(_OBJ_UI_MAIN))
+_DEPS_UI_MAIN = ui_parts.h ui_main.h typedefs.h utils.h allapot.h $(ELSOPARSE_HEADERS) $(INTERPRET_HEADERS)
+DEPS_UI_MAIN = $(patsubst %,$(INCLUDE)/%,$(_DEPS_UI_MAIN))
+_OUT_UI_MAIN = teszt_ui_main
+OUT_UI_MAIN = $(patsubst %,$(BIN)/%,$(_OUT_UI_MAIN))
 
 
 all: $(OBJ)
-	$(CC) -o $(OUT) $^ $(WX_LIB) $(MINGWSTATIC)
+	$(CC) -o $(OUT) $^ $(QT_INCPATH) $(QT_LIBS) $(MINGWSTATIC)
 
 $(OBJECTS)/interpretFlexer.o: ../interpret/interpret.yy.cc
 	$(CC) -c -o $@ $< $(FLAGS)
@@ -120,9 +113,16 @@ $(OBJECTS)/elsoparseFlexer.o: ../elsoparse/elsoparse.yy.cc
 
 $(OBJECTS)/elsoparseParser.o: ../elsoparse/elsoparse.cc
 	$(CC) -c -o $@ $< $(FLAGS)
+	
+ui_parts_moc.cpp : $(INCLUDE)/ui_parts.h
+	$(MOC) $(DEFINES) $(QT_INCPATH) $(INCPATH) $< -o $@
+	
+ui_main_moc.cpp : $(INCLUDE)/ui_main.h
+	$(MOC) $(DEFINES) $(QT_INCPATH) $(INCPATH) $< -o $@
+
 
 $(OBJECTS)/%.o: %.cpp $(DEPS)
-	$(CC) -c -o $@ $< $(FLAGS) $(CXXFLAGS) $(WX_INC)
+	$(CC) -c -o $@ $< $(FLAGS) $(CXXFLAGS) $(QT_INCPATH)
 	
 utils: $(OBJ_UTILS)
 	$(CC) -o $(OUT_UTILS) $^ $(MINGWSTATIC)
@@ -130,11 +130,11 @@ utils: $(OBJ_UTILS)
 allapot: $(OBJ_ALLAPOT)
 	$(CC) -o $(OUT_ALLAPOT) $^ $(MINGWSTATIC)
 	
-ui_parts: $(OBJ_UI_VEC)
-	$(CC) -o $(OUT_UI_VEC) $^ $(WX_LIB) $(MINGWSTATIC)
+ui_vec: $(OBJ_UI_VEC)
+	$(CC) -o $(OUT_UI_VEC) $^ $(QT_INCPATH) $(QT_LIBS) $(MINGWSTATIC)
 
-#ui_main: $(OBJ_UI_MAIN)
-#	$(CC) -o $(OUT_UI_MAIN) $^ $(QT_INCPATH) $(QT_LIBS) $(MINGWSTATIC)
+ui_main: $(OBJ_UI_MAIN)
+	$(CC) -o $(OUT_UI_MAIN) $^ $(QT_INCPATH) $(QT_LIBS) $(MINGWSTATIC)
 
 elsoparse: $(OBJ_ELSOP)
 	$(CC) -o $(OUT_ELSOP) $^ $(MINGWSTATIC)

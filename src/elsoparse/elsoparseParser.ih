@@ -4,6 +4,7 @@
 #include <algorithm>
 #include "elsoparseParser.h"
 
+
 int elsoparseParser::completeParse()
 {
 	int ret = parse();

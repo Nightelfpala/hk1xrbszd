@@ -41,6 +41,24 @@ void Allapot::init( const std::map<std::string, int> &valtozo_kezdetek, const st
 {
 	valtozo_elso = valtozo_kezdetek;
 	valtozok = valt_vector;
+	
+	eax.resize(4);
+	ebx.resize(4);
+	ecx.resize(4);
+	edx.resize(4);
+	
+	ebp.resize(4);
+	esp.resize(4);
+	
+	uint2vecc( 0, eax);
+	ebx = eax;
+	ecx = eax;
+	edx = eax;
+	
+	sint2vecc( 0, esp);
+	ebp = esp;
+	
+	verem.resize(0);
 }
 
 void Allapot::get_reg( const std::string &reg_azon, std::vector<AP_UC> &to ) const
@@ -439,7 +457,7 @@ void Allapot::get_var( const int &elso_byte, const AP_UI &hossz, std::vector<AP_
 	} else	// verembol == 1, verembol veszunk ki
 	{
 		elso *= -1;
-		if ( (elso > verem.size() ) || (( elso - hossz ) < 0) )
+		if ( (elso > verem.size() ) || (elso < hossz ) )
 			throw HATARON_KIVULI_VEREM;
 		for ( int i = 0; i < hossz; ++i)
 		{
@@ -557,8 +575,6 @@ void Allapot::vec_pointerek( std::vector<std::string> &to ) const
 {
 	to.resize( 0 );
 	to.resize( verem.size() + 1, "");
-	cout << "ebp: " << -vecc2sint(ebp) << endl;
-	cout << "esp: " << -vecc2sint(esp) << endl;
 	to[ -vecc2sint(ebp) ] = "ebp";
 	to[ -vecc2sint(esp) ] = "esp";
 }

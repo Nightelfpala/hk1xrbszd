@@ -21,7 +21,6 @@ mainDisplay::mainDisplay( const wxString &title ) : wxFrame(NULL, wxID_ANY, titl
 	file = new wxMenu;
 	
 	file -> Append( UI_MAIN_FILE_OPEN_EVENT, wxString::FromUTF8("Fájl megnyitása") );
-	file -> Append( wxID_ANY, wxEmptyString, wxEmptyString, wxITEM_SEPARATOR );
 	file -> Append( wxID_EXIT, wxString::FromUTF8("Kilépés") );
 	menuBar -> Append( file, "File" );
 	

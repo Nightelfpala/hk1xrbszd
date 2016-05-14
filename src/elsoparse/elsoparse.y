@@ -80,6 +80,8 @@ szekcio:
 |
 	SECTION BSS bssdeklaraciok
 |
+	SECTION TEXT utasitasok
+|
 	SECTION TEXT global utasitasok
 ;
 
@@ -91,7 +93,7 @@ global:
 			std::stringstream ss;
 			ss << d_loc__.first_line << ". sor: " << "global belepesi pont ismetles" << std::endl
 				<< "\telozo nev: " << elsoutasitas_cimke << std::endl
-				<< "\tmost talalt nev: " << $2 << std::endl;
+				<< "\tmost talalt nev: " << *$2 << std::endl;
 			errorMsg = ss.str();
 			
 			delete $2;

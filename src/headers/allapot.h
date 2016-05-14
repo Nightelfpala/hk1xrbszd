@@ -65,9 +65,7 @@ public:
 private:
 	//valtozok
 	std::map<std::string, int> valtozo_elso;
-	std::vector<AP_UC> valtozok;	// a verem es a valtozok tarolasa
-		// felepites:	eleje						verem alja
-				//		valt1	valt2		valt3	PUSH1	PUSH2	PUSH3
+	std::vector<AP_UC> valtozok;	// a valtozok tarolasa
 	
 	//regiszterek
 	std::vector<AP_UC> eax;

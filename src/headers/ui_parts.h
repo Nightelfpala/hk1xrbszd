@@ -2,85 +2,66 @@
 #ifndef UI_PARTS_H_INCLUDED
 #define UI_PARTS_H_INCLUDED
 
-#include "typedefs.h"
-
-#include <QWidget>
-#include <QLabel>
-#include <QGridLayout>
-#include <QScrollArea>
-#include <QFrame>
-#include <QCheckBox>
+#include <wx/wx.h>
 
 #include <vector>
-#include <string>
 
-class regDisplay : public QFrame
-{	// a regiszterek kijelzeseert felelos, fix meretu
-public:
-	regDisplay(int _meret, const std::string &nev, QWidget *parent = 0);
-	~regDisplay();
-	
-	int size() const;
-	
-	void setValues(const std::vector<AP_UC> &val);
-	
-private:
-	QLabel* nameLabel;
-	QGridLayout* gridLayout;
-	
-	const std::string name;
-	int meret;
-	
-	std::vector<AP_UC> valueVec;
-	std::vector<QLabel*> valueLabel;
-};
+class wxScrolledWindow;
+class wxGridBagSizer;
 
-
-class veremDisplay : public QFrame
-{	// a verem illetve a valtozok kijelzeseert felelos, valtoztathato meretu, gorditosavval ellatott
-public:
-	veremDisplay( const std::string &nev, QWidget *parent );
-	~veremDisplay();
-	
-	
-	int size() const;
-	
-	void updateValues(const std::vector<AP_UC> &vals);
-	void updateKieg(const std::vector<std::string> &kiegs);
-	
-private:
-	const std::string name;
-	QLabel* nameLabel;
-	
-	int meret;
-	
-	QScrollArea *scrollArea;
-	QWidget *scrollWidget;
-	QGridLayout* gridLayout;
-	
-	
-	// byteertekek
-	std::vector<AP_UC> valueVec;
-	std::vector<QLabel*> valueLabel;
-	// kiegeszito szovegek: valtozo nevek, verem pointer cimkek
-	std::vector<std::string> kiegVec;
-	std::vector<QLabel*> kiegLabel;
-};
-
-class flagDisplay : public QFrame
+class regDisplay : public wxPanel
 {
 public:
-	flagDisplay( const std::string &nev, QWidget* parent );
-	~flagDisplay();
+	regDisplay( wxPanel *parent, const int &size, const std::string &nev );
 	
-	bool getFlag() const;
-	void setFlag( bool b );
+	void updateValues( const std::vector<unsigned char> &values );
 private:
 	const std::string name;
-	QLabel* nameLabel;
-	QCheckBox* checkBox;
+	const int meret;
 	
-	bool flag;
+	wxTextCtrl* nameLabel;
+	
+	std::vector< wxTextCtrl* > vecLabel;
+	std::vector<unsigned char> vecValue;
 };
 
-#endif	// UI_PARTS_H_INCLUDED
+class varDisplay : public wxPanel
+{
+public:
+	varDisplay( wxPanel *parent, const std::string &nev );
+	
+	void updateValues( const std::vector<unsigned char> &values );
+	void updateLabels( const std::vector< std::string > &values );
+private:
+	const std::string name;
+	
+	wxTextCtrl* nameLabel;
+	
+	wxScrolledWindow *scroll;
+	wxGridBagSizer *inSizer;
+	wxGridBagSizer *outSizer;
+	
+	std::vector< wxTextCtrl* > vecLabel;
+	std::vector<unsigned char> vecValue;
+	
+	std::vector< wxTextCtrl* > nameLabels;
+	std::vector< std::string > vecNames;
+};
+
+class flagDisplay : public wxPanel
+{
+public:
+	flagDisplay( wxPanel *parent, const std::string &nev);
+	
+	void set( bool b);
+private:
+	const std::string name;
+	
+	bool value;
+	
+	wxTextCtrl* nameLabel;
+	wxTextCtrl* valLabel;
+};
+
+#endif // UI_PARTS_H_INCLUDED
+

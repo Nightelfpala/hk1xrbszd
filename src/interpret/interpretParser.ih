@@ -14,7 +14,7 @@ interpretParser::interpretParser() : lexer(NULL)
 
 interpretParser::~interpretParser()
 {
-	if ( lexer != 0)
+	if ( lexer != NULL)
 	{
 		delete lexer;
 	}
