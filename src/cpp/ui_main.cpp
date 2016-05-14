@@ -1,13 +1,15 @@
 
 #include <fstream>
 
+#include "elsoparseParser.h"
+#include "ui_parts.h"
+#include "ui_main.h"
+
 #include <wx/gbsizer.h>
 #include <wx/event.h>
 #include <wx/filedlg.h>
 #include <wx/msgdlg.h>
-
-#include "ui_parts.h"
-#include "ui_main.h"
+#include <wx/filefn.h>	// wxGetCwd()
 
 mainDisplay::mainDisplay( const wxString &title ) : wxFrame(NULL, wxID_ANY, title, wxDefaultPosition, wxSize(800, 600) )
 {
@@ -15,7 +17,7 @@ mainDisplay::mainDisplay( const wxString &title ) : wxFrame(NULL, wxID_ANY, titl
 	mainPanel -> 
 		SetAutoLayout( true );
 	//mainPanel -> 
-		SetMinSize( wxSize(800, 600) );
+		SetMinSize( wxSize(900, 600) );
 	
 	menuBar = new wxMenuBar;
 	file = new wxMenu;
@@ -31,16 +33,16 @@ mainDisplay::mainDisplay( const wxString &title ) : wxFrame(NULL, wxID_ANY, titl
 	//file -> Bind( wxEVT_COMMAND_MENU_SELECTED, &mainDisplay::OnQuit, this );
 	
 	sizer = new wxGridBagSizer( 1, 1 );
-	eax = new regDisplay( mainPanel, 4, "eax" );
-	ebx = new regDisplay( mainPanel, 4, "ebx" );
-	ecx = new regDisplay( mainPanel, 4, "ecx" );
-	edx = new regDisplay( mainPanel, 4, "edx" );
+	eax = new regDisplay( mainPanel, 4, "EAX" );
+	ebx = new regDisplay( mainPanel, 4, "EBX" );
+	ecx = new regDisplay( mainPanel, 4, "ECX" );
+	edx = new regDisplay( mainPanel, 4, "EDX" );
 	
-	valtozok = new varDisplay( mainPanel, "valtozok" );
-	verem = new varDisplay( mainPanel, "verem" );
+	valtozok = new varDisplay( mainPanel, wxString::FromUTF8("Változók") );
+	verem = new varDisplay( mainPanel, "Verem" );
 	
-	sign = new flagDisplay( mainPanel, "sign" );
-	zero = new flagDisplay( mainPanel, "zero" );
+	sign = new flagDisplay( mainPanel, "SIGN" );
+	zero = new flagDisplay( mainPanel, "ZERO" );
 	
 	sizer -> Add( eax, wxGBPosition(0, 0) );
 	sizer -> Add( ebx, wxGBPosition(0, 1) );
@@ -79,7 +81,7 @@ void mainDisplay::OnQuit( wxCommandEvent& event)
 
 void mainDisplay::OpenFile( wxCommandEvent& event)
 {
-	wxFileDialog dialog( this, wxString::FromUTF8("Assembly kódfájl megnyitása"), "", "", wxString::FromUTF8("Assembly fájlok (*.asm)|*.asm"), wxFD_OPEN | wxFD_FILE_MUST_EXIST );
+	wxFileDialog dialog( this, wxString::FromUTF8("Assembly kódfájl megnyitása"), wxGetCwd(), "", wxString::FromUTF8("Assembly fájlok (*.asm)|*.asm"), wxFD_OPEN | wxFD_FILE_MUST_EXIST );
 	
 	if ( dialog.ShowModal() == wxID_CANCEL)
 	{	// nem tortent file megnyitas
@@ -93,23 +95,13 @@ void mainDisplay::OpenFile( wxCommandEvent& event)
 
 void mainDisplay::displayRefresh()
 {
-	// temp - TODO use allapot
-	std::vector<unsigned char> vec(4);
-	std::vector<std::string> labels(4);
-	for (int i = 0; i < 4; ++i)
-	{
-		vec[i] = 3 - i + i * i * 2;
-		if ( i == 2)
-		{
-			labels[i] = "itt";
-		} else
-		{
-			labels[i] = "";
-		}
-	}
+	std::vector<unsigned char> vec;
+	std::vector<std::string> labels;
 	
+	allapot.get_reg( "eax", vec );
 	eax -> updateValues( vec );
 	
+	/*
 	vec[2] = 42;
 	ebx -> updateValues( vec );
 	
@@ -145,7 +137,7 @@ void mainDisplay::displayRefresh()
 	verem -> updateLabels( labels );
 	
 	sign -> set( true );
-	
+	*/
 	sizer -> Layout();
 	Fit();
 }

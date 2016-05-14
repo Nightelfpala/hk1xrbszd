@@ -12,11 +12,11 @@ class wxGridBagSizer;
 class regDisplay : public wxPanel
 {
 public:
-	regDisplay( wxPanel *parent, const int &size, const std::string &nev );
+	regDisplay( wxPanel *parent, const int &size, const wxString &nev );
 	
 	void updateValues( const std::vector<unsigned char> &values );
 private:
-	const std::string name;
+	const wxString name;
 	const int meret;
 	
 	wxTextCtrl* nameLabel;
@@ -28,12 +28,12 @@ private:
 class varDisplay : public wxPanel
 {
 public:
-	varDisplay( wxPanel *parent, const std::string &nev );
+	varDisplay( wxPanel *parent, const wxString &nev );
 	
 	void updateValues( const std::vector<unsigned char> &values );
 	void updateLabels( const std::vector< std::string > &values );
 private:
-	const std::string name;
+	const wxString name;
 	
 	wxTextCtrl* nameLabel;
 	
@@ -51,11 +51,11 @@ private:
 class flagDisplay : public wxPanel
 {
 public:
-	flagDisplay( wxPanel *parent, const std::string &nev);
+	flagDisplay( wxPanel *parent, const wxString &nev);
 	
 	void set( bool b);
 private:
-	const std::string name;
+	const wxString name;
 	
 	bool value;
 	

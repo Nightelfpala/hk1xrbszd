@@ -12,7 +12,7 @@
 
 using namespace std;
 
-regDisplay::regDisplay( wxPanel *parent, const int &size, const std::string &nev ) :
+regDisplay::regDisplay( wxPanel *parent, const int &size, const wxString &nev ) :
 	wxPanel( parent, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL | wxBORDER_SIMPLE ), name(nev), meret(size)
 {
 	vecValue.resize( meret, 0 );
@@ -37,7 +37,7 @@ regDisplay::regDisplay( wxPanel *parent, const int &size, const std::string &nev
 		vecLabel[i] -> SetFont( displayFont );
 		vecLabel[i] -> SetDefaultStyle( wxTextAttr( *wxBLACK ));
 		
-		sizer -> Add( vecLabel[i], wxGBPosition( 1, i) );
+		sizer -> Add( vecLabel[i], wxGBPosition( 1, i), wxDefaultSpan, wxALIGN_CENTER );
 		
 		std::stringstream ss;
 		ss << (int)vecValue[i];
@@ -69,7 +69,7 @@ void regDisplay::updateValues( const std::vector<unsigned char> &values )
 
 // ---------------------------------------------------------
 
-varDisplay::varDisplay( wxPanel *parent, const std::string &nev )
+varDisplay::varDisplay( wxPanel *parent, const wxString &nev )
 	: wxPanel( parent, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL | wxBORDER_SIMPLE ), name(nev)
 {
 	vecValue.resize(0);
@@ -128,7 +128,7 @@ void varDisplay::updateValues( const std::vector<unsigned char> &values )
 			vecLabel[i] -> SetMinSize( wxSize(50, 20) );
 			vecLabel[i] -> SetFont( displayFont );
 			
-			inSizer -> Add( vecLabel[i], wxGBPosition( 2, i ) );
+			inSizer -> Add( vecLabel[i], wxGBPosition( 2, i ), wxDefaultSpan, wxALIGN_CENTER );
 			
 			std::stringstream ss;
 			ss << (int)vecValue[i];
@@ -187,7 +187,7 @@ void varDisplay::updateLabels( const std::vector< std::string > &values )
 			nameLabels[i] -> SetBackgroundColour( GetBackgroundColour() );
 			nameLabels[i] -> SetForegroundColour( *wxRED );
 			
-			inSizer -> Add( nameLabels[i], wxGBPosition( 1, i ) );
+			inSizer -> Add( nameLabels[i], wxGBPosition( 1, i ), wxDefaultSpan, wxALIGN_CENTER );
 			
 			nameLabels[i] -> SetValue( vecNames[i] );
 		}
@@ -226,7 +226,7 @@ void varDisplay::updateLabels( const std::vector< std::string > &values )
 
 // ----------------------------------------
 
-flagDisplay::flagDisplay( wxPanel *parent, const std::string &nev) :
+flagDisplay::flagDisplay( wxPanel *parent, const wxString &nev) :
 	wxPanel( parent, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL | wxBORDER_SIMPLE ), name(nev), value(0)
 {
 	wxFont nameFont(wxFontInfo( 16 ).Bold( true ) );
@@ -246,7 +246,7 @@ flagDisplay::flagDisplay( wxPanel *parent, const std::string &nev) :
 	set( false );
 	
 	sizer -> Add( nameLabel, wxGBPosition(0, 0));
-	sizer -> Add( valLabel, wxGBPosition(1, 0));
+	sizer -> Add( valLabel, wxGBPosition(1, 0), wxDefaultSpan, wxALIGN_CENTER);
 	
 	SetSizer( sizer );
 	Fit();
@@ -254,7 +254,14 @@ flagDisplay::flagDisplay( wxPanel *parent, const std::string &nev) :
 
 void flagDisplay::set( bool b )
 {
-	value = b;
+	if ( value != b)
+	{
+		value = b;
+		valLabel -> SetForegroundColour( *wxRED );
+	} else
+	{
+		valLabel -> SetForegroundColour( *wxBLACK );
+	}
 	
 	std::stringstream ss;
 	ss << (value ? 1 : 0);

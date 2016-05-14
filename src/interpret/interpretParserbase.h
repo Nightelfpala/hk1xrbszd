@@ -122,7 +122,7 @@ union STYPE__
 
         void ABORT() const;
         void ACCEPT() const;
-        void ERROR() const;
+        void IP_ERROR() const;
         void clearin();
         bool debug() const;
         void pop__(size_t count = 1);
@@ -157,7 +157,7 @@ inline void interpretParserBase::ACCEPT() const
     throw PARSE_ACCEPT__;
 }
 
-inline void interpretParserBase::ERROR() const
+inline void interpretParserBase::IP_ERROR() const
 {
     throw UNEXPECTED_TOKEN__;
 }

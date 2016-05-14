@@ -2,6 +2,11 @@
 #ifndef UI_MAIN_H_INCLUDED
 #define UI_MAIN_H_INCLUDED
 
+#include "typedefs.h"
+#include "allapot.h"
+#include "interpretParser.h"
+		// interpretParser.h -> ERROR() atirva IP_ERROR() -ra, hogy ne conflictolja a wxWidgets-szel
+
 #include <wx/wx.h>
 #include <wx/menu.h>
 
@@ -22,6 +27,8 @@ public:
 private:	
 	void OnQuit( wxCommandEvent& event);
 	void OpenFile( wxCommandEvent& event);
+	
+	Allapot allapot;
 
 	regDisplay* eax;
 	regDisplay* ebx;
