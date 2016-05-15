@@ -35,6 +35,8 @@ private:
 	
 	Allapot allapot;
 	
+	bool isloaded;
+	
 	std::map<int, utasitas_data> utas_data;
 	std::map<std::string, int> ugro_cimkek;
 	int vege;

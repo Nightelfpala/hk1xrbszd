@@ -50,8 +50,14 @@ regDisplay::regDisplay( wxPanel *parent, const int &size, const wxString &nev ) 
 
 void regDisplay::updateValues( const std::vector<unsigned char> &values )
 {
-	for ( int i = 0; i < meret; ++i)
+	//cout << "meret : " << meret << "\tvalues.size: " << values.size() << endl;
+	//if (name == "EAX") {wxMessageDialog msg2( this, "1", ""); msg2.ShowModal();}
+	for ( int i = 0; i < meret; ++i)	// SEGFAULT WHY
 	{
+		//if (name == "EAX") {wxMessageDialog msg2( this, "2", ""); msg2.ShowModal();}
+		//cout << name << ":" << endl;
+		//cout << i << ". " << endl;
+		//cout << (int)values.at(i) << endl;
 		if ( vecValue[i] != values[i] )
 		{
 			vecLabel[i] -> SetForegroundColour( *wxRED );
@@ -60,10 +66,12 @@ void regDisplay::updateValues( const std::vector<unsigned char> &values )
 		{
 			vecLabel[i] -> SetForegroundColour( *wxBLACK );
 		}
+		//if (name == "EAX") {wxMessageDialog msg2( this, "3", ""); msg2.ShowModal();}
 		
 		std::stringstream ss;
 		ss << (int)vecValue[i];
 		vecLabel[i] -> SetValue( ss.str() );
+		//cout << name << ": " << i << ". " << vecValue[i] << " done" << endl;
 	}
 }
 
@@ -114,7 +122,7 @@ void varDisplay::updateValues( const std::vector<unsigned char> &values )
 	int prevsize = vecLabel.size();
 	int newsize = values.size();
 	
-	if ( newsize > prevsize );
+	if ( newsize > prevsize )
 	{
 		wxFont displayFont(wxFontInfo( 12 ) );
 		vecValue.resize( newsize );
@@ -218,7 +226,12 @@ void varDisplay::updateLabels( const std::vector< std::string > &values )
 		nameLabels[i] -> SetValue( vecNames[i] );
 	}
 	inSizer -> Layout();
-	scroll -> SetScrollbars( UI_LABEL_WIDTH, 0, newsize , 1 );
+	{
+		int x, y;
+		scroll -> GetViewStart( &x, &y );
+		scroll -> SetScrollbars( UI_LABEL_WIDTH, 0, newsize, x, y );
+		scroll -> Scroll( x, y );
+	}
 	scroll -> FitInside();
 	outSizer -> Layout();
 	Fit();

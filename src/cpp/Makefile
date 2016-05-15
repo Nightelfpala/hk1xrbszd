@@ -11,8 +11,9 @@ INCLUDE_INTERPRET = ../interpret
 OBJECTS = ../objects
 BIN = ../bin
 
-#CC = x86_64-w64-mingw32-g++ -g -Wall -Wextra
-CC = x86_64-w64-mingw32-g++
+CC = x86_64-w64-mingw32-g++ -g -DwxDEBUG_LEVEL=0
+#CC = x86_64-w64-mingw32-g++ -g -DwxDEBUG_LEVEL=0 -Wall -Wextra
+#CC = x86_64-w64-mingw32-g++
 #MOC = moc.exe
 FLAGS = -I$(INCLUDE) -I$(INCLUDE_ELSOPARSE) -I$(INCLUDE_INTERPRET)
 
@@ -22,7 +23,8 @@ FLAGS = -I$(INCLUDE) -I$(INCLUDE_ELSOPARSE) -I$(INCLUDE_INTERPRET)
 #DEFINES		= -DQT_DLL -DQT_GUI_LIB -DQT_CORE_LIB -DQT_NEEDS_QMAIN -DQT_SHARED
 #DEFINES		= -DQT_GUI_LIB -DQT_CORE_LIB -DQT_NEEDS_QMAIN -DQT_SHARED
 #CXXFLAGS	= -pipe -O2 -frtti -fexceptions -mthreads $(DEFINES)
-CXXFLAGS	= -pipe -O2 -frtti -fexceptions $(DEFINES)
+#CXXFLAGS	= -pipe -O2 -frtti -fexceptions $(DEFINES)
+CXXFLAGS	= -pipe -frtti -fexceptions $(DEFINES) -fno-stack-protector -DWXUSINGDLL
 #MINGWSTATIC	= -static-libgcc -static-libstdc++
 #QT_INCPATH	= -I'/usr/x86_64-w64-mingw32/sys-root/mingw/include/qt4/QtCore' -I'/usr/x86_64-w64-mingw32/sys-root/mingw/include/qt4/QtGui' -I'/usr/x86_64-w64-mingw32/sys-root/mingw/include/qt4' -I'/usr/x86_64-w64-mingw32/sys-root/mingw/include/qt4/ActiveQt' -I'release' -I'/usr/x86_64-w64-mingw32/sys-root/mingw/share/qt4/mkspecs/win32-g++'
 #QT_LIBS	= -L'/usr/x86_64-w64-mingw32/sys-root/mingw/lib' -lmingw32 -lqtmain -lQtGui -lQtCore

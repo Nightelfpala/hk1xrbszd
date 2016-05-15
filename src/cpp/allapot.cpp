@@ -67,6 +67,7 @@ void Allapot::get_reg( const std::string &reg_azon, std::vector<AP_UC> &to ) con
 	{
 	case 3:
 		{
+			to.resize(4);
 			switch (reg_azon[1])	// b-nel vigyazni : ebp, ebx
 			{
 			case 'a':

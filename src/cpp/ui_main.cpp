@@ -14,9 +14,11 @@
 #include <wx/button.h>
 #include <wx/filefn.h>	// wxGetCwd()
 
+#include <iostream>
+
 using namespace std;
 
-mainDisplay::mainDisplay( const wxString &title ) : wxFrame(NULL, wxID_ANY, title, wxDefaultPosition, wxSize(800, 600) ), iParser( NULL )
+mainDisplay::mainDisplay( const wxString &title ) : wxFrame(NULL, wxID_ANY, title, wxDefaultPosition, wxSize(800, 600) ), isloaded ( false ), iParser( NULL )
 {
 	wxFont displayFont(wxFontInfo( 12 ) );
 	
@@ -68,7 +70,7 @@ mainDisplay::mainDisplay( const wxString &title ) : wxFrame(NULL, wxID_ANY, titl
 	nextInstruction = new wxTextCtrl( this, wxID_ANY, "", wxDefaultPosition, wxSize( 200, 30), wxTE_READONLY | wxTE_RIGHT | wxBORDER_SIMPLE );
 	nextInstruction -> SetFont( displayFont );
 	nextInstruction -> SetBackgroundColour( wxColour( *wxWHITE ) );
-	nextRow = new wxTextCtrl( this, wxID_ANY, "", wxDefaultPosition, wxSize( 60, 30), wxTE_READONLY | wxTE_RIGHT | wxBORDER_SIMPLE );
+	nextRow = new wxTextCtrl( this, wxID_ANY, " ", wxDefaultPosition, wxSize( 60, 30), wxTE_READONLY | wxTE_RIGHT | wxBORDER_SIMPLE );
 	nextRow -> SetFont( displayFont );
 	//nextRow -> SetBackgroundColour( wxColour( *wxWHITE ) );
 	
@@ -159,6 +161,7 @@ void mainDisplay::OpenFile( wxCommandEvent& event)
 		
 		if ( vege > kezdet )
 		{
+			isloaded = true;
 			nextButton -> Enable( true );
 		}
 		
@@ -176,8 +179,18 @@ void mainDisplay::NextInstruction( wxCommandEvent& event)
 	
 	try
 	{
+		/*
+		wxMessageDialog msg( this, "1", "");
+		msg.ShowModal();
+		*/
 		iParser -> completeParse( iss, utas_data[ allapot.get_kovetkezo() ].argmeret );
+		/*
+		wxMessageDialog msg2( this, "2", "");
+		msg2.ShowModal();
+		*/
 		allapot.kov_utasitas();
+		
+		nextButton -> SetFocus();
 	} catch ( interpretParser::Exceptions ex )
 	{
 		nextButton -> Enable( false );
@@ -207,9 +220,18 @@ void mainDisplay::NextInstruction( wxCommandEvent& event)
 	}
 	
 	displayRefresh();
+	/*
+	wxMessageDialog msg3( this, "3", "");
+	msg3.ShowModal();
+	*/
 	
 	if ( allapot.get_kovetkezo() >= vege)
 	{
+		//nextInstruction -> SetValue( wxString::FromUTF8( " ; Nincs több utasítás" ));
+		nextInstruction -> SetValue( wxString::FromUTF8( "" ));
+		nextRow -> SetValue( "" );
+		wxMessageDialog msg( this, wxString::FromUTF8("Futás vége"), wxString::FromUTF8("Ez volt az utolsó utasítás"));
+		msg.ShowModal();
 		nextButton -> Enable( false );
 	}
 }
@@ -219,7 +241,10 @@ void mainDisplay::displayRefresh()
 	std::vector<unsigned char> vec;
 	std::vector<std::string> labels;
 	
+	//cout << "regs:" << endl;
+	
 	allapot.get_reg( "eax", vec );
+	//cout << "allapot get eax" << endl;
 	eax -> updateValues( vec );
 	
 	allapot.get_reg( "ebx", vec );
@@ -231,25 +256,37 @@ void mainDisplay::displayRefresh()
 	allapot.get_reg( "edx", vec );
 	edx -> updateValues( vec );
 	
+	//cout << "regs done" << endl;
+	
 	allapot.valtozo_vector( vec );
 	allapot.elso_valtozok( labels );
 	valtozok -> updateValues( vec );
 	valtozok -> updateLabels( labels );
+	
+	//cout << "vars done" << endl;
 	
 	allapot.verem_vector( vec );
 	allapot.vec_pointerek( labels );
 	verem -> updateValues( vec );
 	verem -> updateLabels( labels );
 	
+	//cout << "stack done" << endl;
+	
 	sign -> set(allapot.get_sign());
 	zero -> set(allapot.get_zero());
 	
-	if ( vege > allapot.get_kovetkezo() )
+	//cout << "flags done" << endl;
+	
+	if ( !isloaded || vege >= allapot.get_kovetkezo() )
 	{
 		stringstream ss;
 		ss << utas_data[ allapot.get_kovetkezo() ].eredetisorszam << ". sor:";
 		nextRow -> SetValue( ss.str() );
 		nextInstruction -> SetValue(utas_data[ allapot.get_kovetkezo() ].sor);
+	} else
+	{
+		isloaded = false;
+		nextRow -> SetValue( "" );
 	}
 	
 	sizer -> Layout();
