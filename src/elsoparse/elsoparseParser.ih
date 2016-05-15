@@ -4,7 +4,6 @@
 #include <algorithm>
 #include "elsoparseParser.h"
 
-
 int elsoparseParser::completeParse()
 {
 	int ret = parse();
@@ -101,7 +100,7 @@ inline int elsoparseParser::lex()
     d_loc__.first_line = lexer.lineno();
 	int ret = lexer.yylex();
 	
-	if (ret == AZONOSITO or ret == SZAM or ret == REGISZTER or ret == KETARGUMENTUMOS or ret == EGYARGUMENTUMOS or ret == UGROUTAS)
+	if (ret == AZONOSITO || ret == SZAM || ret == REGISZTER || ret == KETARGUMENTUMOS || ret == EGYARGUMENTUMOS || ret == UGROUTAS || ret == RET)
 	{
 		d_val__.szoveg = new std::string(lexer.YYText());
 	}

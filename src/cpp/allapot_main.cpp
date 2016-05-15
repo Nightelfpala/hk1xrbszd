@@ -167,7 +167,7 @@ void verem_teszt()
 		vec_cout( to, "[ebp - 8] lekerdezese:");
 	} catch(Allapot::Exceptions ex)
 	{
-		cout << "HIBA [esp + 4] lekerdezese sikertelen" << endl;
+		cout << "HIBA [ebp - 4] vagy [ebp - 8] lekerdezese sikertelen" << endl;
 	}
 	ap.verem_vector(to);
 	vec_cout(to, "verem vektor:");
@@ -176,6 +176,23 @@ void verem_teszt()
 	for (int i = 0; i < verem_nevek.size(); ++i)
 	{
 		cout << verem_nevek[i] << "\t";
+	}
+	cout << endl;
+	cout << endl;
+	
+	try
+	{
+		ap.get_reg( "esp", vec_AP_UC_2 );
+		sint2vecc( vecc2sint( vec_AP_UC_2 ) + 16, to );
+		ap.set_reg( "esp", to );
+		
+		cout << "HIBA esp negativ szamra allitasa eseten nem dobott hibat" << endl;
+	} catch ( Allapot::Exceptions ex )
+	{
+		cout << "HELYES esp negativ szamra allitasa eseten NEGATIV_VEREM_MERET hibat dobott" << endl;
+		ap.get_reg( "esp", vec_AP_UC_2 );
+		sint2vecc( vecc2sint( vec_AP_UC_2 ) - 16, to );
+		ap.set_reg( "esp", to );
 	}
 	cout << endl;
 	

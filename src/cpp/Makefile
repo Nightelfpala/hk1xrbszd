@@ -111,6 +111,8 @@ OUT_UI_VEC = $(patsubst %,$(BIN)/%,$(_OUT_UI_VEC))
 all: $(OBJ)
 	$(CC) -o $(OUT) $^ $(WX_LIB) $(MINGWSTATIC)
 
+everything: all utils allapot ui_parts elsoparse interpret
+
 $(OBJECTS)/interpretFlexer.o: ../interpret/interpret.yy.cc
 	$(CC) -c -o $@ $< $(FLAGS)
 

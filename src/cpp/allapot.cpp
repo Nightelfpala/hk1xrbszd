@@ -451,7 +451,7 @@ AP_UI Allapot::elso_byte( const std::string &valt_azon ) const
 	return valtozo_elso.at(valt_azon);
 }
 
-void Allapot::get_var( const int &elso_byte, const AP_UI &hossz, std::vector<AP_UC> &to, bool verembol ) const	// TODO
+void Allapot::get_var( const int &elso_byte, const AP_UI &hossz, std::vector<AP_UC> &to, bool verembol ) const
 {
 	int elso = elso_byte;
 	to.resize( hossz );
@@ -475,7 +475,7 @@ void Allapot::get_var( const int &elso_byte, const AP_UI &hossz, std::vector<AP_
 	}
 }
 
-void Allapot::set_var( const int &elso_byte, const std::vector<AP_UC> &from, bool verembe )	// TODO
+void Allapot::set_var( const int &elso_byte, const std::vector<AP_UC> &from, bool verembe )
 {
 	int elso = elso_byte;
 	int hossz = from.size();
@@ -499,7 +499,7 @@ void Allapot::set_var( const int &elso_byte, const std::vector<AP_UC> &from, boo
 	}
 }
 
-void Allapot::verem_push( const std::vector<AP_UC> &from )	// TODO
+void Allapot::verem_push( const std::vector<AP_UC> &from )
 {
 	int veremteto = verem_teteje();
 	int meret = from.size();
@@ -517,7 +517,7 @@ void Allapot::verem_push( const std::vector<AP_UC> &from )	// TODO
 	sint2vecc( -veremteto, esp );
 }
 
-void Allapot::verem_pop ( const AP_UI &meret, std::vector<AP_UC> &to )	// TODO
+void Allapot::verem_pop ( const AP_UI &meret, std::vector<AP_UC> &to )
 {
 	int veremteto = verem_teteje();
 	if ( veremteto < meret)

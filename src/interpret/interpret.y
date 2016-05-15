@@ -385,6 +385,7 @@ utasitas:
 		AP_UI oszto = $2->value;
 		if (oszto == 0)
 		{
+			delete $2;
 			std::stringstream ss;
 			ss << "0-val torteno osztas!" << std::endl;
 			errorMsg = ss.str();
