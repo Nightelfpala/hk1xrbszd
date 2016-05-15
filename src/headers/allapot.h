@@ -61,6 +61,7 @@ public:
 		TELE_VEREM,
 		HATARON_KIVULI_VALTOZO,
 		HATARON_KIVULI_VEREM,
+		NEGATIV_VEREM_MERET,
 	};
 private:
 	//valtozok

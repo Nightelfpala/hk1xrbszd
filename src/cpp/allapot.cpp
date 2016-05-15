@@ -284,6 +284,10 @@ void Allapot::set_reg( const std::string &reg_azon, const std::vector<AP_UC> &fr
 					}
 					// amennyiben magasabb pontra mutat a verem teteje, mint amekkora a vektora, noveljuk meg a meretet
 					int tmp = -vecc2sint(esp);
+					if ( tmp < 0 )
+					{
+						throw NEGATIV_VEREM_MERET;
+					}
 					if ( tmp > verem.size() )
 					{
 						verem.resize( tmp );
@@ -350,6 +354,10 @@ void Allapot::set_reg( const std::string &reg_azon, const std::vector<AP_UC> &fr
 						}
 						// amennyiben magasabb pontra mutat a verem teteje, mint amekkora a vektora, noveljuk meg a meretet
 						int tmp = -vecc2sint(esp);
+						if ( tmp < 0 )
+						{
+							throw NEGATIV_VEREM_MERET;
+						}
 						if ( tmp > verem.size() )
 						{
 							verem.resize( tmp );

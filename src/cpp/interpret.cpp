@@ -107,6 +107,9 @@ int main( int argc, char *argv[] )
 			case Allapot::HATARON_KIVULI_VEREM:
 				cout << "Ervenytelen verem hivatkozas!" << endl;
 				break;
+			case Allapot::NEGATIV_VEREM_MERET:
+				cout << "Az esp regiszter ervenytelen erteket kapott!" << endl;
+				break;
 			}
 			return -1;
 		}

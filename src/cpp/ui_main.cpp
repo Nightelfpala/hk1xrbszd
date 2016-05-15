@@ -191,6 +191,8 @@ void mainDisplay::NextInstruction( wxCommandEvent& event)
 		allapot.kov_utasitas();
 		
 		nextButton -> SetFocus();
+		
+		displayRefresh();
 	} catch ( interpretParser::Exceptions ex )
 	{
 		nextButton -> Enable( false );
@@ -213,13 +215,15 @@ void mainDisplay::NextInstruction( wxCommandEvent& event)
 		case Allapot::HATARON_KIVULI_VEREM:
 			errorMsg = wxString::FromUTF8("Érvénytelen verem hivatkozás!");
 			break;
+		case Allapot::NEGATIV_VEREM_MERET:
+			errorMsg = wxString::FromUTF8("Az esp regiszter érvénytelen értéket kapott!");
+			break;
 		}
 		nextButton -> Enable( false );
 		wxMessageDialog msg( this, errorMsg, wxString::FromUTF8("Hiba történt a művelet végrehajtása során"));
 		msg.ShowModal();
 	}
 	
-	displayRefresh();
 	/*
 	wxMessageDialog msg3( this, "3", "");
 	msg3.ShowModal();
