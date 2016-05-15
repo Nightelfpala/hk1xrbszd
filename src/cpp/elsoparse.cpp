@@ -9,7 +9,19 @@ int main(int argc, char* argv[])
 {
 	
 	ifstream bef;
-	bef.open("../testfiles/teszt1.asm");
+	if ( 2 > argc)
+	{
+		bef.open("../testfiles/teszt1.asm");
+	} else
+	{
+		bef.open( argv[1] );
+		if ( !bef )
+		{
+			cout << "A megadott file (" << argv[1] << ") nem talalhato." << endl;
+			return -1;
+		}
+	}
+	
 	
 	elsoparseParser epP(bef);
 	int p;
@@ -25,7 +37,7 @@ int main(int argc, char* argv[])
 		//cout << "Uresek? " << utasitasok.empty() << "\t" << valtkezdet.empty() << "\t" << ugrocimkek.empty() << "\t" << valtozok.empty() << endl;
 		
 		cout << "Utasitasok:" << endl;
-		for (map<int, utasitas_data>::iterator it = utasitasok.begin(); it != utasitasok.end(); ++it)
+		for (map<int, utasitas_data>::const_iterator it = utasitasok.begin(); it != utasitasok.end(); ++it)
 		{
 			
 			cout << it->first << ". utasitas:" << endl
@@ -38,21 +50,21 @@ int main(int argc, char* argv[])
 		cout << endl << endl;
 		
 		cout << "Valtozo kezdetek:" << endl;
-		for (map<string, int>::iterator it = valtkezdet.begin(); it != valtkezdet.end(); ++it)
+		for (map<string, int>::const_iterator it = valtkezdet.begin(); it != valtkezdet.end(); ++it)
 		{
 			cout << it->first << " valtozonak elso byteja\t" << it->second << "." << endl;
 		}
 		cout << endl;
 		
 		cout << "Ugrocimkek:" << endl;
-		for (map<string, int>::iterator it = ugrocimkek.begin(); it != ugrocimkek.end(); ++it)
+		for (map<string, int>::const_iterator it = ugrocimkek.begin(); it != ugrocimkek.end(); ++it)
 		{
 			cout << it->first << " cimket koveto utasitas\t" << it->second << "." << endl;
 		}
 		cout << endl;
 		
 		cout << "Valtozo vektor:" << endl;
-		for (vector<AP_UC>::iterator it = valtozok.begin(); it != valtozok.end(); ++it)
+		for (vector<AP_UC>::const_iterator it = valtozok.begin(); it != valtozok.end(); ++it)
 		{
 			cout << (int)*it << "\t";
 		}

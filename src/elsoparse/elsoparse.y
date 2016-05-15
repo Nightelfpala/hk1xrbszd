@@ -327,7 +327,7 @@ cimke:
 		{
 			std::stringstream ss;
 			ss << d_loc__.first_line << ". sor: " << "ujradefinialt ugras cimke" << std::endl
-				<< "\t" << $1 << std::endl;
+				<< "\t" << *$1 << std::endl;
 			errorMsg = ss.str();
 			
 			delete $1;

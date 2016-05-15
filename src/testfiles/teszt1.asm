@@ -19,6 +19,7 @@ main:
 	sub eax, 2	; comment
 	cmp eax, 6
 jmpide:
+ketcimke:
 	mov byte [z], 11
 	mov [z + 1], al
 	mov bx, [x]

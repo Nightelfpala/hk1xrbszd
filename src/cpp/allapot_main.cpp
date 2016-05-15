@@ -276,7 +276,7 @@ void valtozo_teszt()
 	vector<AP_UC> init(10, 0);
 	ap.init(valtozo_kezdetek, init);
 	
-	cout << "elso byte:" << endl << "x:\t" << (int)(~(ap.elso_byte("x"))) << endl << "y:\t" << (int)(~(ap.elso_byte("y"))) << endl << "z:\t" << (int)(~(ap.elso_byte("z"))) << endl;
+	cout << "elso byte:" << endl << "x:\t" << (int)(ap.elso_byte("x")) << endl << "y:\t" << (int)(ap.elso_byte("y")) << endl << "z:\t" << (int)(ap.elso_byte("z")) << endl;
 	
 	// [y] := 2 * 256 + 5
 	vector<AP_UC> vy(2);

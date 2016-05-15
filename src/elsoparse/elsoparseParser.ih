@@ -13,7 +13,7 @@ int elsoparseParser::completeParse()
 
 void elsoparseParser::postParse()
 {
-	for (std::map<std::string, int>::iterator it = ugrocimke_kovutasitas.begin(); it != ugrocimke_kovutasitas.end(); ++it )
+	for (std::map<std::string, int>::const_iterator it = ugrocimke_kovutasitas.begin(); it != ugrocimke_kovutasitas.end(); ++it )
 	{
 		if (it->second == -1)
 		{
@@ -24,7 +24,7 @@ void elsoparseParser::postParse()
 		}
 	}
 	
-	for (std::map<std::string, int>::iterator it = valtozo_kezdetek.begin(); it != valtozo_kezdetek.end(); ++it )
+	for (std::map<std::string, int>::const_iterator it = valtozo_kezdetek.begin(); it != valtozo_kezdetek.end(); ++it )
 	{
 		if (it->second == -1)
 		{
@@ -44,7 +44,7 @@ void elsoparseParser::postParse()
 	}
 	
 	utolso_utasitas = get_elsoutasitas() + 1;
-	for (std::map<int, utasitas_data>::iterator it = utasitas_gyujto.begin(); it != utasitas_gyujto.end(); ++it)
+	for (std::map<int, utasitas_data>::const_iterator it = utasitas_gyujto.begin(); it != utasitas_gyujto.end(); ++it)
 	{
 		if ( it->first + 1 > utolso_utasitas )
 		{
