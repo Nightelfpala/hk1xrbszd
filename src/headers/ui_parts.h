@@ -21,6 +21,7 @@ private:
 	const int meret;
 	
 	wxTextCtrl* nameLabel;
+	wxTextCtrl* valueLabel;
 	
 	std::vector< wxTextCtrl* > vecLabel;
 	std::vector<AP_UC> vecValue;

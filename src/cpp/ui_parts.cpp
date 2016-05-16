@@ -1,4 +1,5 @@
 
+#include "utils.h"
 #include "ui_parts.h"
 
 #include <sstream>
@@ -7,6 +8,7 @@
 #include <wx/scrolwin.h>
 
 #include <iostream>
+#include <iomanip>
 
 #define UI_LABEL_WIDTH 50
 
@@ -23,11 +25,17 @@ regDisplay::regDisplay( wxPanel *parent, const int &size, const wxString &nev ) 
 	
 	wxGridBagSizer *sizer = new wxGridBagSizer( 1, 1 );
 	nameLabel = new wxTextCtrl( this, wxID_ANY, name, wxDefaultPosition, wxDefaultSize, wxTE_READONLY | wxTE_LEFT | wxBORDER_NONE );
-	nameLabel -> SetMinSize( wxSize(140, 25) );
+	nameLabel -> SetMinSize( wxSize(100, 25) );
 	nameLabel -> SetFont( nameFont );
 	nameLabel -> SetDefaultStyle( wxTextAttr( *wxBLACK ));
 	
-	sizer -> Add( nameLabel, wxGBPosition(0, 0), wxGBSpan( 1, meret ) );
+	valueLabel = new wxTextCtrl( this, wxID_ANY, "0", wxDefaultPosition, wxDefaultSize, wxTE_READONLY | wxTE_LEFT | wxBORDER_NONE );
+	valueLabel -> SetMinSize( wxSize(100, 20) );
+	valueLabel -> SetFont( displayFont );
+	valueLabel -> SetDefaultStyle( wxTextAttr( *wxBLACK ));
+	
+	sizer -> Add( nameLabel, wxGBPosition(0, 0), wxGBSpan( 1, meret - 2 ) );
+	sizer -> Add( valueLabel, wxGBPosition(0, meret - 2), wxGBSpan( 1, 2) );
 	
 	for ( int i = 0; i < meret; ++i )
 	{
@@ -39,7 +47,7 @@ regDisplay::regDisplay( wxPanel *parent, const int &size, const wxString &nev ) 
 		
 		sizer -> Add( vecLabel[i], wxGBPosition( 1, i), wxDefaultSpan, wxALIGN_CENTER );
 		
-		std::stringstream ss;
+		stringstream ss;
 		ss << (int)vecValue[i];
 		vecLabel[i] -> SetValue( ss.str() );
 	}
@@ -52,7 +60,7 @@ void regDisplay::updateValues( const std::vector<AP_UC> &values )
 {
 	//cout << "meret : " << meret << "\tvalues.size: " << values.size() << endl;
 	//if (name == "EAX") {wxMessageDialog msg2( this, "1", ""); msg2.ShowModal();}
-	for ( int i = 0; i < meret; ++i)	// SEGFAULT WHY
+	for ( int i = 0; i < meret; ++i)
 	{
 		//if (name == "EAX") {wxMessageDialog msg2( this, "2", ""); msg2.ShowModal();}
 		//cout << name << ":" << endl;
@@ -73,6 +81,9 @@ void regDisplay::updateValues( const std::vector<AP_UC> &values )
 		vecLabel[i] -> SetValue( ss.str() );
 		//cout << name << ": " << i << ". " << vecValue[i] << " done" << endl;
 	}
+	stringstream ss;
+	ss << "0x" << std::hex << std::setfill('0') << std::setw( meret * 2) << (AP_UI)Utils::vecc2uint( vecValue );
+	valueLabel -> SetValue( ss.str() );
 }
 
 // ---------------------------------------------------------

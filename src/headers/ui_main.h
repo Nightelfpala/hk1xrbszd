@@ -69,6 +69,10 @@ private:
 	wxTextCtrl *nextRow;
 	
 	wxButton *prevButton;
+	wxTextCtrl *prevInstruction;
+	wxTextCtrl *prevText;
+	
+	int prev;
 	
 	void displayRefresh();
 	

@@ -18,15 +18,14 @@
 
 using namespace std;
 
-mainDisplay::mainDisplay( const wxString &title ) : wxFrame(NULL, wxID_ANY, title, wxDefaultPosition, wxSize(800, 600) ), isloaded ( false ), iParser( NULL )
+mainDisplay::mainDisplay( const wxString &title ) : wxFrame(NULL, wxID_ANY, title, wxDefaultPosition, wxSize(800, 600) ), isloaded ( false ), iParser( NULL ), prev( -1 )
 {
 	wxFont displayFont(wxFontInfo( 12 ) );
 	
 	wxPanel *mainPanel = new wxPanel( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL | wxBORDER_SIMPLE );
-	mainPanel -> 
-		SetAutoLayout( true );
-	//mainPanel -> 
-		SetMinSize( wxSize(900, 600) );
+	mainPanel -> SetAutoLayout( true );
+	SetMinSize( wxSize(820, 370) );
+	SetMaxSize( wxSize(820, 370) );
 		
 	SetTitle( wxString::FromUTF8("Szimuláció") );
 		
@@ -72,16 +71,26 @@ mainDisplay::mainDisplay( const wxString &title ) : wxFrame(NULL, wxID_ANY, titl
 	prevButton = new wxButton( this, UI_MAIN_PREV_INSTRUCTION_EVENT, wxString::FromUTF8("Visszavon"));
 	prevButton -> Enable( false );
 	
-	nextInstruction = new wxTextCtrl( this, wxID_ANY, "", wxDefaultPosition, wxSize( 200, 30), wxTE_READONLY | wxTE_RIGHT | wxBORDER_SIMPLE );
+	nextInstruction = new wxTextCtrl( this, wxID_ANY, "", wxDefaultPosition, wxSize( 250, 30), wxTE_READONLY | wxTE_RIGHT | wxBORDER_SIMPLE );
 	nextInstruction -> SetFont( displayFont );
 	nextInstruction -> SetBackgroundColour( wxColour( *wxWHITE ) );
 	nextRow = new wxTextCtrl( this, wxID_ANY, " ", wxDefaultPosition, wxSize( 60, 30), wxTE_READONLY | wxTE_RIGHT | wxBORDER_SIMPLE );
 	nextRow -> SetFont( displayFont );
 	//nextRow -> SetBackgroundColour( wxColour( *wxWHITE ) );
 	
+	prevInstruction = new wxTextCtrl( this, wxID_ANY, "", wxDefaultPosition, wxSize( 250, 30), wxTE_READONLY | wxTE_RIGHT | wxBORDER_SIMPLE );
+	prevInstruction -> SetFont( displayFont );
+	prevInstruction -> SetBackgroundColour( wxColour( *wxWHITE ) );
+	
+	prevText = new wxTextCtrl( this, wxID_ANY, " ", wxDefaultPosition, wxSize( 60, 30), wxTE_READONLY | wxTE_RIGHT );
+	prevText -> SetFont( displayFont );
+	prevText -> SetValue( wxString::FromUTF8("Előző:") );
+	
 	controlSizer -> Add( nextButton, wxGBPosition( 1, 2), wxDefaultSpan, wxALIGN_RIGHT );
 	controlSizer -> Add( prevButton, wxGBPosition( 1, 1), wxDefaultSpan, wxALIGN_LEFT );
 	controlSizer -> Add( nextInstruction, wxGBPosition( 0, 1), wxGBSpan(1, 3) );
+	controlSizer -> Add( prevText, wxGBPosition( 2, 0) );
+	controlSizer -> Add( prevInstruction, wxGBPosition( 2, 1), wxGBSpan(1, 3) );
 	controlSizer -> Add( nextRow, wxGBPosition( 0, 0) );
 	
 	controlSizer -> Layout();
@@ -169,6 +178,8 @@ void mainDisplay::OpenFile( wxCommandEvent& event )
 			nextButton -> Enable( true );
 		}
 		
+		prev = -1;
+		
 		displayRefresh();
 		
 	} catch ( elsoparseParser::Exceptions ex)
@@ -191,6 +202,8 @@ void mainDisplay::NextInstruction( wxCommandEvent& event )
 		
 		prevButton -> Enable( true );
 		nextButton -> SetFocus();
+		
+		prev = korabbiak.top().get_kovetkezo();
 		
 		displayRefresh();
 	} catch ( interpretParser::Exceptions ex )
@@ -243,7 +256,11 @@ void mainDisplay::PrevInstruction( wxCommandEvent& event )
 	nextButton -> Enable( true );
 	if ( korabbiak.size() == 0 )
 	{
+		prev = -1;
 		prevButton -> Enable( false );
+	} else
+	{
+		prev = korabbiak.top().get_kovetkezo();
 	}
 
 	displayRefresh();
@@ -300,6 +317,14 @@ void mainDisplay::displayRefresh()
 	{
 		isloaded = false;
 		nextRow -> SetValue( "" );
+	}
+	
+	if ( prev != -1 )
+	{
+		prevInstruction -> SetValue( utas_data[ prev ].sor );
+	} else
+	{
+		prevInstruction -> SetValue( "" );
 	}
 	
 	sizer -> Layout();

@@ -94,26 +94,26 @@ _OUT_INTERP = teszt_interpret
 OUT_INTERP = $(patsubst %,$(BIN)/%,$(_OUT_INTERP))
 
 #	teszt_ui_parts:
-_OBJ_UI_VEC = ui_parts.o ui_parts_main.o ui_parts_appmain.o
+_OBJ_UI_VEC = ui_parts.o ui_parts_main.o ui_parts_appmain.o utils.o
 OBJ_UI_VEC = $(patsubst %,$(OBJECTS)/%,$(_OBJ_UI_VEC))
 _DEPS_UI_VEC = ui_parts.h ui_parts_main.h ui_parts_appmain.h typedefs.h
 DEPS_UI_VEC = $(patsubst %,$(INCLUDE)/%,$(_DEPS_UI_VEC))
 _OUT_UI_VEC = teszt_ui_parts
 OUT_UI_VEC = $(patsubst %,$(BIN)/%,$(_OUT_UI_VEC))
 
-#	teszt_ui_main:
-_OBJ_UI_MAIN = allapot.o utils.o $(ELSOPARSE_OBJECTS) $(INTERPRET_OBJECTS) appmain.o ui_main.o appmain.o ui_parts.o
-OBJ_UI_MAIN = $(patsubst %,$(OBJECTS)/%,$(_OBJ_UI_MAIN))
-_DEPS_UI_MAIN = ui_parts.h ui_main.h appmain.h typedefs.h utils.h allapot.h $(ELSOPARSE_HEADERS) $(INTERPRET_HEADERS)
-DEPS_UI_MAIN = $(patsubst %,$(INCLUDE)/%,$(_DEPS_UI_MAIN))
-_OUT_UI_MAIN = teszt_ui_main
-OUT_UI_MAIN = $(patsubst %,$(BIN)/%,$(_OUT_UI_MAIN))
+#	#	teszt_ui_main:
+#	_OBJ_UI_MAIN = allapot.o utils.o $(ELSOPARSE_OBJECTS) $(INTERPRET_OBJECTS) appmain.o ui_main.o appmain.o ui_parts.o
+#	OBJ_UI_MAIN = $(patsubst %,$(OBJECTS)/%,$(_OBJ_UI_MAIN))
+#	_DEPS_UI_MAIN = ui_parts.h ui_main.h appmain.h typedefs.h utils.h allapot.h $(ELSOPARSE_HEADERS) $(INTERPRET_HEADERS)
+#	DEPS_UI_MAIN = $(patsubst %,$(INCLUDE)/%,$(_DEPS_UI_MAIN))
+#	_OUT_UI_MAIN = teszt_ui_main
+#	OUT_UI_MAIN = $(patsubst %,$(BIN)/%,$(_OUT_UI_MAIN))
 
 
 all: $(OBJ)
 	$(CC) -o $(OUT) $^ $(MINGWSTATIC) $(WX_LIB)
 
-everything: all utils allapot elsoparse interpret ui_parts ui_main
+everything: all utils allapot elsoparse interpret ui_parts
 
 $(OBJECTS)/interpretFlexer.o: ../interpret/interpret.yy.cc
 	$(CC) -c -o $@ $< $(FLAGS)
@@ -139,8 +139,8 @@ allapot: $(OBJ_ALLAPOT)
 ui_parts: $(OBJ_UI_VEC)
 	$(CC) -o $(OUT_UI_VEC) $^ $(WX_LIB) $(MINGWSTATIC)
 
-ui_main: $(OBJ_UI_MAIN)
-	$(CC) -o $(OUT_UI_MAIN) $^ $(MINGWSTATIC) $(WX_LIB)
+#ui_main: $(OBJ_UI_MAIN)
+#	$(CC) -o $(OUT_UI_MAIN) $^ $(MINGWSTATIC) $(WX_LIB)
 
 elsoparse: $(OBJ_ELSOP)
 	$(CC) -o $(OUT_ELSOP) $^ $(MINGWSTATIC)
