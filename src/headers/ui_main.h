@@ -27,7 +27,8 @@ class interpretParser;
 class mainDisplay : public wxFrame
 {
 public:
-	mainDisplay( const wxString &title );
+	//mainDisplay( const wxString &title );
+	mainDisplay();
 	~mainDisplay();
 
 private:	
@@ -60,7 +61,6 @@ private:
 	
 	wxMenuBar *menuBar;
 	wxMenu *file;
-	wxMenu *leptet;
 	
 	wxGridBagSizer *sizer;
 	
@@ -70,7 +70,7 @@ private:
 	
 	wxButton *prevButton;
 	wxTextCtrl *prevInstruction;
-	wxTextCtrl *prevText;
+	//wxTextCtrl *prevText;
 	
 	int prev;
 	

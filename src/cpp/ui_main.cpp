@@ -18,7 +18,9 @@
 
 using namespace std;
 
-mainDisplay::mainDisplay( const wxString &title ) : wxFrame(NULL, wxID_ANY, title, wxDefaultPosition, wxSize(800, 600) ), isloaded ( false ), iParser( NULL ), prev( -1 )
+//mainDisplay::mainDisplay( const wxString &title ) 
+mainDisplay::mainDisplay() 
+	: wxFrame(NULL, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize(800, 600) ), isloaded ( false ), iParser( NULL ), prev( -1 )
 {
 	wxFont displayFont(wxFontInfo( 12 ) );
 	
@@ -82,7 +84,7 @@ mainDisplay::mainDisplay( const wxString &title ) : wxFrame(NULL, wxID_ANY, titl
 	prevInstruction -> SetFont( displayFont );
 	prevInstruction -> SetBackgroundColour( wxColour( *wxWHITE ) );
 	
-	prevText = new wxTextCtrl( this, wxID_ANY, " ", wxDefaultPosition, wxSize( 60, 30), wxTE_READONLY | wxTE_RIGHT );
+	wxTextCtrl *prevText = new wxTextCtrl( this, wxID_ANY, " ", wxDefaultPosition, wxSize( 60, 30), wxTE_READONLY | wxTE_RIGHT );
 	prevText -> SetFont( displayFont );
 	prevText -> SetValue( wxString::FromUTF8("Előző:") );
 	
@@ -208,6 +210,7 @@ void mainDisplay::NextInstruction( wxCommandEvent& event )
 		displayRefresh();
 	} catch ( interpretParser::Exceptions ex )
 	{
+		korabbiak.pop();
 		nextButton -> Enable( false );
 		wxMessageDialog msg( this, iParser -> get_error(), wxString::FromUTF8("Hiba történt a művelet végrehajtása során"));
 		msg.ShowModal();
@@ -232,12 +235,13 @@ void mainDisplay::NextInstruction( wxCommandEvent& event )
 			errorMsg = wxString::FromUTF8("Az esp regiszter érvénytelen értéket kapott!");
 			break;
 		}
+		korabbiak.pop();
 		nextButton -> Enable( false );
 		wxMessageDialog msg( this, errorMsg, wxString::FromUTF8("Hiba történt a művelet végrehajtása során"));
 		msg.ShowModal();
 	}
 	
-	if ( allapot.get_kovetkezo() >= vege)
+	if ( nextButton -> IsEnabled() && allapot.get_kovetkezo() >= vege)
 	{
 		//nextInstruction -> SetValue( wxString::FromUTF8( " ; Nincs több utasítás" ));
 		nextInstruction -> SetValue( wxString::FromUTF8( "" ));
@@ -252,6 +256,7 @@ void mainDisplay::PrevInstruction( wxCommandEvent& event )
 {
 	allapot = korabbiak.top();
 	korabbiak.pop();
+	isloaded = true;
 	
 	nextButton -> Enable( true );
 	if ( korabbiak.size() == 0 )

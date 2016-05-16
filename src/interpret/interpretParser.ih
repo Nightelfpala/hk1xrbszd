@@ -16,7 +16,7 @@ interpretParser::interpretParser() : lexer(NULL)
 
 interpretParser::~interpretParser()
 {
-	if ( lexer != NULL)
+	if ( lexer != NULL )
 	{
 		delete lexer;
 	}
@@ -39,12 +39,10 @@ int interpretParser::completeParse(std::istream& in, int argsize)
 
 void interpretParser::preParse(std::istream& in, int argsize)
 {
-	// /*
 	if ( lexer != NULL)
 	{
 		delete lexer;
 	}
-	// */
 	lexer = new interpretFlexLexer( &in, &std::cerr);
 	
 	argmeret = argsize;
