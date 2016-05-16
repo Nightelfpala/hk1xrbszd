@@ -11,11 +11,12 @@
 	// forras: http://flex.sourceforge.net/manual/Cxx.html
 		// ezen a modon a ket lexikalis elemzo (elsoparse, interpret) kulonbozo nevu lesz
 
-#include "allapot.h"
 #include "utils.h"
 
 #include <FlexLexer.h>
 #include <map>
+
+class Allapot;
 
 
 #undef interpretParser

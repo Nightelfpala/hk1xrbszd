@@ -79,7 +79,7 @@ utasitas:
 				allapot->set_var( ($2->elsobyte), vec, b );
 			} else
 			{
-				bool b = ( $2->reg == "esp" || $2->reg == "ebp" || $2->reg == "sp" || $2->reg == "bp");
+				b = ( $2->reg == "esp" || $2->reg == "ebp" || $2->reg == "sp" || $2->reg == "bp");
 				if ( b )
 				{
 					Utils::sint2vecc( val, vec );
@@ -119,7 +119,7 @@ utasitas:
 			} else
 			{
 				allapot->get_reg( ($2->reg), vec );
-				bool b = ( $2->reg == "esp" || $2->reg == "ebp" || $2->reg == "sp" || $2->reg == "bp");
+				b = ( $2->reg == "esp" || $2->reg == "ebp" || $2->reg == "sp" || $2->reg == "bp");
 				if ( b )
 				{
 					plusz = Utils::vecc2sint( vec );
@@ -169,7 +169,7 @@ utasitas:
 			} else
 			{
 				allapot->get_reg( ($2->reg), vec );
-				bool b = ( $2->reg == "esp" || $2->reg == "ebp" || $2->reg == "sp" || $2->reg == "bp");
+				b = ( $2->reg == "esp" || $2->reg == "ebp" || $2->reg == "sp" || $2->reg == "bp");
 				if ( b )
 				{
 					val = Utils::vecc2sint( vec );
@@ -431,10 +431,23 @@ utasitas:
 				allapot->set_var( $2->elsobyte, vec, b);
 			} else
 			{
+				bool b2 = ( $2->reg == "esp" || $2->reg == "ebp" || $2->reg == "sp" || $2->reg == "bp");
 				allapot->get_reg( $2->reg, vec );
-				val = Utils::vecc2uint( vec );
+				if ( b2 )
+				{
+					val = Utils::vecc2sint( vec );
+				} else
+				{
+					val = Utils::vecc2uint( vec );
+				}
 				++val;
-				Utils::uint2vecc( val, vec );
+				if ( b2 )
+				{
+					Utils::sint2vecc( val, vec );
+				} else
+				{
+					Utils::uint2vecc( val, vec );
+				}
 				allapot->set_reg( $2->reg, vec );
 			}
 			allapot->set_zero( val == 0 );
@@ -463,10 +476,23 @@ utasitas:
 				allapot->set_var( $2->elsobyte, vec, b);
 			} else
 			{
+				bool b2 = ( $2->reg == "esp" || $2->reg == "ebp" || $2->reg == "sp" || $2->reg == "bp");
 				allapot->get_reg( $2->reg, vec );
-				val = Utils::vecc2uint( vec );
+				if ( b2 )
+				{
+					val = Utils::vecc2sint( vec );
+				} else
+				{
+					val = Utils::vecc2uint( vec );
+				}
 				--val;
-				Utils::uint2vecc( val, vec );
+				if ( b2 )
+				{
+					Utils::sint2vecc( val, vec );
+				} else
+				{
+					Utils::uint2vecc( val, vec );
+				}
 				allapot->set_reg( $2->reg, vec );
 			}
 			allapot->set_zero( val == 0 );

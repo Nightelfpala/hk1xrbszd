@@ -21,11 +21,18 @@ int main( int argc, char *argv[] )
 		infile = argv[1];
 	} else
 	{
-		infile = "../testfiles/teszt1.asm";
+		cout << "Adja meg a bemeneti file nevet!" << endl;
+		getline( cin, infile );
+		//infile = "../testfiles/teszt1.asm";
 	}
 	cout << "File megnyitasa: " << infile << endl;
 	
 	ifstream inf( infile.c_str() );
+	if ( !inf )
+	{
+		cout << "A megadott file nem talalhato! A program kilep." << endl;
+		return -1;
+	}
 	elsoparseParser eParser( inf );
 	
 	map<int, utasitas_data> utas_data;
@@ -39,7 +46,7 @@ int main( int argc, char *argv[] )
 	
 	try
 	{
-		cout << "Kezdeti elemzes" << endl;
+		cout << "Kezdeti elemzes." << endl;
 		eParser.completeParse();
 		
 		utas_data = eParser.get_utasitasok();
@@ -48,11 +55,11 @@ int main( int argc, char *argv[] )
 		valtozok = eParser.get_valtozok();
 		kezdet = eParser.get_elsoutasitas();
 		vege = eParser.get_utolsoutasitas();
-		cout << "Adatok atvetele megtortent" << endl;
+		cout << "Adatok atvetele megtortent." << endl;
 		
 		allapot.init( valt_kezd, valtozok );
 		allapot.set_kovetkezo( kezdet );
-		cout << "Allapot inicializalva" << endl;
+		cout << "Allapot inicializalva." << endl;
 		
 		allapot.print_allapot();
 		
@@ -67,7 +74,7 @@ int main( int argc, char *argv[] )
 	
 	interpretParser iP;
 	iP.initAp( &allapot, &ugro_cimkek );
-	cout << "Interpreter inicializalva" << endl;
+	cout << "Interpreter inicializalva." << endl;
 	
 	while ( allapot.get_kovetkezo() != vege)
 	{
@@ -117,8 +124,11 @@ int main( int argc, char *argv[] )
 		allapot.print_allapot();
 	}
 	
-	cout << "Nincs tobb vegrehajthato utasitas" << endl;
+	cout << "Nincs tobb vegrehajthato utasitas." << endl;
 	allapot.print_allapot();
+	
+	cout << "Nyomjon entert a program bezarasahoz!" << endl;
+	getline( cin, infile );
 	
 	return 0;
 }

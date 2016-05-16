@@ -11,9 +11,9 @@ INCLUDE_INTERPRET = ../interpret
 OBJECTS = ../objects
 BIN = ../bin
 
-CC = x86_64-w64-mingw32-g++ -g -DwxDEBUG_LEVEL=0
+#CC = x86_64-w64-mingw32-g++ -g -DwxDEBUG_LEVEL=0
 #CC = x86_64-w64-mingw32-g++ -g -DwxDEBUG_LEVEL=0 -Wall -Wextra
-#CC = x86_64-w64-mingw32-g++
+CC = x86_64-w64-mingw32-g++
 #MOC = moc.exe
 FLAGS = -I$(INCLUDE) -I$(INCLUDE_ELSOPARSE) -I$(INCLUDE_INTERPRET)
 
@@ -22,9 +22,9 @@ FLAGS = -I$(INCLUDE) -I$(INCLUDE_ELSOPARSE) -I$(INCLUDE_INTERPRET)
 #DEFINES		= -DUNICODE -DQT_DLL -DQT_GUI_LIB -DQT_CORE_LIB -DQT_NEEDS_QMAIN -DQT_SHARED
 #DEFINES		= -DQT_DLL -DQT_GUI_LIB -DQT_CORE_LIB -DQT_NEEDS_QMAIN -DQT_SHARED
 #DEFINES		= -DQT_GUI_LIB -DQT_CORE_LIB -DQT_NEEDS_QMAIN -DQT_SHARED
-#CXXFLAGS	= -pipe -O2 -frtti -fexceptions -mthreads $(DEFINES)
+CXXFLAGS	= -pipe -O2 -frtti -fexceptions -mthreads $(DEFINES)
 #CXXFLAGS	= -pipe -O2 -frtti -fexceptions $(DEFINES)
-CXXFLAGS	= -pipe -frtti -fexceptions $(DEFINES) -fno-stack-protector -DWXUSINGDLL
+#CXXFLAGS	= -pipe -frtti -fexceptions $(DEFINES) -fno-stack-protector -DWXUSINGDLL
 #MINGWSTATIC	= -static-libgcc -static-libstdc++
 #QT_INCPATH	= -I'/usr/x86_64-w64-mingw32/sys-root/mingw/include/qt4/QtCore' -I'/usr/x86_64-w64-mingw32/sys-root/mingw/include/qt4/QtGui' -I'/usr/x86_64-w64-mingw32/sys-root/mingw/include/qt4' -I'/usr/x86_64-w64-mingw32/sys-root/mingw/include/qt4/ActiveQt' -I'release' -I'/usr/x86_64-w64-mingw32/sys-root/mingw/share/qt4/mkspecs/win32-g++'
 #QT_LIBS	= -L'/usr/x86_64-w64-mingw32/sys-root/mingw/lib' -lmingw32 -lqtmain -lQtGui -lQtCore
@@ -44,13 +44,16 @@ INTERPRET_HEADERS = interpretParser.h interpretParserbase.h
 ELSOPARSE_OBJECTS = elsoparseFlexer.o elsoparseParser.o
 INTERPRET_OBJECTS = interpretFlexer.o interpretParser.o
 #	kiegeszitendo a tovabbi objectfajlokkal
-_OBJ = allapot.o utils.o ui_parts.o $(ELSOPARSE_OBJECTS) $(INTERPRET_OBJECTS) ui_main.o appmain.o
+#_OBJ = allapot.o utils.o $(ELSOPARSE_OBJECTS) $(INTERPRET_OBJECTS) szimulacio.o szimulacio_main.o
+_OBJ = $(INTERPRET_OBJECTS) $(ELSOPARSE_OBJECTS) allapot.o interpret.o utils.o
+# ui_main.o appmain.o ui_parts.o
 OBJ = $(patsubst %,$(OBJECTS)/%,$(_OBJ))
 #	teszteleshez hasznalt mainekbol keletkezo object fajlok
 _MAINS_OBJ = allapot_main.o elsoparse.o utils_main.o ui_parts_main.o ui_parts_appmain.o interpret.o
 MAINS_OBJ = $(patsubst %,$(OBJECTS)/%,$(_MAINS_OBJ))
 
-_DEPS = allapot.h utils.h typedefs.h ui_parts.h semantics.h FlexLexer.h ui_main.h appmain.h
+_DEPS = allapot.h utils.h typedefs.h semantics.h FlexLexer.h szimulacio.h
+# ui_parts.h ui_main.h appmain.h
 _DEPS_ELSOPARSE = elsoparseParser.h elsoparseParserbase.h
 _DEPS_INTERPRET = interpretParser.h interpretParserbase.h
 DEPS = $(patsubst %,$(INCLUDE)/%,$(_DEPS)) $(patsubst %,$(INCLUDE_ELSOPARSE)/%,$(_DEPS_ELSOPARSE)) $(patsubst %,$(INCLUDE_INTERPRET)/%,$(_DEPS_INTERPRET))
@@ -83,35 +86,35 @@ DEPS_ELSOP = $(patsubst %,$(INCLUDE)/%,$(_DEPS_ELSOP))
 _OUT_ELSOP = teszt_elsoparse
 OUT_ELSOP = $(patsubst %,$(BIN)/%,$(_OUT_ELSOP))
 
-#	teszt_interpret:
-_OBJ_INTERP = $(INTERPRET_OBJECTS) $(ELSOPARSE_OBJECTS) allapot.o interpret.o utils.o
-OBJ_INTERP = $(patsubst %,$(OBJECTS)/%,$(_OBJ_INTERP))
-_DEPS_INTERP = typedefs.h $(INTERP_HEADERS) $(ELSOPARSE_HEADERS) allapot.h semantics.h typedefs.h FlexLexer.h utils.h
-DEPS_INTERP = $(patsubst %,$(INCLUDE)/%,$(_DEPS_INTERP))
-_OUT_INTERP = teszt_interpret
-OUT_INTERP = $(patsubst %,$(BIN)/%,$(_OUT_INTERP))
+#	#	teszt_interpret:
+#	_OBJ_INTERP = $(INTERPRET_OBJECTS) $(ELSOPARSE_OBJECTS) allapot.o interpret.o utils.o
+#	OBJ_INTERP = $(patsubst %,$(OBJECTS)/%,$(_OBJ_INTERP))
+#	_DEPS_INTERP = typedefs.h $(INTERP_HEADERS) $(ELSOPARSE_HEADERS) allapot.h semantics.h typedefs.h FlexLexer.h utils.h
+#	DEPS_INTERP = $(patsubst %,$(INCLUDE)/%,$(_DEPS_INTERP))
+#	_OUT_INTERP = teszt_interpret
+#	OUT_INTERP = $(patsubst %,$(BIN)/%,$(_OUT_INTERP))
 
-#	teszt_ui_parts:
-_OBJ_UI_VEC = ui_parts.o ui_parts_main.o ui_parts_appmain.o
-OBJ_UI_VEC = $(patsubst %,$(OBJECTS)/%,$(_OBJ_UI_VEC))
-_DEPS_UI_VEC = ui_parts.h ui_parts_main.h ui_parts_appmain.h typedefs.h
-DEPS_UI_VEC = $(patsubst %,$(INCLUDE)/%,$(_DEPS_UI_VEC))
-_OUT_UI_VEC = teszt_ui_parts
-OUT_UI_VEC = $(patsubst %,$(BIN)/%,$(_OUT_UI_VEC))
+#	#	teszt_ui_parts:
+#	_OBJ_UI_VEC = ui_parts.o ui_parts_main.o ui_parts_appmain.o
+#	OBJ_UI_VEC = $(patsubst %,$(OBJECTS)/%,$(_OBJ_UI_VEC))
+#	_DEPS_UI_VEC = ui_parts.h ui_parts_main.h ui_parts_appmain.h typedefs.h
+#	DEPS_UI_VEC = $(patsubst %,$(INCLUDE)/%,$(_DEPS_UI_VEC))
+#	_OUT_UI_VEC = teszt_ui_parts
+#	OUT_UI_VEC = $(patsubst %,$(BIN)/%,$(_OUT_UI_VEC))
 
-#	#	teszt_ui_main:
-#	_OBJ_UI_MAIN = ui_parts.o ui_main.o allapot.o utils.o ui_main_main.o  $(ELSOPARSE_OBJECTS) $(INTERPRET_OBJECTS)
-#	OBJ_UI_MAIN = $(patsubst %,$(OBJECTS)/%,$(_OBJ_UI_MAIN))
-#	_DEPS_UI_MAIN = ui_parts.h ui_main.h typedefs.h utils.h allapot.h $(ELSOPARSE_HEADERS) $(INTERPRET_HEADERS)
-#	DEPS_UI_MAIN = $(patsubst %,$(INCLUDE)/%,$(_DEPS_UI_MAIN))
-#	_OUT_UI_MAIN = teszt_ui_main
-#	OUT_UI_MAIN = $(patsubst %,$(BIN)/%,$(_OUT_UI_MAIN))
+#	teszt_ui_main:
+_OBJ_UI_MAIN = allapot.o utils.o $(ELSOPARSE_OBJECTS) $(INTERPRET_OBJECTS) appmain.o ui_main.o appmain.o ui_parts.o
+OBJ_UI_MAIN = $(patsubst %,$(OBJECTS)/%,$(_OBJ_UI_MAIN))
+_DEPS_UI_MAIN = ui_parts.h ui_main.h appmain.h typedefs.h utils.h allapot.h $(ELSOPARSE_HEADERS) $(INTERPRET_HEADERS)
+DEPS_UI_MAIN = $(patsubst %,$(INCLUDE)/%,$(_DEPS_UI_MAIN))
+_OUT_UI_MAIN = teszt_ui_main
+OUT_UI_MAIN = $(patsubst %,$(BIN)/%,$(_OUT_UI_MAIN))
 
 
 all: $(OBJ)
-	$(CC) -o $(OUT) $^ $(WX_LIB) $(MINGWSTATIC)
+	$(CC) -o $(OUT) $^ $(MINGWSTATIC)
 
-everything: all utils allapot ui_parts elsoparse interpret
+everything: all utils allapot elsoparse
 
 $(OBJECTS)/interpretFlexer.o: ../interpret/interpret.yy.cc
 	$(CC) -c -o $@ $< $(FLAGS)
@@ -134,17 +137,17 @@ utils: $(OBJ_UTILS)
 allapot: $(OBJ_ALLAPOT)
 	$(CC) -o $(OUT_ALLAPOT) $^ $(MINGWSTATIC)
 	
-ui_parts: $(OBJ_UI_VEC)
-	$(CC) -o $(OUT_UI_VEC) $^ $(WX_LIB) $(MINGWSTATIC)
+#ui_parts: $(OBJ_UI_VEC)
+#	$(CC) -o $(OUT_UI_VEC) $^ $(WX_LIB) $(MINGWSTATIC)
 
-#ui_main: $(OBJ_UI_MAIN)
-#	$(CC) -o $(OUT_UI_MAIN) $^ $(QT_INCPATH) $(QT_LIBS) $(MINGWSTATIC)
+ui_main: $(OBJ_UI_MAIN)
+	$(CC) -o $(OUT_UI_MAIN) $^ $(MINGWSTATIC) $(WX_LIB)
 
 elsoparse: $(OBJ_ELSOP)
 	$(CC) -o $(OUT_ELSOP) $^ $(MINGWSTATIC)
 
-interpret: $(OBJ_INTERP)
-	$(CC) -o $(OUT_INTERP) $^ $(FLAGS) $(MINGWSTATIC)
+#interpret: $(OBJ_INTERP)
+#	$(CC) -o $(OUT_INTERP) $^ $(FLAGS) $(MINGWSTATIC)
 
 clean:
 	rm -f $(OBJ) $(MAINS_OBJ)

@@ -1,6 +1,7 @@
 
 #include <algorithm>
 #include <iostream>
+#include <sstream>
 
 #include "allapot.h"
 #include "utils.h"
@@ -278,16 +279,16 @@ void Allapot::set_reg( const std::string &reg_azon, const std::vector<AP_UC> &fr
 				}
 			case 's':
 				{
+					int tmp = -vecc2sint( from );
+					if ( tmp < 0 )
+					{	// hogyha a verem merete 0 ala csokkenne, hibat dobunk, es nem hajtjuk vegre
+						throw NEGATIV_VEREM_MERET;
+					}
 					for (int i = 0; i < REG_SIZE; ++i)
 					{
 						esp[i] = from[i];
 					}
 					// amennyiben magasabb pontra mutat a verem teteje, mint amekkora a vektora, noveljuk meg a meretet
-					int tmp = -vecc2sint(esp);
-					if ( tmp < 0 )
-					{
-						throw NEGATIV_VEREM_MERET;
-					}
 					if ( tmp > verem.size() )
 					{
 						verem.resize( tmp );
@@ -348,16 +349,19 @@ void Allapot::set_reg( const std::string &reg_azon, const std::vector<AP_UC> &fr
 					}
 				case 's':
 					{
+						vector<AP_UC> newfrom = from;
+						newfrom.push_back( esp[2] );
+						newfrom.push_back( esp[3] );
+						int tmp = -vecc2sint( newfrom );
+						if ( tmp < 0 )
+						{	// nem engedjuk a verem melyseget negativra allitani
+							throw NEGATIV_VEREM_MERET;
+						}
 						for (int i = 0; i < 2; ++i)
 						{
 							esp[i] = from[i];
 						}
 						// amennyiben magasabb pontra mutat a verem teteje, mint amekkora a vektora, noveljuk meg a meretet
-						int tmp = -vecc2sint(esp);
-						if ( tmp < 0 )
-						{
-							throw NEGATIV_VEREM_MERET;
-						}
 						if ( tmp > verem.size() )
 						{
 							verem.resize( tmp );
@@ -602,13 +606,25 @@ void Allapot::print_allapot() const
 	cout << "Zero flag:\t" << zeroflag << endl;
 	cout << "Sign flag:\t" << signflag << endl;
 	
-	vec_cout(eax, "eax");
-	vec_cout(ebx, "ebx");
-	vec_cout(ecx, "ecx");
-	vec_cout(edx, "edx");
-	
-	vec_cout(esp, "esp");
-	vec_cout(ebp, "ebp");
+	stringstream ss;
+	ss << "eax:\t\t\t\t" << vecc2uint( eax );
+	vec_cout(eax, ss.str() );
+	ss.str("");
+	ss << "ebx:\t\t\t\t" << vecc2uint( ebx );
+	vec_cout(ebx, ss.str() );
+	ss.str("");
+	ss << "ecx:\t\t\t\t" << vecc2uint( ecx );
+	vec_cout(ecx, ss.str() );
+	ss.str("");
+	ss << "edx:\t\t\t\t" << vecc2uint( edx );
+	vec_cout(edx, ss.str() );
+	cout << "--------------------------" << endl;
+	ss.str("");
+	ss << "esp:\t\t\t\t" << -vecc2sint( esp );
+	vec_cout(esp, ss.str() );
+	ss.str("");
+	ss << "ebp:\t\t\t\t" << -vecc2sint( ebp );
+	vec_cout(ebp, ss.str() );
 	
 	vector<string> vecStr;
 	elso_valtozok( vecStr );
@@ -621,7 +637,7 @@ void Allapot::print_allapot() const
 	vec_cout( valtozok );
 	
 	vec_pointerek( vecStr );
-	cout << "verem, hossza: " << verem.size() << endl;
+	cout << "verem, hossza: " << verem_teteje() << endl;
 	for (int i = 0; i < vecStr.size(); ++i )
 	{
 		cout << vecStr[i] << "\t";

@@ -169,7 +169,7 @@ void verem_teszt()
 	{
 		cout << "HIBA [ebp - 4] vagy [ebp - 8] lekerdezese sikertelen" << endl;
 	}
-	ap.verem_vector(to);
+	ap.verem_vector( to );
 	vec_cout(to, "verem vektor:");
 	
 	ap.vec_pointerek(verem_nevek);
@@ -187,16 +187,34 @@ void verem_teszt()
 		ap.set_reg( "esp", to );
 		
 		cout << "HIBA esp negativ szamra allitasa eseten nem dobott hibat" << endl;
+		
+		ap.print_allapot();
 	} catch ( Allapot::Exceptions ex )
 	{
 		cout << "HELYES esp negativ szamra allitasa eseten NEGATIV_VEREM_MERET hibat dobott" << endl;
-		ap.get_reg( "esp", vec_AP_UC_2 );
-		sint2vecc( vecc2sint( vec_AP_UC_2 ) - 16, to );
-		ap.set_reg( "esp", to );
+		ap.print_allapot();
+		cout << endl;
+		cout << "HELYES Az allapot nem modosult, a hibas erteket nem vette fel." << endl;
 	}
-	cout << endl;
+	ap.verem_pop( 4, to );
+	ap.verem_pop( 4, to );
+	ap.verem_pop( 4, to );
 	
-	ap.print_allapot();
+	cout << "Mind a 12 byte poppolasa." << endl;
+	cout << endl;
+	try
+	{
+		ap.get_reg( "sp", vec_AP_UC_2 );
+		vec_AP_UC_2[0] -= 1;
+		ap.set_reg( "sp", to );
+		
+		cout << "HIBA sp-n keresztul esp negativ szamra allitasa eseten nem dobott hibat" << endl;
+	} catch ( Allapot::Exceptions ex )
+	{
+		cout << "HELYES sp-n keresztul esp negativ szamra allitasa eseten NEGATIV_VEREM_MERET hibat dobott" << endl;
+		ap.print_allapot();
+		cout << "HELYES Az allapot nem modosult, a hibas erteket nem vette fel." << endl;
+	}
 	
 	cout << endl;
 }

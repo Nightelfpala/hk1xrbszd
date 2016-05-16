@@ -120,13 +120,14 @@ datadecl:
 	AZONOSITO KETTOSPONT meretdata szamok
 	{
 		int meret = (*$3);
-		int pluszhossz = meret * $4->size();
+		int pluszdb = $4->size();
+		int pluszhossz = meret * pluszdb;
 		int mosthossz = valtozok.size();
 		
 		std::vector<AP_UC> vec(meret);
 		
 		valtozok.resize(mosthossz + pluszhossz, 0);
-		for (int i = 0; i < pluszhossz; ++i)
+		for (int i = 0; i < pluszdb; ++i)
 		{
 			Utils::uint2vecc( (*$4)[i] , vec );
 			for (int j = 0; j < meret; ++j)

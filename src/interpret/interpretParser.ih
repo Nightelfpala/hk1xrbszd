@@ -4,6 +4,8 @@
 
 // $insert class.h
 #include "interpretParser.h"
+#include "allapot.h"
+
 #include <iostream>
 
 
@@ -37,10 +39,12 @@ int interpretParser::completeParse(std::istream& in, int argsize)
 
 void interpretParser::preParse(std::istream& in, int argsize)
 {
-	if (lexer)
+	// /*
+	if ( lexer != NULL)
 	{
 		delete lexer;
 	}
+	// */
 	lexer = new interpretFlexLexer( &in, &std::cerr);
 	
 	argmeret = argsize;
