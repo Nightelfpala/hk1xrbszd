@@ -28,6 +28,8 @@ mainDisplay::mainDisplay( const wxString &title ) : wxFrame(NULL, wxID_ANY, titl
 	//mainPanel -> 
 		SetMinSize( wxSize(900, 600) );
 		
+	SetTitle( wxString::FromUTF8("Szimuláció") );
+		
 	wxGridBagSizer *controlSizer = new wxGridBagSizer( 2, 2 );
 	
 	menuBar = new wxMenuBar;
@@ -36,6 +38,7 @@ mainDisplay::mainDisplay( const wxString &title ) : wxFrame(NULL, wxID_ANY, titl
 	file -> Append( UI_MAIN_FILE_OPEN_EVENT, wxString::FromUTF8("Fájl megnyitása") );
 	file -> Append( wxID_ANY, wxEmptyString, wxEmptyString, wxITEM_SEPARATOR );
 	file -> Append( wxID_EXIT, wxString::FromUTF8("Kilépés") );
+	
 	menuBar -> Append( file, "File" );
 	
 	SetMenuBar( menuBar );
@@ -66,6 +69,8 @@ mainDisplay::mainDisplay( const wxString &title ) : wxFrame(NULL, wxID_ANY, titl
 	nextButton = new wxButton( this, UI_MAIN_NEXT_INSTRUCTION_EVENT, wxString::FromUTF8("Végrehajt"));
 	//nextButton -> SetFocus();
 	nextButton -> Enable( false );
+	prevButton = new wxButton( this, UI_MAIN_PREV_INSTRUCTION_EVENT, wxString::FromUTF8("Visszavon"));
+	prevButton -> Enable( false );
 	
 	nextInstruction = new wxTextCtrl( this, wxID_ANY, "", wxDefaultPosition, wxSize( 200, 30), wxTE_READONLY | wxTE_RIGHT | wxBORDER_SIMPLE );
 	nextInstruction -> SetFont( displayFont );
@@ -75,6 +80,7 @@ mainDisplay::mainDisplay( const wxString &title ) : wxFrame(NULL, wxID_ANY, titl
 	//nextRow -> SetBackgroundColour( wxColour( *wxWHITE ) );
 	
 	controlSizer -> Add( nextButton, wxGBPosition( 1, 2), wxDefaultSpan, wxALIGN_RIGHT );
+	controlSizer -> Add( prevButton, wxGBPosition( 1, 1), wxDefaultSpan, wxALIGN_LEFT );
 	controlSizer -> Add( nextInstruction, wxGBPosition( 0, 1), wxGBSpan(1, 3) );
 	controlSizer -> Add( nextRow, wxGBPosition( 0, 0) );
 	
@@ -82,16 +88,11 @@ mainDisplay::mainDisplay( const wxString &title ) : wxFrame(NULL, wxID_ANY, titl
 	
 	sizer -> Add( controlSizer, wxGBPosition( 0, 3), wxGBSpan( 2, 1) );
 	
-#if 1
 	mainPanel -> SetSizer( sizer );
 	sizer -> Layout();
 	mainPanel -> Fit();
-#else
-	SetSizer( sizer );
-	sizer -> Layout();
-	Fit();
-#endif
 
+	prevButton -> Raise();
 	nextButton -> Raise();
 	
 	SetBackgroundColour( mainPanel -> GetBackgroundColour() );
@@ -108,12 +109,12 @@ mainDisplay::~mainDisplay()
 	}
 }
 
-void mainDisplay::OnQuit( wxCommandEvent& event)
+void mainDisplay::OnQuit( wxCommandEvent& event )
 {
 	Close( true );
 }
 
-void mainDisplay::OpenFile( wxCommandEvent& event)
+void mainDisplay::OpenFile( wxCommandEvent& event )
 {
 	// nem ismetelheto, fura segfaultok
 	wxFileDialog dialog( this, wxString::FromUTF8("Assembly kódfájl megnyitása"), wxGetCwd(), "", wxString::FromUTF8("Assembly fájlok (*.asm)|*.asm"), wxFD_OPEN | wxFD_FILE_MUST_EXIST );
@@ -123,8 +124,7 @@ void mainDisplay::OpenFile( wxCommandEvent& event)
 		return;
 	}
 	
-	//wxMessageDialog msg( this, dialog.GetPath(), "eredmeny:");
-	//msg.ShowModal();
+	SetTitle( wxString::FromUTF8("Szimuláció: ") + dialog.GetFilename() );
 	
 	ifstream infile( dialog.GetPath().ToStdString().c_str() );
 	
@@ -157,13 +157,19 @@ void mainDisplay::OpenFile( wxCommandEvent& event)
 		iParser = new interpretParser;
 		iParser -> initAp( &allapot, &ugro_cimkek );
 		
-		displayRefresh();
+		while ( korabbiak.size() > 0 )
+		{
+			korabbiak.pop();
+		}
+		prevButton -> Enable( false );
 		
 		if ( vege > kezdet )
 		{
 			isloaded = true;
 			nextButton -> Enable( true );
 		}
+		
+		displayRefresh();
 		
 	} catch ( elsoparseParser::Exceptions ex)
 	{
@@ -173,23 +179,17 @@ void mainDisplay::OpenFile( wxCommandEvent& event)
 	}
 }
 
-void mainDisplay::NextInstruction( wxCommandEvent& event)
+void mainDisplay::NextInstruction( wxCommandEvent& event )
 {
 	istringstream iss(utas_data[ allapot.get_kovetkezo() ].sor);
 	
 	try
 	{
-		/*
-		wxMessageDialog msg( this, "1", "");
-		msg.ShowModal();
-		*/
+		korabbiak.push( allapot );
 		iParser -> completeParse( iss, utas_data[ allapot.get_kovetkezo() ].argmeret );
-		/*
-		wxMessageDialog msg2( this, "2", "");
-		msg2.ShowModal();
-		*/
 		allapot.kov_utasitas();
 		
+		prevButton -> Enable( true );
 		nextButton -> SetFocus();
 		
 		displayRefresh();
@@ -224,25 +224,34 @@ void mainDisplay::NextInstruction( wxCommandEvent& event)
 		msg.ShowModal();
 	}
 	
-	/*
-	wxMessageDialog msg3( this, "3", "");
-	msg3.ShowModal();
-	*/
-	
 	if ( allapot.get_kovetkezo() >= vege)
 	{
 		//nextInstruction -> SetValue( wxString::FromUTF8( " ; Nincs több utasítás" ));
 		nextInstruction -> SetValue( wxString::FromUTF8( "" ));
 		nextRow -> SetValue( "" );
-		wxMessageDialog msg( this, wxString::FromUTF8("Futás vége"), wxString::FromUTF8("Ez volt az utolsó utasítás"));
+		wxMessageDialog msg( this, wxString::FromUTF8("Nincs több utasítás"), wxString::FromUTF8("Futás vége"));
 		msg.ShowModal();
 		nextButton -> Enable( false );
 	}
 }
 
+void mainDisplay::PrevInstruction( wxCommandEvent& event )
+{
+	allapot = korabbiak.top();
+	korabbiak.pop();
+	
+	nextButton -> Enable( true );
+	if ( korabbiak.size() == 0 )
+	{
+		prevButton -> Enable( false );
+	}
+
+	displayRefresh();
+}
+
 void mainDisplay::displayRefresh()
 {
-	std::vector<unsigned char> vec;
+	std::vector<AP_UC> vec;
 	std::vector<std::string> labels;
 	
 	//cout << "regs:" << endl;
@@ -276,12 +285,12 @@ void mainDisplay::displayRefresh()
 	
 	//cout << "stack done" << endl;
 	
-	sign -> set(allapot.get_sign());
-	zero -> set(allapot.get_zero());
+	sign -> set( allapot.get_sign() );
+	zero -> set( allapot.get_zero() );
 	
 	//cout << "flags done" << endl;
 	
-	if ( !isloaded || vege >= allapot.get_kovetkezo() )
+	if ( isloaded && vege >= allapot.get_kovetkezo() )
 	{
 		stringstream ss;
 		ss << utas_data[ allapot.get_kovetkezo() ].eredetisorszam << ". sor:";
@@ -299,9 +308,11 @@ void mainDisplay::displayRefresh()
 
 wxDEFINE_EVENT( UI_MAIN_FILE_OPEN_EVENT, wxCommandEvent );
 wxDEFINE_EVENT( UI_MAIN_NEXT_INSTRUCTION_EVENT, wxCommandEvent );
+wxDEFINE_EVENT( UI_MAIN_PREV_INSTRUCTION_EVENT, wxCommandEvent );
 
 wxBEGIN_EVENT_TABLE(mainDisplay, wxFrame)
 	EVT_MENU( UI_MAIN_FILE_OPEN_EVENT, mainDisplay::OpenFile )
 	EVT_MENU( wxID_EXIT, mainDisplay::OnQuit )
 	EVT_BUTTON( UI_MAIN_NEXT_INSTRUCTION_EVENT, mainDisplay::NextInstruction )
+	EVT_BUTTON( UI_MAIN_PREV_INSTRUCTION_EVENT, mainDisplay::PrevInstruction )
 wxEND_EVENT_TABLE()

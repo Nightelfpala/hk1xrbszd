@@ -2,6 +2,7 @@
 #ifndef UI_PARTS_H_INCLUDED
 #define UI_PARTS_H_INCLUDED
 
+#include "typedefs.h"
 #include <wx/wx.h>
 
 #include <vector>
@@ -14,7 +15,7 @@ class regDisplay : public wxPanel
 public:
 	regDisplay( wxPanel *parent, const int &size, const wxString &nev );
 	
-	void updateValues( const std::vector<unsigned char> &values );
+	void updateValues( const std::vector<AP_UC> &values );
 private:
 	const wxString name;
 	const int meret;
@@ -22,7 +23,7 @@ private:
 	wxTextCtrl* nameLabel;
 	
 	std::vector< wxTextCtrl* > vecLabel;
-	std::vector<unsigned char> vecValue;
+	std::vector<AP_UC> vecValue;
 };
 
 class varDisplay : public wxPanel
@@ -30,7 +31,7 @@ class varDisplay : public wxPanel
 public:
 	varDisplay( wxPanel *parent, const wxString &nev );
 	
-	void updateValues( const std::vector<unsigned char> &values );
+	void updateValues( const std::vector<AP_UC> &values );
 	void updateLabels( const std::vector< std::string > &values );
 private:
 	const wxString name;
@@ -42,7 +43,7 @@ private:
 	wxGridBagSizer *outSizer;
 	
 	std::vector< wxTextCtrl* > vecLabel;
-	std::vector<unsigned char> vecValue;
+	std::vector<AP_UC> vecValue;
 	
 	std::vector< wxTextCtrl* > nameLabels;
 	std::vector< std::string > vecNames;

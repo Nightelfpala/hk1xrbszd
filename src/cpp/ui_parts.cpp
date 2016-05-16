@@ -48,7 +48,7 @@ regDisplay::regDisplay( wxPanel *parent, const int &size, const wxString &nev ) 
 	Fit();
 }
 
-void regDisplay::updateValues( const std::vector<unsigned char> &values )
+void regDisplay::updateValues( const std::vector<AP_UC> &values )
 {
 	//cout << "meret : " << meret << "\tvalues.size: " << values.size() << endl;
 	//if (name == "EAX") {wxMessageDialog msg2( this, "1", ""); msg2.ShowModal();}
@@ -117,7 +117,7 @@ varDisplay::varDisplay( wxPanel *parent, const wxString &nev )
 	Fit();
 }
 
-void varDisplay::updateValues( const std::vector<unsigned char> &values )
+void varDisplay::updateValues( const std::vector<AP_UC> &values )
 {
 	int prevsize = vecLabel.size();
 	int newsize = values.size();
@@ -267,14 +267,16 @@ flagDisplay::flagDisplay( wxPanel *parent, const wxString &nev) :
 
 void flagDisplay::set( bool b )
 {
-	if ( value != b)
+	if ( value == b )
+	{
+		valLabel -> SetForegroundColour( *wxBLACK );
+	} else
 	{
 		value = b;
 		valLabel -> SetForegroundColour( *wxRED );
-	} else
-	{
-		valLabel -> SetForegroundColour( *wxBLACK );
 	}
+	
+	valLabel -> SetValue( "" );
 	
 	std::stringstream ss;
 	ss << (value ? 1 : 0);

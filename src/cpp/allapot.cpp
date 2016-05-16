@@ -31,6 +31,9 @@ Allapot::Allapot() : zeroflag(false), signflag(false), kovetkezo_utasitas(0), ut
 	ebp = esp;
 	
 	verem.resize(0);
+	
+	zeroflag = false;
+	signflag = false;
 }
 
 Allapot::~Allapot()
@@ -60,6 +63,12 @@ void Allapot::init( const std::map<std::string, int> &valtozo_kezdetek, const st
 	ebp = esp;
 	
 	verem.resize(0);
+	
+	kovetkezo_utasitas = 0;
+	utasitasszam = 0;
+	
+	zeroflag = false;
+	signflag = false;
 }
 
 void Allapot::get_reg( const std::string &reg_azon, std::vector<AP_UC> &to ) const

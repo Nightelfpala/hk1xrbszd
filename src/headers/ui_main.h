@@ -5,6 +5,7 @@
 #include "typedefs.h"
 #include "allapot.h"
 
+#include <stack>
 #include <map>
 
 #include <wx/wx.h>
@@ -12,6 +13,7 @@
 
 wxDECLARE_EVENT( UI_MAIN_FILE_OPEN_EVENT, wxCommandEvent );
 wxDECLARE_EVENT( UI_MAIN_NEXT_INSTRUCTION_EVENT, wxCommandEvent );
+wxDECLARE_EVENT( UI_MAIN_PREV_INSTRUCTION_EVENT, wxCommandEvent );
 
 class wxGridBagSizer;
 class wxButton;
@@ -29,14 +31,16 @@ public:
 	~mainDisplay();
 
 private:	
-	void OnQuit( wxCommandEvent& event);
-	void OpenFile( wxCommandEvent& event);
-	void NextInstruction( wxCommandEvent& event);
+	void OnQuit( wxCommandEvent& event );
+	void OpenFile( wxCommandEvent& event );
+	void NextInstruction( wxCommandEvent& event );
+	void PrevInstruction( wxCommandEvent& event );
 	
 	Allapot allapot;
 	
 	bool isloaded;
 	
+	std::stack<Allapot> korabbiak;
 	std::map<int, utasitas_data> utas_data;
 	std::map<std::string, int> ugro_cimkek;
 	int vege;
@@ -56,12 +60,15 @@ private:
 	
 	wxMenuBar *menuBar;
 	wxMenu *file;
+	wxMenu *leptet;
 	
 	wxGridBagSizer *sizer;
 	
 	wxButton *nextButton;
 	wxTextCtrl *nextInstruction;
 	wxTextCtrl *nextRow;
+	
+	wxButton *prevButton;
 	
 	void displayRefresh();
 	
