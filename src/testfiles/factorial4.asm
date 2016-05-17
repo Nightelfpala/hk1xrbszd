@@ -3,7 +3,7 @@ section .text
 global main
 
 main:
-	push dword 3
+	push dword 4
 	call factorial
 	
 	jmp kilep
