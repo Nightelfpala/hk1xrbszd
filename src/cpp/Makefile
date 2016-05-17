@@ -1,7 +1,7 @@
 # Leforditja a projektet
 #	'utils'		hozza tartozo main segitsegevel letrehoz egy tesztkornyezetet: teszt_utils
 #	'allapot'	hozza tartozo main segitsegevel letrehoz egy tesztkornyezetet: teszt_allapot
-#	'ui_vec'	hozza tartozo main segitsegevel letrehoz egy tesztkornyezetet: teszt_ui_vec
+#	'ui_parts'	hozza tartozo main segitsegevel letrehoz egy tesztkornyezetet: teszt_ui_vec
 #	'elsoparse'	hozza tartozo main segitsegevel letrehoz egy tesztkornyezetet: teszt_elsoparse
 #	'interpret'	hozza tartozo main segitsegevel letrehoz egy tesztkornyezetet: teszt_interpret
 
@@ -51,8 +51,7 @@ OBJ = $(patsubst %,$(OBJECTS)/%,$(_OBJ))
 _MAINS_OBJ = allapot_main.o elsoparse.o utils_main.o ui_parts_main.o ui_parts_appmain.o interpret.o
 MAINS_OBJ = $(patsubst %,$(OBJECTS)/%,$(_MAINS_OBJ))
 
-_DEPS = allapot.h utils.h typedefs.h semantics.h FlexLexer.h szimulacio.h
-# ui_parts.h ui_main.h appmain.h
+_DEPS = allapot.h utils.h typedefs.h semantics.h FlexLexer.h ui_parts.h ui_main.h appmain.h
 _DEPS_ELSOPARSE = elsoparseParser.h elsoparseParserbase.h
 _DEPS_INTERPRET = interpretParser.h interpretParserbase.h
 DEPS = $(patsubst %,$(INCLUDE)/%,$(_DEPS)) $(patsubst %,$(INCLUDE_ELSOPARSE)/%,$(_DEPS_ELSOPARSE)) $(patsubst %,$(INCLUDE_INTERPRET)/%,$(_DEPS_INTERPRET))
