@@ -58,14 +58,8 @@ regDisplay::regDisplay( wxPanel *parent, const int &size, const wxString &nev ) 
 
 void regDisplay::updateValues( const std::vector<AP_UC> &values )
 {
-	//cout << "meret : " << meret << "\tvalues.size: " << values.size() << endl;
-	//if (name == "EAX") {wxMessageDialog msg2( this, "1", ""); msg2.ShowModal();}
 	for ( int i = 0; i < meret; ++i)
 	{
-		//if (name == "EAX") {wxMessageDialog msg2( this, "2", ""); msg2.ShowModal();}
-		//cout << name << ":" << endl;
-		//cout << i << ". " << endl;
-		//cout << (int)values.at(i) << endl;
 		if ( vecValue[i] != values[i] )
 		{
 			vecLabel[i] -> SetForegroundColour( *wxRED );
@@ -74,12 +68,10 @@ void regDisplay::updateValues( const std::vector<AP_UC> &values )
 		{
 			vecLabel[i] -> SetForegroundColour( *wxBLACK );
 		}
-		//if (name == "EAX") {wxMessageDialog msg2( this, "3", ""); msg2.ShowModal();}
 		
 		std::stringstream ss;
 		ss << (int)vecValue[i];
 		vecLabel[i] -> SetValue( ss.str() );
-		//cout << name << ": " << i << ". " << vecValue[i] << " done" << endl;
 	}
 	stringstream ss;
 	ss << "0x" << std::hex << std::setfill('0') << std::setw( meret * 2) << (AP_UI)Utils::vecc2uint( vecValue );
@@ -94,12 +86,9 @@ varDisplay::varDisplay( wxPanel *parent, const wxString &nev )
 	vecValue.resize(0);
 	vecLabel.resize(0);
 	
-	//SetMinSize( wxSize(800, 110) );
-	//SetMaxSize( wxSize(800, 110) );
 	
 	wxFont nameFont(wxFontInfo( 16 ).Bold( true ) );
 	
-	//cout << "scroll constr" << endl;
 	scroll = new wxScrolledWindow( this );
 	scroll -> EnableScrolling( true, false );
 	scroll -> ShowScrollbars( wxSHOW_SB_ALWAYS, wxSHOW_SB_NEVER );
@@ -115,12 +104,9 @@ varDisplay::varDisplay( wxPanel *parent, const wxString &nev )
 	nameLabel -> SetDefaultStyle( wxTextAttr( *wxBLACK ));
 	
 	outSizer -> Add( nameLabel, wxGBPosition(0, 0), wxGBSpan( 1, 1 ) );
-	//cout << "scroll add" << endl;
 	outSizer -> Add( scroll, wxGBPosition(1, 0), wxGBSpan(1, 3));
 	
-	//cout << "scroll setsizer" << endl;
 	scroll -> SetSizer( inSizer );
-	//scroll -> Refresh();
 	inSizer -> Layout();
 	scroll -> FitInside();
 	SetSizer( outSizer );
@@ -159,7 +145,7 @@ void varDisplay::updateValues( const std::vector<AP_UC> &values )
 		for (int i = newsize; i < prevsize; ++i)
 		{
 			inSizer -> Detach( vecLabel[i] );
-			delete vecLabel[i];
+			vecLabel[i] -> Destroy();
 		}
 		vecValue.resize( newsize );
 		vecLabel.resize( newsize );
@@ -217,7 +203,7 @@ void varDisplay::updateLabels( const std::vector< std::string > &values )
 		for ( int i = newsize; i < prevsize; ++i)
 		{
 			inSizer -> Detach( nameLabels[i] );
-			delete nameLabels[i];
+			nameLabels[i] -> Destroy();
 		}
 		vecNames.resize( newsize );
 		nameLabels.resize( newsize );

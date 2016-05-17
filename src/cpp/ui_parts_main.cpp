@@ -12,10 +12,8 @@
 mainDisplay::mainDisplay( const wxString &title ) : wxFrame(NULL, wxID_ANY, title, wxDefaultPosition, wxSize(800, 600) )
 {
 	wxPanel *mainPanel = new wxPanel( this, wxID_ANY  );
-	mainPanel -> 
-		SetAutoLayout( true );
-	//mainPanel -> 
-		SetMinSize( wxSize(800, 600) );
+	mainPanel -> SetAutoLayout( true );
+	SetMinSize( wxSize(800, 600) );
 	
 	menuBar = new wxMenuBar;
 	file = new wxMenu;
@@ -25,9 +23,6 @@ mainDisplay::mainDisplay( const wxString &title ) : wxFrame(NULL, wxID_ANY, titl
 	menuBar -> Append( file, "File" );
 	
 	SetMenuBar( menuBar );
-	
-	//Connect( wxID_EXIT, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( mainDisplay::OnQuit ));
-	//file -> Bind( wxEVT_COMMAND_MENU_SELECTED, &mainDisplay::OnQuit, this );
 	
 	sizer = new wxGridBagSizer( 1, 1 );
 	eax = new regDisplay( mainPanel, 4, "eax" );
@@ -50,15 +45,9 @@ mainDisplay::mainDisplay( const wxString &title ) : wxFrame(NULL, wxID_ANY, titl
 	sizer -> Add( valtozok, wxGBPosition(2, 0), wxGBSpan( 1, 3) );
 	sizer -> Add( verem, wxGBPosition(3, 0), wxGBSpan( 1, 3) );
 
-#if 1
 	mainPanel -> SetSizer( sizer );
 	sizer -> Layout();
 	mainPanel -> Fit();
-#else
-	SetSizer( sizer );
-	sizer -> Layout();
-	Fit();
-#endif
 	
 	Centre();
 	
@@ -67,8 +56,7 @@ mainDisplay::mainDisplay( const wxString &title ) : wxFrame(NULL, wxID_ANY, titl
 
 mainDisplay::~mainDisplay()
 {
-	//if (menuBar) delete menuBar;
-	//if (file) delete file;
+	
 }
 
 void mainDisplay::OnQuit( wxCommandEvent& event)
@@ -87,12 +75,10 @@ void mainDisplay::OpenFile( wxCommandEvent& event)
 	
 	wxMessageDialog msg( this, dialog.GetPath(), "eredmeny:");
 	msg.ShowModal();
-	//ifstream infile( dialog.GetPath().ToStdString() );
 }
 
 void mainDisplay::displayRefresh()
 {
-	// temp - TODO use allapot
 	std::vector<unsigned char> vec(4);
 	std::vector<std::string> labels(4);
 	for (int i = 0; i < 4; ++i)

@@ -21,9 +21,7 @@ int main( int argc, char *argv[] )
 		infile = argv[1];
 	} else
 	{
-		cout << "Adja meg a bemeneti file nevet!" << endl;
-		getline( cin, infile );
-		//infile = "../testfiles/teszt1.asm";
+		infile = "../testfiles/teszt1.asm";
 	}
 	cout << "File megnyitasa: " << infile << endl;
 	

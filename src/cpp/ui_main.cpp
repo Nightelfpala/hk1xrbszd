@@ -276,10 +276,7 @@ void mainDisplay::displayRefresh()
 	std::vector<AP_UC> vec;
 	std::vector<std::string> labels;
 	
-	//cout << "regs:" << endl;
-	
 	allapot.get_reg( "eax", vec );
-	//cout << "allapot get eax" << endl;
 	eax -> updateValues( vec );
 	
 	allapot.get_reg( "ebx", vec );
@@ -291,26 +288,18 @@ void mainDisplay::displayRefresh()
 	allapot.get_reg( "edx", vec );
 	edx -> updateValues( vec );
 	
-	//cout << "regs done" << endl;
-	
 	allapot.valtozo_vector( vec );
 	allapot.elso_valtozok( labels );
 	valtozok -> updateValues( vec );
 	valtozok -> updateLabels( labels );
-	
-	//cout << "vars done" << endl;
 	
 	allapot.verem_vector( vec );
 	allapot.vec_pointerek( labels );
 	verem -> updateValues( vec );
 	verem -> updateLabels( labels );
 	
-	//cout << "stack done" << endl;
-	
 	sign -> set( allapot.get_sign() );
 	zero -> set( allapot.get_zero() );
-	
-	//cout << "flags done" << endl;
 	
 	if ( isloaded && vege >= allapot.get_kovetkezo() )
 	{
