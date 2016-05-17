@@ -39,7 +39,7 @@ int interpretParser::completeParse(std::istream& in, int argsize)
 
 void interpretParser::preParse(std::istream& in, int argsize)
 {
-	if ( lexer != NULL)
+	if ( lexer != NULL )
 	{
 		delete lexer;
 	}

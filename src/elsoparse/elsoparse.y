@@ -119,6 +119,18 @@ bssdeklaraciok:
 datadecl:
 	AZONOSITO KETTOSPONT meretdata szamok
 	{
+		if ( valtozo_kezdetek.count(*$1) > 0 )
+		{
+			std::stringstream ss;
+			ss << d_loc__.first_line << ". sor: " << "ujradefinialt valtozo" << std::endl
+				<< "\t" << (std::string("") + *$1) << std::endl;
+			errorMsg = ss.str();
+			
+			delete $1;
+			delete $3;
+			delete $4;
+			throw HIBA;
+		}
 		int meret = (*$3);
 		int pluszdb = $4->size();
 		int pluszhossz = meret * pluszdb;
@@ -163,6 +175,18 @@ szamok:
 bssdecl:
 	AZONOSITO KETTOSPONT meretbss SZAM
 	{
+		if ( valtozo_kezdetek.count(*$1) > 0 )
+		{
+			std::stringstream ss;
+			ss << d_loc__.first_line << ". sor: " << "ujradefinialt valtozo" << std::endl
+				<< "\t" << (std::string("") + *$1) << std::endl;
+			errorMsg = ss.str();
+			
+			delete $1;
+			delete $3;
+			delete $4;
+			throw HIBA;
+		}
 		int pluszhossz = (*$3) * atoi($4->c_str());
 		int mosthossz = valtozok.size();
 		

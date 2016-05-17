@@ -1,7 +1,7 @@
 
 #include "appmain.h"
 
-#include "ui_main.h"
+#include "ui_parts_main.h"
 
 IMPLEMENT_APP(App)
 

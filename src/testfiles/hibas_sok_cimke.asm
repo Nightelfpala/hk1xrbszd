@@ -1,13 +1,12 @@
 
-global main_egyik
 
 section .text
 
-global main_masik
+global main
 
-
+main:
 	mov eax, 16
-main_egyik:
+main:
 	push eax
 	mov ebx, [ esp ]
 	
