@@ -1,0 +1,149 @@
+#ifndef ELSOPARSEPARSER_IH_INCLUDED
+#define ELSOPARSEPARSER_IH_INCLUDED
+
+#include <algorithm>
+#include "elsoparseParser.h"
+
+int elsoparseParser::completeParse()
+{
+	int ret = parse();
+	postParse();
+	return ret;
+}
+
+void elsoparseParser::postParse()
+{
+	for (std::map<std::string, int>::const_iterator it = ugrocimke_kovutasitas.begin(); it != ugrocimke_kovutasitas.end(); ++it )
+	{
+		if (it->second == -1)
+		{
+			std::stringstream ss;
+			ss << "A(z) " << it->first << " ugrocimke celpontja nincs megadva." << std::endl;
+			errorMsg = ss.str();
+			throw HIBA;
+		}
+	}
+	
+	for (std::map<std::string, int>::const_iterator it = valtozo_kezdetek.begin(); it != valtozo_kezdetek.end(); ++it )
+	{
+		if (it->second == -1)
+		{
+			std::stringstream ss;
+			ss << "A(z) " << it->first << " valtozo nincs definialva." << std::endl;
+			errorMsg = ss.str();
+			throw HIBA;
+		}
+	}
+	
+	if (elsoutasitas_cimke == "")
+	{
+		std::stringstream ss;
+		ss << "A program belepesi pontja nincs megadva." << std::endl;
+		errorMsg = ss.str();
+		throw HIBA;
+	}
+	
+	utolso_utasitas = get_elsoutasitas() + 1;
+	for (std::map<int, utasitas_data>::const_iterator it = utasitas_gyujto.begin(); it != utasitas_gyujto.end(); ++it)
+	{
+		if ( it->first + 1 > utolso_utasitas )
+		{
+			utolso_utasitas = it->first + 1;
+		}
+	}
+}
+
+std::map<int, utasitas_data> elsoparseParser::get_utasitasok() const
+{
+	return utasitas_gyujto;
+}
+
+std::map<std::string, int> elsoparseParser::get_valtozokezdet() const
+{
+	return valtozo_kezdetek;
+}
+std::map<std::string, int> elsoparseParser::get_ugrocimke() const
+{
+	return ugrocimke_kovutasitas;
+}
+	
+std::vector<AP_UC> elsoparseParser::get_valtozok() const
+{
+	return valtozok;
+}
+
+int elsoparseParser::get_elsoutasitas() const
+{
+	return ugrocimke_kovutasitas.at(elsoutasitas_cimke);
+}
+
+int elsoparseParser::get_utolsoutasitas() const
+{
+	return utolso_utasitas;
+}
+	
+std::string elsoparseParser::get_error() const
+{
+	return errorMsg;
+}
+
+void elsoparseParser::error(char const *msg)
+{
+	std::stringstream ss;
+	ss << d_loc__.first_line << ". sor: " << msg << std::endl;
+    errorMsg = ss.str();
+	throw HIBA;
+}
+
+inline int elsoparseParser::lex()
+{
+    d_loc__.first_line = lexer.lineno();
+	int ret = lexer.yylex();
+	
+	if (ret == AZONOSITO || ret == SZAM || ret == REGISZTER || ret == KETARGUMENTUMOS || ret == EGYARGUMENTUMOS || ret == UGROUTAS || ret == RET)
+	{
+		d_val__.szoveg = new std::string(lexer.YYText());
+	}
+	if (ret == LEXERROR)
+	{
+		std::stringstream ss;
+		ss << d_loc__.first_line << ". sor: lexikalis hiba: " << lexer.YYText() << std::endl;
+		errorMsg = ss.str();
+		throw HIBA;
+	}
+    return ret;
+}
+
+inline void elsoparseParser::print()         
+{
+    print__();
+}
+
+inline void elsoparseParser::exceptionHandler__(std::exception const &exc)		// http://bisoncpp.sourceforge.net/bisonc++06.html 6.3
+{
+	throw;  // re-implement to handle exceptions thrown by actions
+}
+
+int elsoparseParser::getRegSize(const std::string &reg) const
+{	// undefined behaviour with flag registers
+	if (reg[0] == 'e')
+	{
+		return 4;
+	} else if (reg[1] == 'p' || reg[1] == 'x')
+	{
+		return 2;
+	} else
+	{
+		return 1;
+	}
+}
+
+std::string elsoparseParser::toLower(const std::string& s) const
+{
+	std::string ss = s;
+	std::transform(ss.begin(), ss.end(), ss.begin(), ::tolower);
+	return ss;
+}
+
+
+#endif
